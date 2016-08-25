@@ -1,0 +1,80 @@
+<?php
+
+namespace backend\models;
+
+use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use backend\models\Area;
+
+/**
+ * OtchetSearch represents the model behind the search form about `backend\models\Otchet`.
+ */
+class AreaSearch extends Area
+{
+    /**
+     * @inheritdoc
+     */
+     
+     /**
+      * 
+      * 
+      * 
+      * */
+    public $kn;
+    public $name;
+    
+    public function rules()
+    {
+        return [
+            [['id', 'kn', 'name'], 'required'],
+            [['kn', 'name'], 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+     /*
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+*/
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = Area::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'kn' => $this->kn,
+			'name' => $this->name,
+			
+        ]);
+
+        $query->andFilterWhere(['like', 'kn', $this->kn])
+            ->andFilterWhere(['like', 'name', $this->name]);
+
+        return $dataProvider;
+    }
+}
