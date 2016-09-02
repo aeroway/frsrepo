@@ -63,6 +63,8 @@ class AbEmployee extends \yii\db\ActiveRecord
 			foreach($res2 as $res2value)
 				$res3[] = $res2value["name"];
 		}
+		
+		if(empty($res3)) return '';
 
 		return implode(', ', $res3);
 	}
@@ -79,6 +81,7 @@ class AbEmployee extends \yii\db\ActiveRecord
 				$res3 = $res2value["name"];
 		}
 
+		if(empty($res3)) return '';
 		return $res3;
 	}
 
