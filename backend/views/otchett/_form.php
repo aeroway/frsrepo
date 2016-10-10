@@ -29,6 +29,8 @@ use yii\widgets\ActiveForm;
 
 	<?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
+	<?= $form->field($model, 'protocol')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

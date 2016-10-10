@@ -43,7 +43,7 @@ class Otchett extends \yii\db\ActiveRecord
         return [
             [['description', 'status', 'comment', 'date', 'username'], 'required'],
 			[['id_dpt', 'id_egrp'], 'integer'],
-            [['kn', 'description', 'status', 'comment', 'username', 'area', 'flag', 'filename'], 'string'],
+            [['kn', 'description', 'status', 'comment', 'username', 'area', 'flag', 'filename', 'protocol'], 'string'],
             [['date', 'date_update', 'date_load'], 'safe']
         ];
     }
@@ -68,6 +68,7 @@ class Otchett extends \yii\db\ActiveRecord
 			'id_egrp' => 'id',
 			'date_update' => 'Обновление',
 			'date_load' => 'Загружено',
+			'protocol' => 'Протокол',
         ];
     }
 }

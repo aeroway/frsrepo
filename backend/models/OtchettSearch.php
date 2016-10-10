@@ -19,7 +19,7 @@ class OtchettSearch extends Otchett
     {
         return [
             [['id', 'id_dpt', 'id_egrp'], 'integer'],
-            [['kn', 'description', 'status', 'comment', 'date', 'username', 'area', 'flag', 'filename', 'date_update', 'date_load'], 'safe'],
+            [['kn', 'description', 'status', 'comment', 'date', 'username', 'area', 'flag', 'filename', 'date_update', 'date_load', 'protocol'], 'safe'],
         ];
     }
 
@@ -73,7 +73,8 @@ class OtchettSearch extends Otchett
 			->andFilterWhere(['like', 'id_dpt', $this->id_dpt])
 			->andFilterWhere(['like', 'filename', $this->filename])
 			->andFilterWhere(['like', 'id_egrp', $this->id_egrp])
-            ->andFilterWhere(['like', 'username', $this->username]);
+            ->andFilterWhere(['like', 'username', $this->username])
+			->andFilterWhere(['like', 'protocol', $this->protocol]);
 
         return $dataProvider;
     }

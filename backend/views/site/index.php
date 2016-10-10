@@ -249,7 +249,7 @@ function status($table)
             <div class="col-lg-3" style="<?php statusList('otchet9')?>">
                 <h2>Дубли субъектов</h2>
                 <p>Двойники физических лиц.</p>
-				<p><a href="/advanced/docs/dubli-fiz-lic.doc">Инструкция</a></p>
+				<p><a href="/backend/docs/dubli-fiz-lic.doc">Инструкция</a></p>
 				<!--<p><i>Срок исполнения с 14.03.2016 по 27.05.2016</i></p>-->
 				<p><i>Срок исполнения Абинск до 24.06.2016</i></p>
 
@@ -259,8 +259,8 @@ function status($table)
             </div>
             <div class="col-lg-3" style="<?php statusList('otchet10')?>">
                 <h2>Некорректные виды ОНИ-2</h2>
-				<p><a href="/advanced/docs/sz-oni-2.docx">Служебная записка</a></p>
-				<p><a target="_blank" href="/advanced/docs/09-isx-13873-re-15_02.10.2015_12.47.52.pdf">Письмо Росреестра</a></p>
+				<p><a href="/backend/docs/sz-oni-2.docx">Служебная записка</a></p>
+				<p><a target="_blank" href="/backend/docs/09-isx-13873-re-15_02.10.2015_12.47.52.pdf">Письмо Росреестра</a></p>
 				<p><i>Срок исполнения до 18.07.2016</i></p>
 
 				<p><?php status('otchet10')?></p>
@@ -299,7 +299,7 @@ function status($table)
             <div class="col-lg-3" style="<?php statusList('otchet13')?>">
                 <h2>Без активного адреса в ТИР</h2>
                 <p> </p>
-				<p><a href="/advanced/docs/rekomendacii-oni-bez-aktivnogo-adresa.doc">Рекомендации: ОНИ без активного адреса</a></p>
+				<p><a href="/backend/docs/rekomendacii-oni-bez-aktivnogo-adresa.doc">Рекомендации: ОНИ без активного адреса</a></p>
 				<p><i>Срок исполнения до 25.07.2016</i></p>
 
 				<p><?php status('otchet13')?></p>
@@ -315,16 +315,54 @@ function status($table)
 
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet14">Перейти &raquo;</a></p>
             </div>
-            <div class="col-lg-3">
-                <h2> </h2>
-                <p> </p>
-				<p><i> </i></p>
+            <div class="col-lg-3" style="<?php statusList('otchet15')?>">
+                <h2>Ошибки ФЛК 2015</h2>
+                <p>Протокол ошибок ФЛК годовой выгрузки</p>
+				<p><i>Срок исполнения до 24.10.2016</i></p>
 
-				<p> </p>
+				<p><?php status('otchet15')?></p>
 
-                <p> </p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet15">Перейти &raquo;</a></p>
             </div>
 		</div>
+		<div class="row">
+            <div class="col-lg-3" style="<?php statusList('otchet16')?>">
+                <h2>Ошибки ФЛК 2016</h2>
+				<p>Протокол ошибок ФЛК годовой выгрузки</p>
+				<p><i></i></p>
 
+				<p><?php status('otchet16')?></p>
+
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet16">Перейти &raquo;</a></p>
+            </div>
+            <div class="col-lg-3" style="">
+                <h2></h2>
+                <p> </p>
+				<p></p>
+				<p></p>
+
+				<p></p>
+
+                <p></p>
+            </div>
+            <div class="col-lg-3" style="">
+                <h2></h2>
+                <p></p>
+				<p><i></i></p>
+
+				<p></p>
+
+                <p></p>
+            </div>
+            <div class="col-lg-3" style="">
+                <h2></h2>
+                <p></p>
+				<p><i></i></p>
+
+				<p></p>
+
+                <p></p>
+            </div>
+		</div>
 	</div>
 </div>

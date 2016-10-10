@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format' =>  ['date', 'php:d M Y'],
 				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
 			],
+			'protocol',
         ],
     ]) ?>
 

@@ -38,6 +38,6 @@ phpunit.phar
 /composer.json
 /tests
 /environments
-/docs
+/backend/web/docs
 /.bowerrc
 /console

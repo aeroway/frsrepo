@@ -334,13 +334,12 @@ function status($table)
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet14">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3">
-                <h2> </h2>
-                <p> </p>
-				<p><i> </i></p>
+                <h2>Ошибки ФЛК</h2>
+                <p>Протокол ошибок ФЛК годовой выгрузки</p>
+				<p><?php area('otchet15'); ?></p>
+				<p><?php status('otchet15')?></p>
 
-				<p> </p>
-
-                <p> </p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet15">Перейти &raquo;</a></p>
             </div>
 		</div>
     </div>
