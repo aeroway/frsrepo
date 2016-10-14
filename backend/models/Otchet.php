@@ -55,7 +55,7 @@ class Otchet extends \yii\db\ActiveRecord
             'kn' => 'КН/УН',
             'description' => 'Описание',
             'status' => 'Состояние',
-            'comment' => 'Комментарий',
+            'comment' => 'Наимен. ошибки',
             'date' => 'Дата',
             'username' => 'Пользователь',
 			'area' => 'Район',

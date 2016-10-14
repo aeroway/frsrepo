@@ -307,7 +307,6 @@ function status($table)
 
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet11">Перейти &raquo;</a></p>
             </div>
-      
 		</div>
         <div class="row">
             <div class="col-lg-3">
@@ -334,12 +333,47 @@ function status($table)
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet14">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3">
-                <h2>Ошибки ФЛК</h2>
+                <h2>Ошибки ФЛК 2015</h2>
                 <p>Протокол ошибок ФЛК годовой выгрузки</p>
 				<p><?php area('otchet15'); ?></p>
 				<p><?php status('otchet15')?></p>
 
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet15">Перейти &raquo;</a></p>
+            </div>
+		</div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <h2>Ошибки ФЛК 2016</h2>
+				<p><i></i></p>
+				<p><?php area('otchet16'); ?></p>
+				<p><?php status('otchet16')?></p>
+
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet12">Перейти &raquo;</a></p>
+            </div>
+            <div class="col-lg-3">
+                <h2></h2>
+                <p></p>
+				<p></p>
+				<p></p>
+
+                <p></p>
+            </div>
+            <div class="col-lg-3">
+                <h2></h2>
+                <p></p>
+				<p></p>
+				<p></p>
+
+                <p></p>
+            </div>
+            <div class="col-lg-3">
+                <h2></h2>
+                <p></p>
+				<p></p>
+				<p></p>
+
+                <p></p>
             </div>
 		</div>
     </div>

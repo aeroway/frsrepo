@@ -55,7 +55,7 @@ class Otchetn extends \yii\db\ActiveRecord
             'reason1' => 'Причина',
             'reason2' => 'Кол-во',
             'offer' => 'Предложения',
-            'comment' => 'Примечание',
+            'comment' => 'Наимен. ошибки',
             'condnum' => 'УН',
 			'flag' => 'Ошибка',
 			'dateon' => 'Дата',

@@ -21,7 +21,15 @@ use yii\widgets\ActiveForm;
 			['prompt'=>'Выберите Статус']
 	) ?>
 
-    <?= $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']) ?>
+	<?php
+		$arr = Yii::$app->request->get();
+
+		if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
+			echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+		} else {
+			echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+		}
+	?>
 
 	<?= $form->field($model, 'date')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
 
