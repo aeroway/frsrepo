@@ -77,7 +77,7 @@ class Employee extends \yii\db\ActiveRecord
 {
     public static function getDb()
     {
-        return \Yii::$app->db4;  
+        return \Yii::$app->db5;  
     }
     /**
      * @inheritdoc
