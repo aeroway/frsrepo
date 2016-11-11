@@ -34,8 +34,6 @@ phpunit.phar
 /requirements.php
 /init.bat
 /init
-/composer.lock
-/composer.json
 /tests
 /environments
 /backend/web/docs
