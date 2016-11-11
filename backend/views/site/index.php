@@ -175,7 +175,7 @@ function status($table)
 				<p><i>Срок исполнения до 18.07.2016</i></p>
 				<p><?php status('otchet')?></p>
 
-                <p><a class="btn btn-default" href="?r=otchet/index">Перейти &raquo;</a></p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3" style="<?php statusList('otchet2')?>">
                 <h2>Дубли КН</h2>

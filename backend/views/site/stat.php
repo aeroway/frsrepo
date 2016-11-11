@@ -198,7 +198,7 @@ function status($table)
 				<p><?php area('otchet'); ?></p>
 				<p><?php status('otchet')?></p>
 
-                <p><a class="btn btn-default" href="?r=otchet/index">Перейти &raquo;</a></p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3">
                 <h2>Дубли КН</h2>

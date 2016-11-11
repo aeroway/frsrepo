@@ -213,4 +213,5 @@ class InventorypartsController extends Controller
 			if($g>1) throw new ForbiddenHttpException('Пользователь состоит больше, чем в одной группе.');
 		}
 	}
+
 }

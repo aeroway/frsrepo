@@ -46,7 +46,7 @@ class InventorySearch extends Inventory
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
+			'sort'=> ['defaultOrder' => ['date'=>SORT_DESC]]
         ]);
 
         $sort = $dataProvider->getSort();

@@ -15,6 +15,9 @@ return [
 		'questions' => [
 			'class' => 'backend\modules\questions\Questions',
 		],
+        'gridview' => [
+            'class' => '\kartik\grid\Module',
+        ],
 	],
     'components' => [
         'user' => [
