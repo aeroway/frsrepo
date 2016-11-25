@@ -34,9 +34,9 @@ class InventoryPartsorder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['partsname_invpo', 'count_invpo'], 'required'],
             [['partsname_invpo'], 'string'],
-            [['count_invpo'], 'integer'],
-            [['id_partsorder_invor'], 'integer'],
+            [['count_invpo', 'id_partsorder_invor'], 'integer'],
             [['id_partsorder_invor'], 'exist', 'skipOnError' => true, 'targetClass' => InventoryOrder::className(), 'targetAttribute' => ['id_partsorder_invor' => 'id']],
 		];
 	}

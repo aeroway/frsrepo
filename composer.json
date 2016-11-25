@@ -21,9 +21,9 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "wbraganca/yii2-dynamicform": "*",
         "kartik-v/yii2-grid": "@dev",
-		"yiisoft/yii2-jui": "~2.0.0",
-		"kartik-v/yii2-krajee-base": "dev-master",
-		"kartik-v/yii2-dialog": "@dev"
+        "yiisoft/yii2-jui": "~2.0.0",
+        "kartik-v/yii2-krajee-base": "dev-master",
+        "kartik-v/yii2-dialog": "@dev"
     },
     "require-dev": {
         "codeception/codeception": "*",

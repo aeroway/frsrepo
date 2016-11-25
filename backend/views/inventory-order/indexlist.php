@@ -9,7 +9,8 @@ use backend\models\InventoryPartsorderSearch;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Заявки на запчасти';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['index']];
+$this->params['breadcrumbs'][] = "Управление заявками";
 ?>
 <div class="inventory-partsorder-index">
 
@@ -17,24 +18,47 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать заявку', ['create'], ['class' => 'btn btn-success']) ?>
-        <?php
-        if(in_array("AdminInventory", Yii::$app->user->identity->groups))
-        {
-            echo Html::a('Управление', ['indexlist'], ['class' => 'btn btn-info']);
-        }
-        ?>
+        <?php //Html::a('Создать заявку', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
 <?php
 	$button =
 	[
 		'class' => 'yii\grid\ActionColumn',
-		'template'=>'{view}',
+		'buttons'=>
+		[
+			'act'=>function ($url, $model)
+			{
+				$options = [
+					'title' => Yii::t('yii', 'Акт'),
+					'aria-label' => Yii::t('yii', 'Акт'),
+				];
+				$customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/act','id'=>$model['id']]);
+					return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $customurl, $options);
+			},
+			'close'=>function ($url, $model)
+			{
+				$options = [
+					'title' => Yii::t('yii', 'Закрыть'),
+					'aria-label' => Yii::t('yii', 'Закрыть'),
+				];
+				$customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/close','id'=>$model['id']]);
+					return Html::a('<span class="glyphicon glyphicon-ok"></span>', $customurl, $options);
+			},
+
+		],
+		'template'=>'{act} {close} {delete}',
 	];
 ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+		'rowOptions' => function($model)
+		{
+			if($model->status_id_invor == 1) return ['class'=>'success'];
+            if($model->status_id_invor == 5) return ['class'=>'warning'];
+		},
         'export' => false,
         'pjax' => true,
         'columns' => [
@@ -58,16 +82,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
 
-            //'id',
             'invnum_invor',
             'invname_invor',
             'user_invor',
+            //'demanding_invor',
 			[
 				'attribute'=>'status_id_invor',
 				'value'=>'statusOrder',
 			],
-
-            $button,
+            'date_invor:date',
+             $button,
         ],
     ]); ?>
 </div>

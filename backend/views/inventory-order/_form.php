@@ -7,6 +7,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 use backend\models\Inventory;
 use backend\models\InventoryParts;
 use backend\models\InventoryOrder;
+use backend\models\InventoryStatusorder;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 
@@ -40,13 +41,15 @@ use yii\helpers\ArrayHelper;
 	]);
 	?>
 
-	<?= $form->field($model, 'invname_invor')->textInput(); ?>
+	<?= $form->field($model, 'invname_invor')->textInput(['readonly' => true]); ?>
 
-	
 	<?= $form->field($model, 'ip_invor')->textInput(['readonly' => true, 'value' => Yii::$app->getRequest()->getUserIP()]); ?>
-	
+
 	<?= $form->field($model, 'user_invor')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->username ]) ?>
-	
+
+    <?= $form->field($model, 'date_invor')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
+
+    <?= $form->field($model, 'status_id_invor')->hiddenInput(['value'=> 1])->label(false); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

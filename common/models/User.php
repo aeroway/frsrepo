@@ -13,6 +13,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public $accessToken;
     public $fio;
     public $groups;
+
 /*
     private static $users = [
         '100' => [
@@ -38,36 +39,31 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         ],
     ];
 */
+
     /**
      * @inheritdoc
      */
-     
-     
+
     public static function findIdentity($id)
     {
-        
-        //echo 'id: '.$id;
-        //echo 'username: '.$this->username;
-        //exit();
         $result = \Yii::$app->Ldap->user()->info($id);
         if ($result)
 		{
-			$out=array('id'=>$id,'username'=>$id,'fio'=>$result[0]['displayname'][0],'groups'=>\Yii::$app->Ldap->user()->groups($id));
-		} else { $out = null; }
+            $out=array('id'=>$id,'username'=>$id,'fio'=>$result[0]['displayname'][0],'groups'=>\Yii::$app->Ldap->user()->groups($id));
+        } else 
+        {
+            $out = null; 
+        }
 
 		return new static ($out);
-
-        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
-    
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
+        foreach (self::$users as $user)
+        {
+            if ($user['accessToken'] === $token) 
+            {
                 return new static($user);
             }
         }
@@ -75,83 +71,47 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return null;
     }
 
+
     /**
      * Finds user by username
      *
      * @param  string      $username
      * @return static|null
      */
+
     public static function findByUsername($username)
     {
-        /** for LDAP*/
-
         $result = \Yii::$app->Ldap->user()->info($username);
+
         if ($result)
 		{
-            $out=array('id'=>$username,'username'=>$username,'fio'=>$result[0]['displayname'][0],'groups'=>\Yii::$app->Ldap->user()->groups($username));
-
-			/**
-			* echo '<pre>';
-			* print_r($out);  
-			* echo '</pre>';
-			* exit;
-			*/
+            $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($username));
 
 			return new static($out);
 		}
-		else 
+        else
 		{
-			echo 'ERROR LDAP';
-			exit;
+			die('Неверный логин или пароль');
 		}
-
-		/*
-		echo '<pre>';
-		print_r($result);  
-		echo '</pre>';
-		*/
-
-		/**
-		* foreach (self::$users as $user) {
-		*             if (strcasecmp($user['username'], $username) === 0) {
-		*                 $ret = new static($user);
-		* 
-		*  *                 echo '<pre>';
-		*  *                 print_r($ret);
-		*  *                 echo '</pre>';
-		*  *                 exit;
-		*  
-		*                 return new static($user);
-		*             }
-		*         }
-		*/
 
 		return null;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey()
     {
         return $this->authKey;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validateAuthKey($authKey)
     {
         return $this->authKey === $authKey;
     }
+
 
     /**
      * Validates password
@@ -159,35 +119,34 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      * @param  string  $password password to validate
      * @return boolean if password provided is valid for current user
      */
+
     public function validatePassword($password)
     {
         return $this->password === $password;
     }
-    
+
     public function checkGroup($username,$group)
     {
-        
-        //echo 'id: '.$id;
-        //echo 'username: '.$this->username;
-        //exit();
         return \Yii::$app->Ldap->user()->inGroup($username,$group) ? true : false;
-        
-        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
-    
+
     public static function findGroup($username)
     {
-        
-        //echo 'id: '.$id;
         echo 'username: '.$username;
         exit();
+
+        /*
         $result = \Yii::$app->Ldap->user()->info($id);
-        if ($result){
-            
-            $out=array('id'=>$id,'username'=>$id,'fio'=>$result[0]['displayname'][0],'groups'=>array('1'=>1));
-            } else {$out = null;}
-            return new static ($out);
-        
-        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        if ($result)
+        {
+            $out = array('id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => array('1' => 1));
+        }
+        else
+        {
+            $out = null;
+        }
+
+        return new static ($out);
+        */
     }
 }

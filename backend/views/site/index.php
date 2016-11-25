@@ -335,15 +335,15 @@ function status($table)
 
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet16">Перейти &raquo;</a></p>
             </div>
-            <div class="col-lg-3" style="">
-                <h2></h2>
-                <p> </p>
+            <div class="col-lg-3" style="<?php statusList('otchet17')?>">
+                <h2>Лидирующие нули</h2>
+                <p>Объекты с лидирующими нулями</p>
 				<p></p>
 				<p></p>
 
-				<p></p>
+				<p><?php status('otchet17')?></p>
 
-                <p></p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet17">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3" style="">
                 <h2></h2>

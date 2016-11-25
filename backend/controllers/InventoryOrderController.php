@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\Inventory;
 use backend\models\InventoryParts;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * InventoryOrderController implements the CRUD actions for InventoryOrder model.
@@ -31,7 +32,7 @@ class InventoryOrderController extends Controller
         return [
 			'access'=>[
 				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index'],
+				'only'=>['create','update','view','delete','index','indexlist'],
 				'rules'=>[
 					[
 						'allow'=>true,
@@ -54,6 +55,8 @@ class InventoryOrderController extends Controller
      */
     public function actionIndex()
     {
+        $this->checkAccess();
+
 		$searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -63,6 +66,61 @@ class InventoryOrderController extends Controller
         ]);
     }
 
+    public function actionIndexlist()
+    {
+        $this->checkAccess2();
+
+		$searchModel = new InventoryOrderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('indexlist', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionAct($id)
+    {
+        $this->checkAccess2();
+
+		$searchModel = new InventoryOrderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $model = $this->findModel($id);
+        $model->attributes = [
+            'status_id_invor' => 5,
+            'date_invor' => date("Y-m-d H:i:s"),
+        ];
+        $model->save();
+
+        return $this->render('indexlist', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+    public function actionClose($id)
+    {
+        $this->checkAccess2();
+
+		$searchModel = new InventoryOrderSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $model = $this->findModel($id);
+        $model->attributes = [
+            'status_id_invor' => 3,
+            'date_invor' => date("Y-m-d H:i:s"),
+        ];
+        $model->save();
+
+        return $this->render('indexlist', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
     /**
      * Displays a single InventoryOrder model.
      * @param integer $id
@@ -70,6 +128,8 @@ class InventoryOrderController extends Controller
      */
     public function actionView($id)
     {
+        $this->checkAccess();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -82,6 +142,8 @@ class InventoryOrderController extends Controller
      */
     public function actionCreate()
     {
+        $this->checkAccess();
+
 		$model = new InventoryOrder();
 		$modelsPoItem = [new InventoryPartsorder];
 
@@ -130,6 +192,8 @@ class InventoryOrderController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->checkAccess2();
+
         $model = $this->findModel($id);
         $modelsPoItem = $model->idPartsorderInvor;
 
@@ -183,11 +247,20 @@ class InventoryOrderController extends Controller
      */
     public function actionDelete($id)
     {
-		InventoryPartsorder::deleteAll(['id_partsorder_invor' => $id]);
-		
-        $this->findModel($id)->delete();
+        $this->checkAccess2();
 
-        return $this->redirect(['index']);
+        // Для удаления запчастей связанных с объектом
+		//InventoryPartsorder::deleteAll(['id_partsorder_invor' => $id]);
+        //$this->findModel($id)->delete();
+
+        $model = $this->findModel($id);
+        $model->attributes = [
+            'active_invor' => 0,
+            'date_invor' => date("Y-m-d H:i:s"),
+        ];
+        $model->save();
+
+        return $this->redirect(['indexlist']);
     }
 
     /**
@@ -239,4 +312,24 @@ class InventoryOrderController extends Controller
 			return 'Запрещено';
 		}
 	}
+
+	private function checkAccess()
+	{
+		if(
+			!in_array("AdminInventory", Yii::$app->user->identity->groups) and
+			!in_array("ManagerInventory", Yii::$app->user->identity->groups)
+		)
+		{
+			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+		}
+	}
+
+	private function checkAccess2()
+	{
+		if(!in_array("AdminInventory", Yii::$app->user->identity->groups))
+		{
+			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+		}
+	}
+
 }

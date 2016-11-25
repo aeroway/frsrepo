@@ -352,10 +352,10 @@ function status($table)
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet12">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3">
-                <h2></h2>
-                <p></p>
-				<p></p>
-				<p></p>
+                <h2>Лидирующие нули</h2>
+                <p>Объекты с лидирующими нулями</p>
+				<p><?php altarea('otchet17','area')?></p>
+				<p><?php status('otchet17')?></p>
 
                 <p></p>
             </div>

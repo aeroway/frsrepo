@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Создать объект', ['create'], ['class' => 'btn btn-success']) ?>
 		<?= Html::a('Перейти к запчастям', Yii::$app->getUrlManager()->createUrl(['inventoryparts/index']), ['class' => 'btn btn-info']) ?>
 		<?= Html::a('Установленные запчасти', Yii::$app->getUrlManager()->createUrl(['inventorypl/index']), ['class' => 'btn btn-info']) ?>
+		<?= Html::a('МО', Yii::$app->getUrlManager()->createUrl(['inventory-moo/index']), ['class' => 'btn btn-info']) ?>
     </p>
 
 <?php

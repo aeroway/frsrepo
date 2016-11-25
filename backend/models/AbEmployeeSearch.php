@@ -67,21 +67,23 @@ class AbEmployeeSearch extends AbEmployee
             'dt1' => $this->dt1,
             'dt2' => $this->dt2,
         ]);
-        if ($this->id_employee){
-            $sql="select id from employee where upper(fam)+' '+upper(name)+' '+upper(otch) like upper('%".$this->id_employee."%')";
-            $connection = \Yii::$app->db4;
+
+        if($this->id_employee)
+        {
+            $sql = "SELECT id FROM employee WHERE upper(fam)+' '+upper(name)+' '+upper(otch) LIKE upper('%".ltrim($this->id_employee)."%')";
+            $connection = \Yii::$app->db5;
             $ids = $connection->createCommand($sql)->queryAll();
-            $ids_s='(';
-            foreach($ids as $data){
-                    $ids_s .=$data['id'].',';
+            $ids_s = '(';
+
+            foreach($ids as $data)
+            {
+                $ids_s .= $data['id'] . ',';
             }
-            $ids_s=substr($ids_s,0,strlen($ids_s)-1).')';
-            
-            
-            $query->andWhere('id_employee in '.$ids_s.' ');
-            
+
+            $ids_s = substr($ids_s, 0, strlen($ids_s)-1) . ')';
+
+            $query->andWhere('id_employee in ' . $ids_s . ' ');
         }
-        
 
 		$query->andFilterWhere([
 			'act' => '1'

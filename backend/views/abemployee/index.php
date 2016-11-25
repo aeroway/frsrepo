@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use backend\models\Employee;
+use yii\bootstrap\Alert;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\AbEmployeeSearch */
@@ -44,6 +45,18 @@ if (in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
 		}
 		?>
     </p>
+
+    <?php
+    echo Alert::widget([
+        'options' => [
+            'class' => 'alert-info'
+        ],
+        'body' => '<h4>Пример поиска по дате</h4>
+                    <p><i>Ищем</i>: "июля 25 2016".<br><i>Набераем</i> в фильтре: "2016-07-25".</p>
+                    <p><i>Ищем</i>: "авг. 03 2016"<br><i>Набераем</i> в фильтре: "2016-08-03".</p>
+                    <p>Вместо тире можно использовать точки.</p>'
+    ]);
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
