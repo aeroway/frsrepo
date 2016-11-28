@@ -17,7 +17,7 @@ use Yii;
  */
 class AbEmployee extends \yii\db\ActiveRecord
 {
-	public $systemslist, $id_status;
+    public $systemslist, $id_status;
 
     public static function getDb()
     {
@@ -43,47 +43,47 @@ class AbEmployee extends \yii\db\ActiveRecord
         ];
     }
 
-	public function getFullName()
-	{
-		if(!empty($this->idEmployee->fam) and !empty($this->idEmployee->name) and !empty($this->idEmployee->otch)) {
-			return $this->idEmployee->fam . ' ' . $this->idEmployee->name . ' ' . $this->idEmployee->otch;
-		} else{
-			return 'Неполные данные по ФИО';
-		}
-	}
+    public function getFullName()
+    {
+        if(!empty($this->idEmployee->fam) and !empty($this->idEmployee->name) and !empty($this->idEmployee->otch)) {
+            return $this->idEmployee->fam . ' ' . $this->idEmployee->name . ' ' . $this->idEmployee->otch;
+        } else{
+            return 'Неполные данные по ФИО';
+        }
+    }
 
-	public function getFullSystems($id)
-	{
-		$res = AbEmplSys::find()->where(['id_empl'=>$id])->all();
+    public function getFullSystems($id)
+    {
+        $res = AbEmplSys::find()->where(['id_empl'=>$id])->all();
 
-		for($i = 0; count($res)-1 >= $i; $i++)
-		{
-			$res2 = AbSystems::find()->where(['id'=>$res[$i]["id_systems"]])->all();
+        for($i = 0; count($res)-1 >= $i; $i++)
+        {
+            $res2 = AbSystems::find()->where(['id'=>$res[$i]["id_systems"]])->all();
 
-			foreach($res2 as $res2value)
-				$res3[] = $res2value["name"];
-		}
-		
-		if(empty($res3)) return '';
+            foreach($res2 as $res2value)
+                $res3[] = $res2value["name"];
+        }
+        
+        if(empty($res3)) return '';
 
-		return implode(', ', $res3);
-	}
+        return implode(', ', $res3);
+    }
 
-	public function getStatus($id)
-	{
-		$res = AbEmplSys::find()->where(['id_empl'=>$id])->all();
+    public function getStatus($id)
+    {
+        $res = AbEmplSys::find()->where(['id_empl'=>$id])->all();
 
-		for($i = 0; count($res)-1 >= $i; $i++)
-		{
-			$res2 = AbStatus::find()->where(['id'=>$res[$i]["id_status"]])->all();
+        for($i = 0; count($res)-1 >= $i; $i++)
+        {
+            $res2 = AbStatus::find()->where(['id'=>$res[$i]["id_status"]])->all();
 
-			foreach($res2 as $res2value)
-				$res3 = $res2value["name"];
-		}
+            foreach($res2 as $res2value)
+                $res3 = $res2value["name"];
+        }
 
-		if(empty($res3)) return '';
-		return $res3;
-	}
+        if(empty($res3)) return '';
+        return $res3;
+    }
 
     /**
      * @inheritdoc
@@ -96,8 +96,8 @@ class AbEmployee extends \yii\db\ActiveRecord
             'act' => 'Активность',
             'dt1' => 'Начало',
             'dt2' => 'Завершение',
-			'systemslist' => 'Системы',
-			'id_status' => 'Статус',
+            'systemslist' => 'Системы',
+            'id_status' => 'Статус',
         ];
     }
 
@@ -113,26 +113,26 @@ class AbEmployee extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Employee::className(), ['id' => 'id_employee']);
     }
-	
-	public function getAllEmployee($id)
-	{
-		$newEmployeeArray = '';
-		$result = '';
+    
+    public function getAllEmployee($id)
+    {
+        $newEmployeeArray = '';
+        $result = '';
 
-		$employee = Employee::find()
-			->select(['employee.id', 'employee.fam','employee.name','employee.otch'])
-			->where(['status'=>1,'idm_otdel'=>$id])
-			->orderBy(['fam' => SORT_ASC])
-			->all();
+        $employee = Employee::find()
+            ->select(['employee.id', 'employee.fam','employee.name','employee.otch'])
+            ->where(['status'=>1,'idm_otdel'=>$id])
+            ->orderBy(['fam' => SORT_ASC])
+            ->all();
 
-		for($i = 0; $i <= count($employee)-1; $i++)
-		{
-			$tmpid = $employee[$i]['id'];
-			$tmpname = $employee[$i]['fam'] . ' ' . $employee[$i]['name'] . ' ' . $employee[$i]['otch'];
+        for($i = 0; $i <= count($employee)-1; $i++)
+        {
+            $tmpid = $employee[$i]['id'];
+            $tmpname = $employee[$i]['fam'] . ' ' . $employee[$i]['name'] . ' ' . $employee[$i]['otch'];
 
-			$result .= '<option value="'.$tmpid.'">'.$tmpname.'</option>';
-		}
+            $result .= '<option value="'.$tmpid.'">'.$tmpname.'</option>';
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

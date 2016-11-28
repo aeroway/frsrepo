@@ -39,7 +39,7 @@ class InventoryPartsorderController extends Controller
      */
     public function actionIndex()
     {
-		$searchModel = new InventoryOrderSearch();
+        $searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -67,12 +67,12 @@ class InventoryPartsorderController extends Controller
      */
     public function actionCreate()
     {
-		$model = new InventoryOrder();
-		$modelsPoItem = [new InventoryPartsorder];
+        $model = new InventoryOrder();
+        $modelsPoItem = [new InventoryPartsorder];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
-			$modelsPoItem = Model::createMultiple(InventoryPartsorder::classname());
+            $modelsPoItem = Model::createMultiple(InventoryPartsorder::classname());
             Model::loadMultiple($modelsPoItem, Yii::$app->request->post());
 
             // validate all models
@@ -102,7 +102,7 @@ class InventoryPartsorderController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-				'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
+                'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
             ]);
         }
     }
@@ -121,7 +121,7 @@ class InventoryPartsorderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
             $oldIDs = ArrayHelper::map($modelsPoItem, 'id', 'id');
-			$modelsPoItem = Model::createMultiple(InventoryPartsorder::classname(), $modelsPoItem);
+            $modelsPoItem = Model::createMultiple(InventoryPartsorder::classname(), $modelsPoItem);
             Model::loadMultiple($modelsPoItem, Yii::$app->request->post());
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsPoItem, 'id', 'id')));
 
@@ -134,7 +134,7 @@ class InventoryPartsorderController extends Controller
                 try {
                     if ($flag = $model->save(false)) {
                         if (! empty($deletedIDs)) {
-							InventoryPartsorder::deleteAll(['id' => $deletedIDs]);
+                            InventoryPartsorder::deleteAll(['id' => $deletedIDs]);
                         }
                         foreach ($modelsPoItem as $modelPoItem) {
                             $modelPoItem->id_partsorder_invor = $model->id;
@@ -155,7 +155,7 @@ class InventoryPartsorderController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-				'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
+                'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
             ]);
         }
     }

@@ -12,7 +12,7 @@ use backend\models\Req;
  */
 class ReqSearch extends Req
 {
-	public $findOrg, $fullAddress;
+    public $findOrg, $fullAddress;
     /**
      * @inheritdoc
      */
@@ -42,18 +42,18 @@ class ReqSearch extends Req
      */
     public function search($params)
     {
-		if(in_array("alvl1", Yii::$app->user->identity->groups))
-		{
-			$query = Req::find()->where(['user_text'=>'23UPR\\'.Yii::$app->user->identity->username]);
-		}
-		else
-		{
-			$query = Req::find();
-		}
+        if(in_array("alvl1", Yii::$app->user->identity->groups))
+        {
+            $query = Req::find()->where(['user_text'=>'23UPR\\'.Yii::$app->user->identity->username]);
+        }
+        else
+        {
+            $query = Req::find();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -98,8 +98,8 @@ class ReqSearch extends Req
             ->andFilterWhere(['like', 'code_mesto', $this->code_mesto])
             ->andFilterWhere(['like', 'org', $this->org])
             ->andFilterWhere(['like', 'inn', $this->inn])
-			->andFilterWhere(['or',	['like', 'zayavitel_fio', $this->findOrg], ['like', 'org', $this->findOrg]])
-			->andFilterWhere(['like', 'obj_addr', $this->fullAddress]);
+            ->andFilterWhere(['or',    ['like', 'zayavitel_fio', $this->findOrg], ['like', 'org', $this->findOrg]])
+            ->andFilterWhere(['like', 'obj_addr', $this->fullAddress]);
 
         return $dataProvider;
     }

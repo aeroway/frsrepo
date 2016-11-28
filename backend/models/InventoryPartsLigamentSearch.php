@@ -55,7 +55,7 @@ class InventoryPartsLigamentSearch extends InventoryPartsLigament
             return $dataProvider;
         }
 
-		$query->joinWith('idInventoryParts');
+        $query->joinWith('idInventoryParts');
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -63,7 +63,7 @@ class InventoryPartsLigamentSearch extends InventoryPartsLigament
         ]);
 
         $query->andFilterWhere(['like', 'invnum_inventory', $this->invnum_inventory])
-			  ->andFilterWhere(['like', 'inventory_parts.nameparts', $this->id_inventory_parts]);
+              ->andFilterWhere(['like', 'inventory_parts.nameparts', $this->id_inventory_parts]);
 
         return $dataProvider;
     }

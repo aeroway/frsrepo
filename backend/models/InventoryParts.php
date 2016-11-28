@@ -53,13 +53,13 @@ class InventoryParts extends \yii\db\ActiveRecord
             'id_typeparts' => 'Тип запчасти',
             'amount' => 'Количество',
             'location' => 'Локация',
-			'comment_parts' => 'Коммент',
+            'comment_parts' => 'Коммент',
         ];
     }
 
     public function getTypepartsName()
     {
-		return $this->idTypeparts->name;
+        return $this->idTypeparts->name;
     }
 
     /**

@@ -8,6 +8,6 @@ use Yii;
 class Cdb
 {
 
-	public static $name;
+    public static $name;
 
 }

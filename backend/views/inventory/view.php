@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Создать объект', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php
-		/*= Html::a('Удалить', ['delete', 'id' => $model->id], [
+        /*= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -33,28 +33,28 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'invname',
             'invnum',
-			[
-				'attribute' => 'idMoo.name',
-				'label' => 'Материальноответственный',
-			],
+            [
+                'attribute' => 'idMoo.name',
+                'label' => 'Материальноответственный',
+            ],
             'location',
             'idTypetech.name',
-			[
-				'attribute' => 'date',
-				'format' =>  ['date', 'php:d.m.Y'],
-			],
+            [
+                'attribute' => 'date',
+                'format' =>  ['date', 'php:d.m.Y'],
+            ],
             'idStatus.name',
             'comment',
-			[
-				'attribute' => 'authority',
-				'format'=>'raw',
-				'value' => $model->authority ? 'Да' : '-',
-			],
-			[
-				'attribute' => 'waybill',
-				'format'=>'raw',
-				'value' => $model->waybill ? 'Да' : '-',
-			],
+            [
+                'attribute' => 'authority',
+                'format'=>'raw',
+                'value' => $model->authority ? 'Да' : '-',
+            ],
+            [
+                'attribute' => 'waybill',
+                'format'=>'raw',
+                'value' => $model->waybill ? 'Да' : '-',
+            ],
             //'username',
         ],
     ]) ?>

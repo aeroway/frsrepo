@@ -17,7 +17,7 @@ use backend\models\Req;
     <?php $form = ActiveForm::begin(); ?>
 
 
-	<?= $form->field($model, 'date_return')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]); ?>
+    <?= $form->field($model, 'date_return')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]); ?>
 
     <div class="formstatus-group">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

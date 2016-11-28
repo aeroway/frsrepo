@@ -19,16 +19,16 @@ class AbsystemsController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index','createstatus','log','createdatereturn'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index','createstatus','log','createdatereturn'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -44,10 +44,10 @@ class AbsystemsController extends Controller
      */
     public function actionIndex()
     {
-		if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
+        if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
 
         $searchModel = new AbSystemsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

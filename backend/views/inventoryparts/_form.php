@@ -17,9 +17,9 @@ use backend\models\InventoryTypeparts;
     <?= $form->field($model, 'nameparts')->textInput() ?>
 
     <?= $form->field($model, 'id_typeparts')->dropDownList(
-			ArrayHelper::map(InventoryTypeparts::find()->orderBy(['name' => SORT_ASC])->all(),'id','name'),
-			['prompt'=>'Выберите тип']
-	); ?>
+            ArrayHelper::map(InventoryTypeparts::find()->orderBy(['name' => SORT_ASC])->all(),'id','name'),
+            ['prompt'=>'Выберите тип']
+    ); ?>
 
     <?= $form->field($model, 'amount')->textInput() ?>
 

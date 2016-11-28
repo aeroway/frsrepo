@@ -30,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             //'id',
             'idInventoryParts.nameparts',
-			'typepartsName',
-			//'idInventoryParts.typeparts',
-			'amount_ipl',
-			'invnumInventory.invname',
+            'typepartsName',
+            //'idInventoryParts.typeparts',
+            'amount_ipl',
+            'invnumInventory.invname',
             'invnum_inventory',
         ],
     ]) ?>

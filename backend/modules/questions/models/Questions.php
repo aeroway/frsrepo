@@ -43,35 +43,35 @@ class Questions extends \yii\db\ActiveRecord
         ];
     }
 
-	public function searchQuestions()
-	{
-		$word = Yii::$app->request->post("search");
-		$pattern = "/($word)+/iu";
+    public function searchQuestions()
+    {
+        $word = Yii::$app->request->post("search");
+        $pattern = "/($word)+/iu";
 
-		$replacement = '<span class="highlight">' . Yii::$app->request->post("search") . '</span>';
+        $replacement = '<span class="highlight">' . Yii::$app->request->post("search") . '</span>';
 
-		$data = Questions::find()
-					->select(['question', 'answer'])
-					->where(['like', 'answer', Yii::$app->request->post('search')])
-					->asArray()
-					->all();
+        $data = Questions::find()
+                    ->select(['question', 'answer'])
+                    ->where(['like', 'answer', Yii::$app->request->post('search')])
+                    ->asArray()
+                    ->all();
 
-		$result = '<h4 align="center">Результат поиска</h4>';
-		$result .=  '<div class="table-responsive"><table class="tquestions table bordered">';
+        $result = '<h4 align="center">Результат поиска</h4>';
+        $result .=  '<div class="table-responsive"><table class="tquestions table bordered">';
 
-		foreach($data as $value)
-		{
-			$subject = $value["answer"];
+        foreach($data as $value)
+        {
+            $subject = $value["answer"];
 
-			$result .= '<tr>
-							<td>' . $value["question"] . ': ' . preg_replace($pattern, $replacement, $subject) . '</td>
-						</tr>';
-		}
+            $result .= '<tr>
+                            <td>' . $value["question"] . ': ' . preg_replace($pattern, $replacement, $subject) . '</td>
+                        </tr>';
+        }
 
-		if(empty($data)) { $result .= '<p>Не найдено.</p>'; }
+        if(empty($data)) { $result .= '<p>Не найдено.</p>'; }
 
-		$result .= '</table></div>';
+        $result .= '</table></div>';
 
-		return $result;
-	}
+        return $result;
+    }
 }

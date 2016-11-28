@@ -41,19 +41,19 @@ class VedomostCheckForm extends \yii\db\ActiveRecord
             [['vedomost_num', 'vedomost_res', 'check_type','sektors_ip'], 'integer']
         ];
     }
-	public function getIconStatus()
-	{
-		switch ($this->vedomost_res) {
-			case 1:
-				return '<span class="glyphicon glyphicon-ok" title="Выполнена"> </span>';
-				break;
-			case 0:
-				return '<span class="glyphicon glyphicon-remove" title="Отказ"> </span>';
-				break;
-			default:
-				return $this->vedomost_res;
-		}
-	}
+    public function getIconStatus()
+    {
+        switch ($this->vedomost_res) {
+            case 1:
+                return '<span class="glyphicon glyphicon-ok" title="Выполнена"> </span>';
+                break;
+            case 0:
+                return '<span class="glyphicon glyphicon-remove" title="Отказ"> </span>';
+                break;
+            default:
+                return $this->vedomost_res;
+        }
+    }
 
     /**
      * @inheritdoc
@@ -69,12 +69,12 @@ class VedomostCheckForm extends \yii\db\ActiveRecord
             'vedomost_res' => 'Результат',
             'check_type' => 'Check Type',
             'module' => 'Module',
-			'sektors_ip' => 'Размещение',
+            'sektors_ip' => 'Размещение',
         ];
     }
-	
-	public function getSektorsSektor()
-	{
-		return $this->hasOne(Sektors::className(), ['ip' => 'sektors_ip']);
-	}
+    
+    public function getSektorsSektor()
+    {
+        return $this->hasOne(Sektors::className(), ['ip' => 'sektors_ip']);
+    }
 }

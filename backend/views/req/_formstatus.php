@@ -15,10 +15,10 @@ use backend\models\ReqSt;
 
     <?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'status')->dropDownList(
-				ArrayHelper::map(ReqSt::find()->orderBy(['text' => SORT_ASC])->all(),'id','text'),
-				['prompt'=>'Выберите статус']
-	)  ?>
+    <?= $form->field($model, 'status')->dropDownList(
+                ArrayHelper::map(ReqSt::find()->orderBy(['text' => SORT_ASC])->all(),'id','text'),
+                ['prompt'=>'Выберите статус']
+    )  ?>
 
     <div class="formstatus-group">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

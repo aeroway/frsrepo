@@ -47,7 +47,7 @@ class AbEmployeeSearch extends AbEmployee
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['dt2'=>SORT_ASC]]
+            'sort'=> ['defaultOrder' => ['dt2'=>SORT_ASC]]
         ]);
 
         $this->load($params);
@@ -58,7 +58,7 @@ class AbEmployeeSearch extends AbEmployee
             return $dataProvider;
         }
 
-		//$query->joinWith('idEmployee');
+        //$query->joinWith('idEmployee');
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -85,9 +85,9 @@ class AbEmployeeSearch extends AbEmployee
             $query->andWhere('id_employee in ' . $ids_s . ' ');
         }
 
-		$query->andFilterWhere([
-			'act' => '1'
-		]);
+        $query->andFilterWhere([
+            'act' => '1'
+        ]);
 
         return $dataProvider;
     }

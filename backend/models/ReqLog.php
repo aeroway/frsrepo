@@ -63,96 +63,96 @@ class ReqLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-			[['otdel', 'type', 'cel', 'zayavitel_fio', 'obj_addr', 'kn', 'kuvd', 'user_text', 'user_to', 'fast'], 'required'],
+            [['otdel', 'type', 'cel', 'zayavitel_fio', 'obj_addr', 'kn', 'kuvd', 'user_text', 'user_to', 'fast'], 'required'],
             [['obj_addr', 'zayavitel_num', 'zayavitel_fio', 'kuvd', 'user_text', 'user_to', 'kn', 'coment', 'cur_user', 'phone', 'user_last', 'user_print', 'code_mesto', 'org', 'inn', 'scan_doc', 'log_user'], 'string'],
             [['obj_id', 'kuvd_id', 'status', 'type', 'otdel', 'cel', 'fast', 'vedomost_num', 'vedomost_unform', 'area_id', 'log_id'], 'integer'],
             [['date_in', 'date_end', 'srok', 'print_date', 'date_v', 'date_return'], 'safe']
         ];
     }
-	public function getIconStatus()
-	{
-		switch ($this->status) {
-			case 1:
-				return '<span class="glyphicon glyphicon-bell" title="Новая"> </span>';
-				break;
-			case 2:
-				return '<span class="glyphicon glyphicon-time" title="В обработке"> </span>';
-				break;
-			case 3:
-				return '<span class="glyphicon glyphicon-ok" title="Выполнена"> </span>';
-				break;
-			case 4:
-				return '<span class="glyphicon glyphicon-remove" title="Отказ"> </span>';
-				break;
-			case 5:
-				return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Мачуги">-М</span>';
-				break;
-			case 6:
-				return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Ленина">-Л</span>';
-				break;
-			case 7:
-				return '<span class="glyphicon glyphicon-eye-close" title="Подготовлен к передачи на выдачу"> </span>';
-				break;
-			case 8:
-				return '<span class="glyphicon glyphicon-eye-open" title="Документы переданы на выдачу"> </span>';
-				break;
-			case 9:
-				return '<span class="glyphicon glyphicon-repeat" title="Расписка возвращена"> </span>';
-				break;
-			default:
-				return $this->status;
-		}
-	}
-	public function getIconType()
-	{
-		switch ($this->type) {
-			case 1:
-				return '<span class="glyphicon glyphicon-briefcase" title="Дело ПУД"> </span>';
-				break;
-			case 2:
-				return '<span class="glyphicon glyphicon-file" title="Листы реестров ЕГРП"> </span>';
-				break;
-			case 3:
-				return '<span class="glyphicon glyphicon-briefcase" title="Дело ПУД"> </span>+<span class="glyphicon glyphicon-file" title="Листы реестров ЕГРП"> </span>';
-				break;
-			case 4:
-				return '<span class="glyphicon glyphicon-folder-open" title="Документ"> </span>';
-				break;
-			case 5:
-				return '<span class="glyphicon glyphicon-floppy-disk" title="Скан образ"> </span>';
-				break;
-			default:
-				return $this->type;
-		}
-	}
-	public function getFindOrg()
-	{
-		$this->getCleanUserText();
-		$this->getCleanUserPrint();
-		
-		if(!empty($this->org) and !empty($this->inn)) {
-			$this->org = str_replace("\"", "'", "$this->org");
-			return $this->zayavitel_fio . ' <span class="glyphicon glyphicon-info-sign" title="' . $this->org . ' : ' . $this->inn . '"> </span>';
-		} else return $this->zayavitel_fio;
-	}
-	public function getCleanUserText()
-	{
-		$this->user_text = str_replace("23UPR\\", "", "$this->user_text");
-		return $this->user_text;
-	}
-	public function getCleanUserPrint()
-	{
-		$this->user_print = str_replace("23UPR\\", "", "$this->user_print");
-		return $this->user_print;
-	}
-	public function getFullAddress()
-	{
-		if(!empty($this->area_id)) {
-			return $this->obj_addr . '<br>[' . $this->areasArea->name . ']';
-		} else{
-			return $this->obj_addr;
-		}
-	}
+    public function getIconStatus()
+    {
+        switch ($this->status) {
+            case 1:
+                return '<span class="glyphicon glyphicon-bell" title="Новая"> </span>';
+                break;
+            case 2:
+                return '<span class="glyphicon glyphicon-time" title="В обработке"> </span>';
+                break;
+            case 3:
+                return '<span class="glyphicon glyphicon-ok" title="Выполнена"> </span>';
+                break;
+            case 4:
+                return '<span class="glyphicon glyphicon-remove" title="Отказ"> </span>';
+                break;
+            case 5:
+                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Мачуги">-М</span>';
+                break;
+            case 6:
+                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Ленина">-Л</span>';
+                break;
+            case 7:
+                return '<span class="glyphicon glyphicon-eye-close" title="Подготовлен к передачи на выдачу"> </span>';
+                break;
+            case 8:
+                return '<span class="glyphicon glyphicon-eye-open" title="Документы переданы на выдачу"> </span>';
+                break;
+            case 9:
+                return '<span class="glyphicon glyphicon-repeat" title="Расписка возвращена"> </span>';
+                break;
+            default:
+                return $this->status;
+        }
+    }
+    public function getIconType()
+    {
+        switch ($this->type) {
+            case 1:
+                return '<span class="glyphicon glyphicon-briefcase" title="Дело ПУД"> </span>';
+                break;
+            case 2:
+                return '<span class="glyphicon glyphicon-file" title="Листы реестров ЕГРП"> </span>';
+                break;
+            case 3:
+                return '<span class="glyphicon glyphicon-briefcase" title="Дело ПУД"> </span>+<span class="glyphicon glyphicon-file" title="Листы реестров ЕГРП"> </span>';
+                break;
+            case 4:
+                return '<span class="glyphicon glyphicon-folder-open" title="Документ"> </span>';
+                break;
+            case 5:
+                return '<span class="glyphicon glyphicon-floppy-disk" title="Скан образ"> </span>';
+                break;
+            default:
+                return $this->type;
+        }
+    }
+    public function getFindOrg()
+    {
+        $this->getCleanUserText();
+        $this->getCleanUserPrint();
+        
+        if(!empty($this->org) and !empty($this->inn)) {
+            $this->org = str_replace("\"", "'", "$this->org");
+            return $this->zayavitel_fio . ' <span class="glyphicon glyphicon-info-sign" title="' . $this->org . ' : ' . $this->inn . '"> </span>';
+        } else return $this->zayavitel_fio;
+    }
+    public function getCleanUserText()
+    {
+        $this->user_text = str_replace("23UPR\\", "", "$this->user_text");
+        return $this->user_text;
+    }
+    public function getCleanUserPrint()
+    {
+        $this->user_print = str_replace("23UPR\\", "", "$this->user_print");
+        return $this->user_print;
+    }
+    public function getFullAddress()
+    {
+        if(!empty($this->area_id)) {
+            return $this->obj_addr . '<br>[' . $this->areasArea->name . ']';
+        } else{
+            return $this->obj_addr;
+        }
+    }
 
     /**
      * @inheritdoc
@@ -191,10 +191,10 @@ class ReqLog extends \yii\db\ActiveRecord
             'area_id' => 'Area ID',
             'org' => 'Org',
             'inn' => 'Inn',
-			'scan_doc' => 'Название документа',
-			'log_id' => 'log id',
-			'log_user' => 'Редактировал',
-			'date_return' => 'Возврат',
+            'scan_doc' => 'Название документа',
+            'log_id' => 'log id',
+            'log_user' => 'Редактировал',
+            'date_return' => 'Возврат',
         ];
     }
 
@@ -205,21 +205,21 @@ class ReqLog extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Type::className(), ['id' => 'type']);
     }
-	public function getOtdelsOtdel()
-	{
-		return $this->hasOne(Otdel::className(), ['id' => 'otdel']);
-	}
-	public function getReqsReqSt()
-	{
-		return $this->hasOne(ReqSt::className(), ['id' => 'status']);
-	}
-	public function getAreasArea()
-	{
-		return $this->hasOne(Area::className(), ['id' => 'area_id']);
-	}
-	public function getCelsCel()
-	{
-		return $this->hasOne(Cel::className(), ['id' => 'cel']);
-	}
+    public function getOtdelsOtdel()
+    {
+        return $this->hasOne(Otdel::className(), ['id' => 'otdel']);
+    }
+    public function getReqsReqSt()
+    {
+        return $this->hasOne(ReqSt::className(), ['id' => 'status']);
+    }
+    public function getAreasArea()
+    {
+        return $this->hasOne(Area::className(), ['id' => 'area_id']);
+    }
+    public function getCelsCel()
+    {
+        return $this->hasOne(Cel::className(), ['id' => 'cel']);
+    }
 
 }

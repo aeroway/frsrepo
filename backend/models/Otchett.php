@@ -28,11 +28,11 @@ class Otchett extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-	public static $name;
+    public static $name;
 
     public static function tableName()
     {
-		return self::$name;
+        return self::$name;
     }
 
     /**
@@ -42,7 +42,7 @@ class Otchett extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'status', 'comment', 'date', 'username'], 'required'],
-			[['id_dpt', 'id_egrp'], 'integer'],
+            [['id_dpt', 'id_egrp'], 'integer'],
             [['kn', 'description', 'status', 'comment', 'username', 'area', 'flag', 'filename', 'protocol'], 'string'],
             [['date', 'date_update', 'date_load'], 'safe']
         ];
@@ -61,14 +61,14 @@ class Otchett extends \yii\db\ActiveRecord
             'comment' => 'Наимен. ошибки',
             'date' => 'Дата',
             'username' => 'Пользователь',
-			'area' => 'Район',
-			'flag' => 'Метка',
-			'id_dpt' => 'iddpt',
-			'filename' => 'Файл',
-			'id_egrp' => 'id',
-			'date_update' => 'Обновление',
-			'date_load' => 'Загружено',
-			'protocol' => 'Протокол',
+            'area' => 'Район',
+            'flag' => 'Метка',
+            'id_dpt' => 'iddpt',
+            'filename' => 'Файл',
+            'id_egrp' => 'id',
+            'date_update' => 'Обновление',
+            'date_load' => 'Загружено',
+            'protocol' => 'Протокол',
         ];
     }
 }

@@ -22,16 +22,16 @@ class InventoryMooController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index','log'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index','log'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -47,7 +47,7 @@ class InventoryMooController extends Controller
      */
     public function actionIndex()
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $searchModel = new InventoryMooSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -65,7 +65,7 @@ class InventoryMooController extends Controller
      */
     public function actionView($id)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -79,7 +79,7 @@ class InventoryMooController extends Controller
      */
     public function actionCreate()
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $model = new InventoryMoo();
 
@@ -100,7 +100,7 @@ class InventoryMooController extends Controller
      */
     public function actionUpdate($id)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $model = $this->findModel($id);
 
@@ -121,7 +121,7 @@ class InventoryMooController extends Controller
      */
     public function actionDelete($id)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $this->findModel($id)->delete();
 
@@ -144,28 +144,28 @@ class InventoryMooController extends Controller
         }
     }
 
-	private function checkAccess()
-	{
-		if(
-			!in_array("AdminInventory", Yii::$app->user->identity->groups) and
-			!in_array("ManagerInventory", Yii::$app->user->identity->groups)
-		)
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
-		else
-		{
-			$arr1 = Yii::$app->user->identity->groups;
-			$arr2 = array("AdminInventory", "ManagerInventory");
-			$g = null;
+    private function checkAccess()
+    {
+        if(
+            !in_array("AdminInventory", Yii::$app->user->identity->groups) and
+            !in_array("ManagerInventory", Yii::$app->user->identity->groups)
+        )
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+        else
+        {
+            $arr1 = Yii::$app->user->identity->groups;
+            $arr2 = array("AdminInventory", "ManagerInventory");
+            $g = null;
 
-			for($i = 0; $i<count($arr1); $i++)
-				for($j = 0; $j<count($arr2); $j++)
-					if($arr1[$i] === $arr2[$j])
-					{
-						$g++;
-					}
-			if($g>1) throw new ForbiddenHttpException('Пользователь состоит больше, чем в одной группе.');
-		}
-	}
+            for($i = 0; $i<count($arr1); $i++)
+                for($j = 0; $j<count($arr2); $j++)
+                    if($arr1[$i] === $arr2[$j])
+                    {
+                        $g++;
+                    }
+            if($g>1) throw new ForbiddenHttpException('Пользователь состоит больше, чем в одной группе.');
+        }
+    }
 }

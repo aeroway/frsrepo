@@ -71,9 +71,9 @@ class Inventory extends \yii\db\ActiveRecord
             'authority' => 'Доверенность',
             'waybill' => 'Накладная',
             'username' => 'Пользователь',
-			'idMoo.name' => 'Ответственный',
-			'idStatus.name' => 'Статус',
-			'idTypetech.name' => 'Тип',
+            'idMoo.name' => 'Ответственный',
+            'idStatus.name' => 'Статус',
+            'idTypetech.name' => 'Тип',
         ];
     }
 

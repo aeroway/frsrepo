@@ -22,8 +22,8 @@ class AppAsset extends AssetBundle
         'css/qhighlight.css',
     ];
     public $js = [
-		'js/main.js',
-		'js/qhighlight.js',
+        'js/main.js',
+        'js/qhighlight.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

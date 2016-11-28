@@ -38,8 +38,8 @@ class Otchetn extends \yii\db\ActiveRecord
     {
         return [
             [['area', 'status', 'reason1', 'reason2', 'offer', 'comment', 'condnum', 'flag', 'usernameon', 'filename'], 'string'],
-			[['id_dpt', 'id_egrp'], 'integer'],
-			[['dateon', 'date_update', 'date_load'], 'safe']
+            [['id_dpt', 'id_egrp'], 'integer'],
+            [['dateon', 'date_update', 'date_load'], 'safe']
         ];
     }
 
@@ -57,15 +57,15 @@ class Otchetn extends \yii\db\ActiveRecord
             'offer' => 'Предложения',
             'comment' => 'Наимен. ошибки',
             'condnum' => 'УН',
-			'flag' => 'Ошибка',
-			'dateon' => 'Дата',
-			'usernameon' => 'Пользователь',
-			'flag' => 'Метка',
-			'id_dpt' => 'id dpt',
-			'filename' => 'Файл',
-			'id_egrp' => 'id',
-			'date_update' => 'Обновление',
-			'date_load' => 'Загружено',
+            'flag' => 'Ошибка',
+            'dateon' => 'Дата',
+            'usernameon' => 'Пользователь',
+            'flag' => 'Метка',
+            'id_dpt' => 'id dpt',
+            'filename' => 'Файл',
+            'id_egrp' => 'id',
+            'date_update' => 'Обновление',
+            'date_load' => 'Загружено',
         ];
     }
     

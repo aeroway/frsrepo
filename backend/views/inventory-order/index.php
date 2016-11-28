@@ -26,11 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
 <?php
-	$button =
-	[
-		'class' => 'yii\grid\ActionColumn',
-		'template'=>'{view}',
-	];
+    $button =
+    [
+        'class' => 'yii\grid\ActionColumn',
+        'template'=>'{view}',
+    ];
 ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -46,8 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return GridView::ROW_COLLAPSED;
                 },
                 'detail' => function($model, $key, $index, $column) 
-				{
-					$searchModel = new InventoryPartsorderSearch();
+                {
+                    $searchModel = new InventoryPartsorderSearch();
                     $searchModel->id_partsorder_invor = $model->id;
                     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,10 +62,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'invnum_invor',
             'invname_invor',
             'user_invor',
-			[
-				'attribute'=>'status_id_invor',
-				'value'=>'statusOrder',
-			],
+            [
+                'attribute'=>'status_id_invor',
+                'value'=>'statusOrder',
+            ],
 
             $button,
         ],

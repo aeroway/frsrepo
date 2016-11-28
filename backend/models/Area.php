@@ -24,7 +24,7 @@ class Area extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-		return 'Area';
+        return 'Area';
     }
 
     /**
@@ -35,7 +35,7 @@ class Area extends \yii\db\ActiveRecord
         return [
             //[['name', 'kn'], 'required'],
             [['name'], 'string'],
-			[['status'], 'integer']
+            [['status'], 'integer']
         ];
     }
 

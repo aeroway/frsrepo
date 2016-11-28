@@ -22,16 +22,16 @@ class InventoryController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index','log'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index','log'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -47,7 +47,7 @@ class InventoryController extends Controller
      */
     public function actionIndex()
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $searchModel = new InventorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -65,7 +65,7 @@ class InventoryController extends Controller
      */
     public function actionView($id)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -74,7 +74,7 @@ class InventoryController extends Controller
 
     public function actionLog($invnum)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $searchModel = new InventoryLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -91,20 +91,20 @@ class InventoryController extends Controller
      */
     public function actionCreate()
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $model = new Inventory();
 
-		if ($model->load(Yii::$app->request->post()))
-		{
+        if ($model->load(Yii::$app->request->post()))
+        {
 
-			$rows = Inventory::find()->select('id')->where(['invnum' => $model->invnum])->limit(1)->all();
+            $rows = Inventory::find()->select('id')->where(['invnum' => $model->invnum])->limit(1)->all();
 
-			if($rows)
-			{
-				throw new ConflictHttpException('Запись с таким инвентарным номером уже есть.');
-			}
-		}
+            if($rows)
+            {
+                throw new ConflictHttpException('Запись с таким инвентарным номером уже есть.');
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -123,35 +123,35 @@ class InventoryController extends Controller
      */
     public function actionUpdate($id)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
-		{
-			foreach(Yii::$app->request->post() as $fkey) { }
-			foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
+        {
+            foreach(Yii::$app->request->post() as $fkey) { }
+            foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-			$modellog = new InventoryLog();
-			$modellog->attributes = [
-				'invname' => $attrarr["invname"],
-				'invnum' => $attrarr["invnum"],
-				'id_moo' => $attrarr["id_moo"],
-				'location' => $attrarr["location"],
-				'id_typetech' => $attrarr["id_typetech"],
-				'date' => $attrarr["date"],
-				'id_status' => $attrarr["id_status"],
-				'comment' => $attrarr["comment"],
-				'authority' => $attrarr["authority"],
-				'waybill' => $attrarr["waybill"],
-				'username' => Yii::$app->user->identity->username,
-			];
-			$modellog->insert(true);
+            $modellog = new InventoryLog();
+            $modellog->attributes = [
+                'invname' => $attrarr["invname"],
+                'invnum' => $attrarr["invnum"],
+                'id_moo' => $attrarr["id_moo"],
+                'location' => $attrarr["location"],
+                'id_typetech' => $attrarr["id_typetech"],
+                'date' => $attrarr["date"],
+                'id_status' => $attrarr["id_status"],
+                'comment' => $attrarr["comment"],
+                'authority' => $attrarr["authority"],
+                'waybill' => $attrarr["waybill"],
+                'username' => Yii::$app->user->identity->username,
+            ];
+            $modellog->insert(true);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
-		else
-		{
+        else
+        {
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -160,35 +160,35 @@ class InventoryController extends Controller
 
     public function actionUpdatee($id,$page,$sort)
     {
-		$this->checkAccess();
+        $this->checkAccess();
 
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
-		{
-			foreach(Yii::$app->request->post() as $fkey) { }
-			foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
+        {
+            foreach(Yii::$app->request->post() as $fkey) { }
+            foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-			$modellog = new InventoryLog();
-			$modellog->attributes = [
-				'invname' => $attrarr["invname"],
-				'invnum' => $attrarr["invnum"],
-				'id_moo' => $attrarr["id_moo"],
-				'location' => $attrarr["location"],
-				'id_typetech' => $attrarr["id_typetech"],
-				'date' => $attrarr["date"],
-				'id_status' => $attrarr["id_status"],
-				'comment' => $attrarr["comment"],
-				'authority' => $attrarr["authority"],
-				'waybill' => $attrarr["waybill"],
-				'username' => Yii::$app->user->identity->username,
-			];
-			$modellog->insert(true);
+            $modellog = new InventoryLog();
+            $modellog->attributes = [
+                'invname' => $attrarr["invname"],
+                'invnum' => $attrarr["invnum"],
+                'id_moo' => $attrarr["id_moo"],
+                'location' => $attrarr["location"],
+                'id_typetech' => $attrarr["id_typetech"],
+                'date' => $attrarr["date"],
+                'id_status' => $attrarr["id_status"],
+                'comment' => $attrarr["comment"],
+                'authority' => $attrarr["authority"],
+                'waybill' => $attrarr["waybill"],
+                'username' => Yii::$app->user->identity->username,
+            ];
+            $modellog->insert(true);
 
             return $this->redirect(['index', 'page' => $page, 'sort' => $sort]);
         }
-		else
-		{
+        else
+        {
             return $this->renderAjax('update', [
                 'model' => $model,
             ]);
@@ -203,7 +203,7 @@ class InventoryController extends Controller
      */
     public function actionDelete($id)
     {
-		throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
 
         $this->findModel($id)->delete();
 
@@ -235,29 +235,29 @@ class InventoryController extends Controller
         }
     }
 */
-	private function checkAccess()
-	{
-		if(
-			!in_array("AdminInventory", Yii::$app->user->identity->groups) and
-			!in_array("ManagerInventory", Yii::$app->user->identity->groups)
-		)
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
-		else
-		{
-			$arr1 = Yii::$app->user->identity->groups;
-			$arr2 = array("AdminInventory", "ManagerInventory");
-			$g = null;
+    private function checkAccess()
+    {
+        if(
+            !in_array("AdminInventory", Yii::$app->user->identity->groups) and
+            !in_array("ManagerInventory", Yii::$app->user->identity->groups)
+        )
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+        else
+        {
+            $arr1 = Yii::$app->user->identity->groups;
+            $arr2 = array("AdminInventory", "ManagerInventory");
+            $g = null;
 
-			for($i = 0; $i<count($arr1); $i++)
-				for($j = 0; $j<count($arr2); $j++)
-					if($arr1[$i] === $arr2[$j])
-					{
-						$g++;
-						//echo $i. " Элемент массива arr1 совпал с ".$j." Элементом массива arr2<br>";
-					}
-			if($g>1) throw new ForbiddenHttpException('Пользователь состоит больше, чем в одной группе.');
-		}
-	}
+            for($i = 0; $i<count($arr1); $i++)
+                for($j = 0; $j<count($arr2); $j++)
+                    if($arr1[$i] === $arr2[$j])
+                    {
+                        $g++;
+                        //echo $i. " Элемент массива arr1 совпал с ".$j." Элементом массива arr2<br>";
+                    }
+            if($g>1) throw new ForbiddenHttpException('Пользователь состоит больше, чем в одной группе.');
+        }
+    }
 }

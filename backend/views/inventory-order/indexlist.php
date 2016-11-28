@@ -22,43 +22,43 @@ $this->params['breadcrumbs'][] = "Управление заявками";
     </p>
 
 <?php
-	$button =
-	[
-		'class' => 'yii\grid\ActionColumn',
-		'buttons'=>
-		[
-			'act'=>function ($url, $model)
-			{
-				$options = [
-					'title' => Yii::t('yii', 'Акт'),
-					'aria-label' => Yii::t('yii', 'Акт'),
-				];
-				$customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/act','id'=>$model['id']]);
-					return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $customurl, $options);
-			},
-			'close'=>function ($url, $model)
-			{
-				$options = [
-					'title' => Yii::t('yii', 'Закрыть'),
-					'aria-label' => Yii::t('yii', 'Закрыть'),
-				];
-				$customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/close','id'=>$model['id']]);
-					return Html::a('<span class="glyphicon glyphicon-ok"></span>', $customurl, $options);
-			},
+    $button =
+    [
+        'class' => 'yii\grid\ActionColumn',
+        'buttons'=>
+        [
+            'act'=>function ($url, $model)
+            {
+                $options = [
+                    'title' => Yii::t('yii', 'Акт'),
+                    'aria-label' => Yii::t('yii', 'Акт'),
+                ];
+                $customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/act','id'=>$model['id']]);
+                    return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $customurl, $options);
+            },
+            'close'=>function ($url, $model)
+            {
+                $options = [
+                    'title' => Yii::t('yii', 'Закрыть'),
+                    'aria-label' => Yii::t('yii', 'Закрыть'),
+                ];
+                $customurl=Yii::$app->getUrlManager()->createUrl(['inventory-order/close','id'=>$model['id']]);
+                    return Html::a('<span class="glyphicon glyphicon-ok"></span>', $customurl, $options);
+            },
 
-		],
-		'template'=>'{act} {close} {delete}',
-	];
+        ],
+        'template'=>'{act} {close} {delete}',
+    ];
 ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-		'rowOptions' => function($model)
-		{
-			if($model->status_id_invor == 1) return ['class'=>'success'];
+        'rowOptions' => function($model)
+        {
+            if($model->status_id_invor == 1) return ['class'=>'success'];
             if($model->status_id_invor == 5) return ['class'=>'warning'];
-		},
+        },
         'export' => false,
         'pjax' => true,
         'columns' => [
@@ -70,8 +70,8 @@ $this->params['breadcrumbs'][] = "Управление заявками";
                     return GridView::ROW_COLLAPSED;
                 },
                 'detail' => function($model, $key, $index, $column) 
-				{
-					$searchModel = new InventoryPartsorderSearch();
+                {
+                    $searchModel = new InventoryPartsorderSearch();
                     $searchModel->id_partsorder_invor = $model->id;
                     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -86,10 +86,10 @@ $this->params['breadcrumbs'][] = "Управление заявками";
             'invname_invor',
             'user_invor',
             //'demanding_invor',
-			[
-				'attribute'=>'status_id_invor',
-				'value'=>'statusOrder',
-			],
+            [
+                'attribute'=>'status_id_invor',
+                'value'=>'statusOrder',
+            ],
             'date_invor:date',
              $button,
         ],

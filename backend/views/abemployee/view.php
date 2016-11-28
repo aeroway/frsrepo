@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-		<?php if(in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups)) { ?>
+        <?php if(in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups)) { ?>
         <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-		<?php } ?>
+        <?php } ?>
     </p>
 
     <?= DetailView::widget([
@@ -32,21 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             //'id',
             //'id_employee',
-			[
-				'attribute'=>'fullName',
-				'label'=>'Сотрудник',
-			],
+            [
+                'attribute'=>'fullName',
+                'label'=>'Сотрудник',
+            ],
             'act',
-			[
-				'attribute' => 'dt1',
-				'format' =>  ['date', 'php:d M Y'],
-				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-			],
-			[
-				'attribute' => 'dt2',
-				'format' =>  ['date', 'php:d M Y'],
-				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-			],
+            [
+                'attribute' => 'dt1',
+                'format' =>  ['date', 'php:d M Y'],
+                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+            ],
+            [
+                'attribute' => 'dt2',
+                'format' =>  ['date', 'php:d M Y'],
+                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+            ],
         ],
     ]) ?>
 

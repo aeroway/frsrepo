@@ -38,8 +38,8 @@ class InventoryPartsorder extends \yii\db\ActiveRecord
             [['partsname_invpo'], 'string'],
             [['count_invpo', 'id_partsorder_invor'], 'integer'],
             [['id_partsorder_invor'], 'exist', 'skipOnError' => true, 'targetClass' => InventoryOrder::className(), 'targetAttribute' => ['id_partsorder_invor' => 'id']],
-		];
-	}
+        ];
+    }
 
     /**
      * @inheritdoc

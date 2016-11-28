@@ -12,13 +12,13 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-		'questions' => [
-			'class' => 'backend\modules\questions\Questions',
-		],
+        'questions' => [
+            'class' => 'backend\modules\questions\Questions',
+        ],
         'gridview' => [
             'class' => '\kartik\grid\Module',
         ],
-	],
+    ],
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',
@@ -36,10 +36,10 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-		'formatter' => [
-			'class' => 'yii\i18n\Formatter',
-			'nullDisplay' => '',
-		],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'nullDisplay' => '',
+        ],
         'urlManager' => [
             // here is your backend URL rules
         ],
@@ -51,6 +51,6 @@ return [
         ],
     ],
     'params' => $params,
-	'language'=>'ru-RU',
+    'language'=>'ru-RU',
 
 ];

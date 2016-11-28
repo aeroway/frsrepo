@@ -16,28 +16,28 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput() ?>
 
-	<?= $form->field($model, 'status')->dropDownList(
-			['Исправлен' => 'Исправлен','Невозможно исправить' => 'Невозможно исправить','В работе' => 'В работе'],
-			['prompt'=>'Выберите Статус']
-	) ?>
+    <?= $form->field($model, 'status')->dropDownList(
+            ['Исправлен' => 'Исправлен','Невозможно исправить' => 'Невозможно исправить','В работе' => 'В работе'],
+            ['prompt'=>'Выберите Статус']
+    ) ?>
 
-	<?php
-		$arr = Yii::$app->request->get();
+    <?php
+        $arr = Yii::$app->request->get();
 
-		if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
-			echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
-		} else {
-			echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
-		}
-	?>
+        if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
+            echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+        } else {
+            echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+        }
+    ?>
 
-	<?= $form->field($model, 'date')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
+    <?= $form->field($model, 'date')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
 
-	<?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
+    <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
 
-	<?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
+    <?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
-	<?= $form->field($model, 'protocol')->textInput() ?>
+    <?= $form->field($model, 'protocol')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

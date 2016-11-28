@@ -48,14 +48,14 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     {
         $result = \Yii::$app->Ldap->user()->info($id);
         if ($result)
-		{
+        {
             $out=array('id'=>$id,'username'=>$id,'fio'=>$result[0]['displayname'][0],'groups'=>\Yii::$app->Ldap->user()->groups($id));
         } else 
         {
             $out = null; 
         }
 
-		return new static ($out);
+        return new static ($out);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -84,18 +84,18 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         $result = \Yii::$app->Ldap->user()->info($username);
 
         if ($result)
-		{
+        {
             $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($username));
 
-			return new static($out);
-		}
+            return new static($out);
+        }
         else
-		{
-			die('Неверный логин или пароль');
-		}
+        {
+            die('Неверный логин или пароль');
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     public function getId()
     {

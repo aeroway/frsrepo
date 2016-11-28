@@ -19,9 +19,9 @@ $this->title = 'Прием ведомостей';
         <h1>Проверка ведомостей</h1>
 
         <p class="lead">Отсканируйте штрихкод с ведомости <br />и нажмите на кнопку Проверить.</p>
-		<!--
+        <!--
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-		-->
+        -->
     </div>
     
 

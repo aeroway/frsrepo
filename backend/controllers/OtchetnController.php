@@ -20,16 +20,16 @@ class OtchetnController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -84,7 +84,7 @@ class OtchetnController extends Controller
      */
     public function actionCreate()
     {
-		throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
 
         $model = new Otchetn();
 
@@ -124,24 +124,24 @@ class OtchetnController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-			foreach(Yii::$app->request->post() as $fkey) { }
-			foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
+            foreach(Yii::$app->request->post() as $fkey) { }
+            foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-			if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\'.strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->usernameon)) )
-			{/*
-				if (!($this->findModel($id)->usernameon == '23UPR\\'.'Захарова АН'))
-				{
-					if (!($this->findModel($id)->usernameon == '23UPR\\'.'Пиценко СВ'))
-					{
-						if (!($this->findModel($id)->usernameon == '23UPR\\'.'Звягина ИВ'))
-						{*/
-							throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
-						/*}
-					}
-				}
-			*/}
+            if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\'.strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->usernameon)) )
+            {/*
+                if (!($this->findModel($id)->usernameon == '23UPR\\'.'Захарова АН'))
+                {
+                    if (!($this->findModel($id)->usernameon == '23UPR\\'.'Пиценко СВ'))
+                    {
+                        if (!($this->findModel($id)->usernameon == '23UPR\\'.'Звягина ИВ'))
+                        {*/
+                            throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
+                        /*}
+                    }
+                }
+            */}
 
-			$model->save();
+            $model->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -159,7 +159,7 @@ class OtchetnController extends Controller
      */
     public function actionDelete($id)
     {
-		throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
 
         $this->findModel($id)->delete();
 
@@ -182,18 +182,18 @@ class OtchetnController extends Controller
         }
     }
 
-	public function actionBulk()
-	{
-		$action = Yii::$app->request->post('action');
-		$selection = (array)Yii::$app->request->post('selection');
+    public function actionBulk()
+    {
+        $action = Yii::$app->request->post('action');
+        $selection = (array)Yii::$app->request->post('selection');
 
-		foreach($selection as $id)
-		{
-			Yii::$app->db->createCommand()
-			->update('otchetn', ['usernameon' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
-		}
+        foreach($selection as $id)
+        {
+            Yii::$app->db->createCommand()
+            ->update('otchetn', ['usernameon' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
+        }
 
-		return $this->redirect(['index']);
+        return $this->redirect(['index']);
 
-	}
+    }
 }

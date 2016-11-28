@@ -50,14 +50,14 @@ class InventoryPartsLigament extends \yii\db\ActiveRecord
             'id' => 'ID',
             'invnum_inventory' => 'Инв. объекта',
             'id_inventory_parts' => 'Запчасть',
-			'amount_ipl' => 'Шт.',
-			'typepartsName' => 'Тип запчасти'
+            'amount_ipl' => 'Шт.',
+            'typepartsName' => 'Тип запчасти'
         ];
     }
 
     public function getTypepartsName()
     {
-		return $this->idInventoryParts->typepartsName;
+        return $this->idInventoryParts->typepartsName;
     }
 
     /**

@@ -37,24 +37,24 @@ AppAsset::register($this);
             $menuItems = [
                 ['label' => 'Статистика', 'url' => ['/site/stat']],
                 ['label' => 'Отчёты', 'url' => ['/site/index']],
-				/*
-				((Yii::$app->user->identity) && (in_array('alvl3',Yii::$app->user->identity->groups))) ?  ['label' => 'Ведомости', 'url' => ['/site2/index']] : '',
-				((Yii::$app->user->identity) && (in_array('ITUchet',Yii::$app->user->identity->groups))) ? ['label' => 'ОИТ', 'url' => ['inventory/index']] : '', 
-				((Yii::$app->user->identity) && (in_array('AccountBlockingAdmin',Yii::$app->user->identity->groups))) ? ['label' => 'Аккаунты', 'url' => ['/abemployee/index']] : '',
-				((Yii::$app->user->identity) && 
-					(
-						(in_array('alvl1',Yii::$app->user->identity->groups)) or 
-						(in_array('alvl2',Yii::$app->user->identity->groups)) or 
-						(in_array('alvl3',Yii::$app->user->identity->groups)) or 
-						(in_array('alvl4',Yii::$app->user->identity->groups)) 
-					)
-				) ? ['label' => 'Заказ дел', 'url' => ['/req/index']] : '',
-				*/
-			];
+                /*
+                ((Yii::$app->user->identity) && (in_array('alvl3',Yii::$app->user->identity->groups))) ?  ['label' => 'Ведомости', 'url' => ['/site2/index']] : '',
+                ((Yii::$app->user->identity) && (in_array('ITUchet',Yii::$app->user->identity->groups))) ? ['label' => 'ОИТ', 'url' => ['inventory/index']] : '', 
+                ((Yii::$app->user->identity) && (in_array('AccountBlockingAdmin',Yii::$app->user->identity->groups))) ? ['label' => 'Аккаунты', 'url' => ['/abemployee/index']] : '',
+                ((Yii::$app->user->identity) && 
+                    (
+                        (in_array('alvl1',Yii::$app->user->identity->groups)) or 
+                        (in_array('alvl2',Yii::$app->user->identity->groups)) or 
+                        (in_array('alvl3',Yii::$app->user->identity->groups)) or 
+                        (in_array('alvl4',Yii::$app->user->identity->groups)) 
+                    )
+                ) ? ['label' => 'Заказ дел', 'url' => ['/req/index']] : '',
+                */
+            ];
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
-				$menuItems[] = ['label' => 'Сервисы', 'url' => Yii::$app->urlManagerFrontEnd->createUrl("index.php")];
+                $menuItems[] = ['label' => 'Сервисы', 'url' => Yii::$app->urlManagerFrontEnd->createUrl("index.php")];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
@@ -69,18 +69,18 @@ AppAsset::register($this);
         ?>
 
         <div class="container">
-		<?php
-		if(!empty($this->params['breadcrumbs']))
-		{
-			for($i=0; count($this->params['breadcrumbs']) >= $i; $i++)
-			{
-				if(isset($this->params['breadcrumbs'][$i]["url"]))
-				{
-					$this->params['breadcrumbs'][$i]["url"]["table"] = Otchett::$name;
-				}
-			}
-		}
-		?>
+        <?php
+        if(!empty($this->params['breadcrumbs']))
+        {
+            for($i=0; count($this->params['breadcrumbs']) >= $i; $i++)
+            {
+                if(isset($this->params['breadcrumbs'][$i]["url"]))
+                {
+                    $this->params['breadcrumbs'][$i]["url"]["table"] = Otchett::$name;
+                }
+            }
+        }
+        ?>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
@@ -97,17 +97,17 @@ AppAsset::register($this);
 
     <?php $this->endBody() ?>
 </body>
-	<script>
-		$( ".field-req-scan_doc" ).hide();
-		$('#req-type').change(function() {
-			var select = $(this).val();
-			if ( select == '5' ) {
-				$( ".field-req-scan_doc" ).show();
-			} else {
-				$('#req-scan_doc').val('');
-				$( ".field-req-scan_doc" ).hide();
-			}
-		});
-	</script>
+    <script>
+        $( ".field-req-scan_doc" ).hide();
+        $('#req-type').change(function() {
+            var select = $(this).val();
+            if ( select == '5' ) {
+                $( ".field-req-scan_doc" ).show();
+            } else {
+                $('#req-scan_doc').val('');
+                $( ".field-req-scan_doc" ).hide();
+            }
+        });
+    </script>
 </html>
 <?php $this->endPage() ?>

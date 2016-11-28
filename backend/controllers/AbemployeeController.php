@@ -20,16 +20,16 @@ class AbemployeeController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -73,24 +73,24 @@ class AbemployeeController extends Controller
      */
     public function actionCreate()
     {
-		if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
+        if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
 
         $model = new AbEmployee();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
-		{
-			for($i=1; count(Yii::$app->request->post()["AbEmployee"]["systemslist"]) >= $i; $i++)
-			{
-				Yii::$app->db3->createCommand()
-				->insert('[account_blocking].[dbo].[ab_empl_sys]', [
-				'id_empl' => $model->id,
-				'id_systems' => Yii::$app->request->post()["AbEmployee"]["systemslist"][$i-1],
-				'id_status' => Yii::$app->request->post()["AbEmployee"]["id_status"],
-				])->execute();
-			}
+        {
+            for($i=1; count(Yii::$app->request->post()["AbEmployee"]["systemslist"]) >= $i; $i++)
+            {
+                Yii::$app->db3->createCommand()
+                ->insert('[account_blocking].[dbo].[ab_empl_sys]', [
+                'id_empl' => $model->id,
+                'id_systems' => Yii::$app->request->post()["AbEmployee"]["systemslist"][$i-1],
+                'id_status' => Yii::$app->request->post()["AbEmployee"]["id_status"],
+                ])->execute();
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -108,10 +108,10 @@ class AbemployeeController extends Controller
      */
     public function actionUpdate($id)
     {
-		if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
+        if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
 
         $model = $this->findModel($id);
 
@@ -132,10 +132,10 @@ class AbemployeeController extends Controller
      */
     public function actionDelete($id)
     {
-		if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
+        if(!in_array("AccountBlockingAdmin", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
         $model = AbEmployee::updateAll(['act' => 0],'id = '.$id);
         
         return $this->redirect(['index']);
@@ -166,16 +166,16 @@ class AbemployeeController extends Controller
         }
     }
 
-	public function actionDoit()
-	{
-		$model = new Abemployee();
-		$id = Yii::$app->request->get('id');
-		if ($id)
-		{
-			// Найти всех сотрудников в отделе
-			$result = $model->getAllEmployee($id);
-			return $result;
+    public function actionDoit()
+    {
+        $model = new Abemployee();
+        $id = Yii::$app->request->get('id');
+        if ($id)
+        {
+            // Найти всех сотрудников в отделе
+            $result = $model->getAllEmployee($id);
+            return $result;
         }
-		return 0;
-	}
+        return 0;
+    }
 }

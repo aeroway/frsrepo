@@ -20,7 +20,7 @@ class InventoryLogSearch extends InventoryLog
         return [
             [['id', 'id_moo', 'id_typetech', 'id_status', 'authority', 'waybill'], 'integer'],
             [['invname', 'invnum', 'location', 'date', 'comment', 'username'], 'safe'],
-			[['date'], 'date','format' => 'M.d.yyyy'],
+            [['date'], 'date','format' => 'M.d.yyyy'],
         ];
     }
 
@@ -46,7 +46,7 @@ class InventoryLogSearch extends InventoryLog
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]],
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -57,7 +57,7 @@ class InventoryLogSearch extends InventoryLog
             return $dataProvider;
         }
 
-		$query->where('invnum=\''.$params["invnum"].'\'');
+        $query->where('invnum=\''.$params["invnum"].'\'');
 
         $query->andFilterWhere([
             'id' => $this->id,

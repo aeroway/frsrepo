@@ -21,8 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить запчать', ['create'], ['class' => 'btn btn-success']) ?>
-		<?= Html::a('Перейти к объектам', Yii::$app->getUrlManager()->createUrl(['inventory/index']), ['class' => 'btn btn-info']) ?>
-		<?= Html::a('Установленные запчасти', Yii::$app->getUrlManager()->createUrl(['inventorypl/index']), ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Перейти к объектам', Yii::$app->getUrlManager()->createUrl(['inventory/index']), ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Установленные запчасти', Yii::$app->getUrlManager()->createUrl(['inventorypl/index']), ['class' => 'btn btn-info']) ?>
     </p>
 
 <?php
@@ -47,7 +47,7 @@ Modal::begin([
 
 Modal::end();
 ?>
-<?php Pjax::begin(); ?>	
+<?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -55,65 +55,65 @@ Modal::end();
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-			'nameparts',
-			[
-				'attribute' => 'id_typeparts',
-				'value' => 'idTypeparts.name',
-				//'filterRowOptions'=>['class'=>'kartik-sheet-style'],
-			],
+            'nameparts',
+            [
+                'attribute' => 'id_typeparts',
+                'value' => 'idTypeparts.name',
+                //'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+            ],
             'amount',
             'location',
-			'comment_parts',
+            'comment_parts',
 
             [
-				'class' => 'yii\grid\ActionColumn',
-				'contentOptions'=>['style'=>'text-align: center;width: 80px;'],
-				'buttons'=>
-				[
-					'addparts'=>function ($url, $model, $key)
-					{
-						$options = [
-							'title' => Yii::t('yii', 'Setup'),
-							'aria-label' => Yii::t('yii', 'Setup'),
-							'data-toggle' => Yii::t('yii', 'modal'),
-							'data-target' => Yii::t('yii', '#w0'),
-						];
-						$url=Yii::$app->getUrlManager()->createUrl(['inventoryparts/addparts','id'=>$model['id']]);
+                'class' => 'yii\grid\ActionColumn',
+                'contentOptions'=>['style'=>'text-align: center;width: 80px;'],
+                'buttons'=>
+                [
+                    'addparts'=>function ($url, $model, $key)
+                    {
+                        $options = [
+                            'title' => Yii::t('yii', 'Setup'),
+                            'aria-label' => Yii::t('yii', 'Setup'),
+                            'data-toggle' => Yii::t('yii', 'modal'),
+                            'data-target' => Yii::t('yii', '#w0'),
+                        ];
+                        $url=Yii::$app->getUrlManager()->createUrl(['inventoryparts/addparts','id'=>$model['id']]);
 
-						return Html::a('<span class="glyphicon glyphicon-wrench"></span>', $url, $options);
+                        return Html::a('<span class="glyphicon glyphicon-wrench"></span>', $url, $options);
 
-					},
-					'update'=>function ($url, $model, $key)
-					{
-						$options = [
-							'title' => Yii::t('yii', 'Редактировать'),
-							'aria-label' => Yii::t('yii', 'Редактировать'),
-							'data-toggle' => Yii::t('yii', 'modal'),
-							'data-target' => Yii::t('yii', '#w0'),
-						];
+                    },
+                    'update'=>function ($url, $model, $key)
+                    {
+                        $options = [
+                            'title' => Yii::t('yii', 'Редактировать'),
+                            'aria-label' => Yii::t('yii', 'Редактировать'),
+                            'data-toggle' => Yii::t('yii', 'modal'),
+                            'data-target' => Yii::t('yii', '#w0'),
+                        ];
 
-						if(empty(Yii::$app->request->queryParams["page"])) {
-							$page = 1;
-						} else {
-							$page = Yii::$app->request->queryParams["page"];
-						}
-						if(empty(Yii::$app->request->queryParams["sort"])) {
-							$sort = '';
-						} else {
-							$sort = Yii::$app->request->queryParams["sort"];
-						}
+                        if(empty(Yii::$app->request->queryParams["page"])) {
+                            $page = 1;
+                        } else {
+                            $page = Yii::$app->request->queryParams["page"];
+                        }
+                        if(empty(Yii::$app->request->queryParams["sort"])) {
+                            $sort = '';
+                        } else {
+                            $sort = Yii::$app->request->queryParams["sort"];
+                        }
 
-						$url=Yii::$app->getUrlManager()->createUrl(['inventoryparts/updatee','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+                        $url=Yii::$app->getUrlManager()->createUrl(['inventoryparts/updatee','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
 
-						return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
 
-					},
+                    },
 
-				],
-				'template' => '{view} {update} {addparts}',
-			],
+                ],
+                'template' => '{view} {update} {addparts}',
+            ],
         ],
     ]);
-	?>
+    ?>
 <?php Pjax::end(); ?>
 </div>

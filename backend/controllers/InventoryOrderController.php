@@ -30,16 +30,16 @@ class InventoryOrderController extends Controller
     public function behaviors()
     {
         return [
-			'access'=>[
-				'class'=>AccessControl::classname(),
-				'only'=>['create','update','view','delete','index','indexlist'],
-				'rules'=>[
-					[
-						'allow'=>true,
-						'roles'=>['@']
-					],
-				]
-			],
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create','update','view','delete','index','indexlist'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -57,7 +57,7 @@ class InventoryOrderController extends Controller
     {
         $this->checkAccess();
 
-		$searchModel = new InventoryOrderSearch();
+        $searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -70,7 +70,7 @@ class InventoryOrderController extends Controller
     {
         $this->checkAccess2();
 
-		$searchModel = new InventoryOrderSearch();
+        $searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('indexlist', [
@@ -83,7 +83,7 @@ class InventoryOrderController extends Controller
     {
         $this->checkAccess2();
 
-		$searchModel = new InventoryOrderSearch();
+        $searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $model = $this->findModel($id);
@@ -104,7 +104,7 @@ class InventoryOrderController extends Controller
     {
         $this->checkAccess2();
 
-		$searchModel = new InventoryOrderSearch();
+        $searchModel = new InventoryOrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $model = $this->findModel($id);
@@ -144,12 +144,12 @@ class InventoryOrderController extends Controller
     {
         $this->checkAccess();
 
-		$model = new InventoryOrder();
-		$modelsPoItem = [new InventoryPartsorder];
+        $model = new InventoryOrder();
+        $modelsPoItem = [new InventoryPartsorder];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
-			$modelsPoItem = Model::createMultiple(InventoryPartsorder::classname());
+            $modelsPoItem = Model::createMultiple(InventoryPartsorder::classname());
             Model::loadMultiple($modelsPoItem, Yii::$app->request->post());
 
             // validate all models
@@ -179,7 +179,7 @@ class InventoryOrderController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-				'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
+                'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
             ]);
         }
     }
@@ -200,7 +200,7 @@ class InventoryOrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
             $oldIDs = ArrayHelper::map($modelsPoItem, 'id', 'id');
-			$modelsPoItem = Model::createMultiple(InventoryPartsorder::classname(), $modelsPoItem);
+            $modelsPoItem = Model::createMultiple(InventoryPartsorder::classname(), $modelsPoItem);
             Model::loadMultiple($modelsPoItem, Yii::$app->request->post());
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsPoItem, 'id', 'id')));
 
@@ -213,7 +213,7 @@ class InventoryOrderController extends Controller
                 try {
                     if ($flag = $model->save(false)) {
                         if (! empty($deletedIDs)) {
-							InventoryPartsorder::deleteAll(['id' => $deletedIDs]);
+                            InventoryPartsorder::deleteAll(['id' => $deletedIDs]);
                         }
                         foreach ($modelsPoItem as $modelPoItem) {
                             $modelPoItem->id_partsorder_invor = $model->id;
@@ -234,7 +234,7 @@ class InventoryOrderController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-				'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
+                'modelsPoItem' => (empty($modelsPoItem)) ? [new InventoryPartsorder] : $modelsPoItem
             ]);
         }
     }
@@ -250,7 +250,7 @@ class InventoryOrderController extends Controller
         $this->checkAccess2();
 
         // Для удаления запчастей связанных с объектом
-		//InventoryPartsorder::deleteAll(['id_partsorder_invor' => $id]);
+        //InventoryPartsorder::deleteAll(['id_partsorder_invor' => $id]);
         //$this->findModel($id)->delete();
 
         $model = $this->findModel($id);
@@ -279,57 +279,57 @@ class InventoryOrderController extends Controller
         }
     }
 
-	public function actionLists($id)
-	{
-		$invs = Inventory::find()
-			->where(['invnum' => $id])
-			->all();
+    public function actionLists($id)
+    {
+        $invs = Inventory::find()
+            ->where(['invnum' => $id])
+            ->all();
 
-			foreach($invs as $inv)
-			{
-				echo $inv->invname;
-			}
-	}
+            foreach($invs as $inv)
+            {
+                echo $inv->invname;
+            }
+    }
 
-	public function actionValidation()
-	{
-		$invpar = InventoryParts::find()
-			->where(['nameparts' => Yii::$app->request->get('namepart')])
-			->one();
+    public function actionValidation()
+    {
+        $invpar = InventoryParts::find()
+            ->where(['nameparts' => Yii::$app->request->get('namepart')])
+            ->one();
 
-		if ($invpar["amount"] == 0)
-		{
-			return 'Нет на складе';
-		}
+        if ($invpar["amount"] == 0)
+        {
+            return 'Нет на складе';
+        }
 
-		if( ($invpar["amount"] - Yii::$app->request->get('count')) < 0 )
-		{
-			return $invpar["amount"];
-		}
-	
-		if( (Yii::$app->request->get('count')) < 0)
-		{
-			return 'Запрещено';
-		}
-	}
+        if( ($invpar["amount"] - Yii::$app->request->get('count')) < 0 )
+        {
+            return $invpar["amount"];
+        }
+    
+        if( (Yii::$app->request->get('count')) < 0)
+        {
+            return 'Запрещено';
+        }
+    }
 
-	private function checkAccess()
-	{
-		if(
-			!in_array("AdminInventory", Yii::$app->user->identity->groups) and
-			!in_array("ManagerInventory", Yii::$app->user->identity->groups)
-		)
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
-	}
+    private function checkAccess()
+    {
+        if(
+            !in_array("AdminInventory", Yii::$app->user->identity->groups) and
+            !in_array("ManagerInventory", Yii::$app->user->identity->groups)
+        )
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+    }
 
-	private function checkAccess2()
-	{
-		if(!in_array("AdminInventory", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
-	}
+    private function checkAccess2()
+    {
+        if(!in_array("AdminInventory", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+    }
 
 }

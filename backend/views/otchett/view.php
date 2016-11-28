@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Обновить', ['update', 'id' => $model->id, 'table'=> Otchett::$name], ['class' => 'btn btn-primary']) ?>
         <?php
-		/*= Html::a('Delete', ['delete', 'id' => $model->id], [
+        /*= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -36,25 +36,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             'status',
             'comment',
-			[
-				'attribute' => 'date',
-				'format' =>  ['date', 'php:d.m.Y'],
-			],
+            [
+                'attribute' => 'date',
+                'format' =>  ['date', 'php:d.m.Y'],
+            ],
             'username',
-			'id_dpt',
-			'id_egrp',
-			[
-				'attribute' => 'date_update',
-				'format' =>  ['date', 'php:d M Y'],
-				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-			],
-			'area',
-			[
-				'attribute' => 'date_load',
-				'format' =>  ['date', 'php:d M Y'],
-				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-			],
-			'protocol',
+            'id_dpt',
+            'id_egrp',
+            [
+                'attribute' => 'date_update',
+                'format' =>  ['date', 'php:d M Y'],
+                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+            ],
+            'area',
+            [
+                'attribute' => 'date_load',
+                'format' =>  ['date', 'php:d M Y'],
+                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+            ],
+            'protocol',
         ],
     ]) ?>
 

@@ -19,13 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Создать вопрос', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-	<?= $this->render('_form', [
-			'model' => $searchModel,
-		])
-	?>
+    <?= $this->render('_form', [
+            'model' => $searchModel,
+        ])
+    ?>
 
     <?php
-	/*= GridView::widget([
+    /*= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -38,6 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);*/
-	?>
+    ?>
 
 </div>

@@ -48,7 +48,7 @@ class InventoryOrderSearch extends InventoryOrder
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['date_invor'=>SORT_DESC]]
+            'sort'=> ['defaultOrder' => ['date_invor'=>SORT_DESC]]
         ]);
 
         $this->load($params);

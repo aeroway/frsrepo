@@ -20,7 +20,7 @@ class InventorySearch extends Inventory
         return [
             [['id' /*, 'authority', 'waybill'*/], 'integer'],
             [['invname','id_typetech', 'id_moo', 'id_status', 'invnum', 'location', 'date', 'comment', 'username'], 'safe'],
-			[['date'], 'date','format' => 'M.d.yyyy'],
+            [['date'], 'date','format' => 'M.d.yyyy'],
         ];
     }
 
@@ -46,7 +46,7 @@ class InventorySearch extends Inventory
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['date'=>SORT_DESC]]
+            'sort'=> ['defaultOrder' => ['date'=>SORT_DESC]]
         ]);
 
         $sort = $dataProvider->getSort();
@@ -66,9 +66,9 @@ class InventorySearch extends Inventory
             return $dataProvider;
         }
 
-		$query->joinWith('idMoo');
-		$query->joinWith('idStatus');
-		$query->joinWith('idTypetech');
+        $query->joinWith('idMoo');
+        $query->joinWith('idStatus');
+        $query->joinWith('idTypetech');
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -82,13 +82,13 @@ class InventorySearch extends Inventory
             ->andFilterWhere(['like', 'invnum', $this->invnum])
             ->andFilterWhere(['like', 'location', $this->location])
             ->andFilterWhere(['like', 'comment', $this->comment])
-			->andFilterWhere(['like', 'inventory_moo.name', $this->id_moo])
-			->andFilterWhere(['like', 'inventory_status.name', $this->id_status])
-			->andFilterWhere(['like', 'inventory_typetech.name', $this->id_typetech]);
+            ->andFilterWhere(['like', 'inventory_moo.name', $this->id_moo])
+            ->andFilterWhere(['like', 'inventory_status.name', $this->id_status])
+            ->andFilterWhere(['like', 'inventory_typetech.name', $this->id_typetech]);
 
-		if(!in_array("AdminInventory", Yii::$app->user->identity->groups)) {
-			$query->andFilterWhere(['!=', 'inventory_status.id', 9]);
-		}
+        if(!in_array("AdminInventory", Yii::$app->user->identity->groups)) {
+            $query->andFilterWhere(['!=', 'inventory_status.id', 9]);
+        }
 
         return $dataProvider;
     }

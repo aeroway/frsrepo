@@ -41,7 +41,7 @@ class InventoryOrder extends \yii\db\ActiveRecord
         return [
             [['invnum_invor', 'invname_invor', 'ip_invor', 'user_invor', 'demanding_invor', 'date_invor'], 'string'],
             [['status_id_invor', 'active_invor'], 'integer'],
-			[['invnum_invor', 'invname_invor', 'status_id_invor'], 'required'],
+            [['invnum_invor', 'invname_invor', 'status_id_invor'], 'required'],
         ];
     }
 

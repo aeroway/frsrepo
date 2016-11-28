@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Объекты', 'url' => ['index'
 ?>
 <style>
 tbody tr:nth-child(1) {
-	color: green; /* Цвет текста */
-	font-weight: bold;
+    color: green; /* Цвет текста */
+    font-weight: bold;
 }
 </style>
 <div class="inventory-log">
@@ -29,35 +29,35 @@ tbody tr:nth-child(1) {
 
             'invname',
             'invnum',
-			'idMoo.name',
+            'idMoo.name',
             'location',
-			'idStatus.name',
-			'idTypetech.name',
-			[
-				'attribute' => 'date',
-				'format' =>  ['date', 'php:M d Y'],
-				'contentOptions' => ['style'=>'width: 100px; text-align: center;'],
-			],
+            'idStatus.name',
+            'idTypetech.name',
+            [
+                'attribute' => 'date',
+                'format' =>  ['date', 'php:M d Y'],
+                'contentOptions' => ['style'=>'width: 100px; text-align: center;'],
+            ],
             'comment',
-			[
-				'attribute'=>'authority',
-				'contentOptions' =>function ($model, $key, $index, $column){
-					return ['class' => 'name'];
-				},
-				'content'=>function($data){
-					return $data["authority"] ? 'Да' : '-';
-				}
-			],
-			[
-				'attribute'=>'waybill',
-				'contentOptions' =>function ($model, $key, $index, $column){
-					return ['class' => 'name'];
-				},
-				'content'=>function($data){
-					return $data["waybill"] ? 'Да' : '-';
-				}
-			],
-			'username',
+            [
+                'attribute'=>'authority',
+                'contentOptions' =>function ($model, $key, $index, $column){
+                    return ['class' => 'name'];
+                },
+                'content'=>function($data){
+                    return $data["authority"] ? 'Да' : '-';
+                }
+            ],
+            [
+                'attribute'=>'waybill',
+                'contentOptions' =>function ($model, $key, $index, $column){
+                    return ['class' => 'name'];
+                },
+                'content'=>function($data){
+                    return $data["waybill"] ? 'Да' : '-';
+                }
+            ],
+            'username',
 
             //['class' => 'yii\grid\ActionColumn'],
         ],

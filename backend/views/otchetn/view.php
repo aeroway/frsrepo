@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php
-			/*
-			Html::a('Удалить', ['delete', 'id' => $model->id], [
+            /*
+            Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -32,35 +32,35 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             //'id',
             'area',
-			'status',
-			[
-				'label' => 'Причины',
-				'attribute' => 'reason1',
-			],
-			[
-				'label' => 'Кол-во объектов недвижимости с разбивкой по причинам',
-				'attribute' => 'reason2',
-			],
-			[
-				'label' => 'Предложения по выходу из ситуации (по каждому блоку причин)',
-				'attribute' => 'offer',
-			],
+            'status',
+            [
+                'label' => 'Причины',
+                'attribute' => 'reason1',
+            ],
+            [
+                'label' => 'Кол-во объектов недвижимости с разбивкой по причинам',
+                'attribute' => 'reason2',
+            ],
+            [
+                'label' => 'Предложения по выходу из ситуации (по каждому блоку причин)',
+                'attribute' => 'offer',
+            ],
             'comment',
             'condnum',
-			[
-				'attribute' => 'dateon',
-				'format' =>  ['date', 'php:M d Y'],
-			],
-			'usernameon',
-			'id_dpt',
-			'id_egrp',
-			[
-				'attribute' => 'date_update',
-				'format' =>  ['date', 'php:M d Y'],
-				'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-			],
-			'area',
-			'date_load',
+            [
+                'attribute' => 'dateon',
+                'format' =>  ['date', 'php:M d Y'],
+            ],
+            'usernameon',
+            'id_dpt',
+            'id_egrp',
+            [
+                'attribute' => 'date_update',
+                'format' =>  ['date', 'php:M d Y'],
+                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+            ],
+            'area',
+            'date_load',
 
         ],
     ]) ?>

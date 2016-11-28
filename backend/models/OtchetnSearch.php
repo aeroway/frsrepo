@@ -45,7 +45,7 @@ class OtchetnSearch extends Otchetn
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['area' => SORT_ASC]]
+            'sort'=> ['defaultOrder' => ['area' => SORT_ASC]]
         ]);
 
         $this->load($params);
@@ -58,8 +58,8 @@ class OtchetnSearch extends Otchetn
 
         $query->andFilterWhere([
             'id' => $this->id,
-			'date_update' => $this->date_update,
-			'date_load' => $this->date_load,
+            'date_update' => $this->date_update,
+            'date_load' => $this->date_load,
         ]);
 
         $query->andFilterWhere(['like', 'area', $this->area])
@@ -68,11 +68,11 @@ class OtchetnSearch extends Otchetn
             ->andFilterWhere(['like', 'reason2', $this->reason2])
             ->andFilterWhere(['like', 'offer', $this->offer])
             ->andFilterWhere(['like', 'comment', $this->comment])
-			->andFilterWhere(['like', 'flag', $this->flag])
-			->andFilterWhere(['like', 'filename', $this->filename])
-			->andFilterWhere(['like', 'id_dpt', $this->id_dpt])
-			->andFilterWhere(['like', 'id_egrp', $this->id_egrp])
-			->andFilterWhere(['like', 'usernameon', $this->usernameon])
+            ->andFilterWhere(['like', 'flag', $this->flag])
+            ->andFilterWhere(['like', 'filename', $this->filename])
+            ->andFilterWhere(['like', 'id_dpt', $this->id_dpt])
+            ->andFilterWhere(['like', 'id_egrp', $this->id_egrp])
+            ->andFilterWhere(['like', 'usernameon', $this->usernameon])
             ->andFilterWhere(['like', 'condnum', $this->condnum]);
 
         return $dataProvider;

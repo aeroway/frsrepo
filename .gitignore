@@ -39,3 +39,5 @@ phpunit.phar
 /backend/web/docs
 /.bowerrc
 /console
+/backend/runtime
+/frontend/runtime

@@ -20,22 +20,22 @@ use backend\models\ReqSt;
 
     <?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'otdel')->dropDownList(
-			ArrayHelper::map(Otdel::find()->all(),'id','text'),
-			['prompt'=>'Выберите отдел']
-	) ?>
+    <?= $form->field($model, 'otdel')->dropDownList(
+            ArrayHelper::map(Otdel::find()->all(),'id','text'),
+            ['prompt'=>'Выберите отдел']
+    ) ?>
 
-	<?= $form->field($model, 'type')->dropDownList(
-			ArrayHelper::map(Type::find()->all(),'id','text'),
-			['prompt'=>'Выберите материал']
-	) ?>
+    <?= $form->field($model, 'type')->dropDownList(
+            ArrayHelper::map(Type::find()->all(),'id','text'),
+            ['prompt'=>'Выберите материал']
+    ) ?>
 
-	<?= $form->field($model, 'scan_doc')->textInput() ?>
+    <?= $form->field($model, 'scan_doc')->textInput() ?>
 
-	<?= $form->field($model, 'cel')->dropDownList(
-			ArrayHelper::map(Cel::find()->all(),'id','text'),
-			['prompt'=>'Выберите цель']
-	) ?>
+    <?= $form->field($model, 'cel')->dropDownList(
+            ArrayHelper::map(Cel::find()->all(),'id','text'),
+            ['prompt'=>'Выберите цель']
+    ) ?>
 
     <?= $form->field($model, 'zayavitel_fio')->textInput() ?>
 
@@ -44,19 +44,19 @@ use backend\models\ReqSt;
     <?= $form->field($model, 'kn')->textInput() ?>
 
     <?= $form->field($model, 'kuvd')->textInput() ?>
-	<?php
-		//print_r(Yii::$app->user->identity->groups);
-	?>
-	<?php  //=$form->field($model, 'user_text')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
+    <?php
+        //print_r(Yii::$app->user->identity->groups);
+    ?>
+    <?php  //=$form->field($model, 'user_text')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
 
-	<?= $form->field($model, 'user_to')->textInput() ?>
+    <?= $form->field($model, 'user_to')->textInput() ?>
 
-	<?= $form->field($model, 'fast')->dropDownList(
-			['0' => 'Обычная','1' => 'Срочная'],
-			['prompt'=>'Выберите срочность']
-	) ?>
+    <?= $form->field($model, 'fast')->dropDownList(
+            ['0' => 'Обычная','1' => 'Срочная'],
+            ['prompt'=>'Выберите срочность']
+    ) ?>
 
-	<?= '<p>* Необходимо устанавливать только в случае действительной срочности.</p>' ?>
+    <?= '<p>* Необходимо устанавливать только в случае действительной срочности.</p>' ?>
 
     <?php // $form->field($model, 'zayavitel_num')->textInput() ?>
 
@@ -100,7 +100,7 @@ use backend\models\ReqSt;
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		<?= Html::a('Отменить', ['index'], ['class'=>'btn btn-warning']) ?>
+        <?= Html::a('Отменить', ['index'], ['class'=>'btn btn-warning']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

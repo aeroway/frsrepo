@@ -26,29 +26,29 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-			[
-				'attribute' => 'date_in',
-				'label' => 'Возврат',
-				'format' =>  ['date', 'php:d.m.Y'],
-				'contentOptions' => ['style'=>'width: 90px;'],
-			],
+            [
+                'attribute' => 'date_in',
+                'label' => 'Возврат',
+                'format' =>  ['date', 'php:d.m.Y'],
+                'contentOptions' => ['style'=>'width: 90px;'],
+            ],
             'user_in',
             'vedomost_num',
             //'vedomost_date',
-			[
-				'attribute' => 'IconStatus',
-				'label' => 'Статус',
-				'format' => 'html',
-				'value' => 'IconStatus',
-				'contentOptions'=>['style'=>'text-align: center; width: 65px;'],
-			],
+            [
+                'attribute' => 'IconStatus',
+                'label' => 'Статус',
+                'format' => 'html',
+                'value' => 'IconStatus',
+                'contentOptions'=>['style'=>'text-align: center; width: 65px;'],
+            ],
             // 'check_type',
             // 'module',
-			//'sektors_ip',
-			[
-				'attribute' => 'sektorsSektor.name',
-				'label' => 'Нахождение',
-			]
+            //'sektors_ip',
+            [
+                'attribute' => 'sektorsSektor.name',
+                'label' => 'Нахождение',
+            ]
 
             //['class' => 'yii\grid\ActionColumn'],
         ],

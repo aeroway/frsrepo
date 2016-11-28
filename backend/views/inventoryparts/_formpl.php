@@ -17,15 +17,15 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-	<?= $form->field($model, 'invnum_inventory')->widget(Select2::classname(), [
-		'data' => ArrayHelper::map(Inventory::find()->all(),'invnum','invnum'),
-		'language' => 'ru',
-		'options' => ['placeholder' => 'Выберите инвентарный номер'],
-		'pluginOptions' => [
-			'allowClear' => true
-		],
-	]);
-	?>
+    <?= $form->field($model, 'invnum_inventory')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(Inventory::find()->all(),'invnum','invnum'),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите инвентарный номер'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'amount_ipl')->textInput() ?>
 

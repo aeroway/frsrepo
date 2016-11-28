@@ -55,7 +55,7 @@ class InventoryPartsSearch extends InventoryParts
             return $dataProvider;
         }
 
-		$query->joinWith('idTypeparts');
+        $query->joinWith('idTypeparts');
         $query->andFilterWhere([
             'id' => $this->id,
             'amount' => $this->amount,

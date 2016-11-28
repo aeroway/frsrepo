@@ -41,12 +41,12 @@ class QuestionsController extends Controller
         ]);
     }
 
-	public function actionSearch()
-	{
-		$questionModel = new Questions();
+    public function actionSearch()
+    {
+        $questionModel = new Questions();
 
-		return $questionModel->searchQuestions();
-	}
+        return $questionModel->searchQuestions();
+    }
 
     /**
      * Displays a single Questions model.
@@ -55,7 +55,7 @@ class QuestionsController extends Controller
      */
     public function actionView()
     {
-		foreach( Yii::$app->request->get() as $value);
+        foreach( Yii::$app->request->get() as $value);
 
         return $this->render('view', [
             'model' => $this->findModel($value["answer"]),

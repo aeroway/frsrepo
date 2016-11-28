@@ -67,8 +67,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-		// временный редирект
-		//return $this->redirect('http://10.23.112.112');
+        // временный редирект
+        //return $this->redirect('http://10.23.112.112');
 
         return $this->render('index');
     }

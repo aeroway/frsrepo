@@ -45,7 +45,7 @@ class OtchettSearch extends Otchett
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['kn'=>SORT_DESC, 'area' => SORT_ASC]]
+            'sort'=> ['defaultOrder' => ['kn'=>SORT_DESC, 'area' => SORT_ASC]]
         ]);
 
         $this->load($params);
@@ -59,22 +59,22 @@ class OtchettSearch extends Otchett
         $query->andFilterWhere([
             'id' => $this->id,
             'date' => $this->date,
-			'date_update' => $this->date_update,
-			'date_load' => $this->date_load,
+            'date_update' => $this->date_update,
+            'date_load' => $this->date_load,
         ]);
 
-		//$query->andFilterWhere(['like', 'kn', str_replace ( "\\\\\\\\", "\\", $this->kn )])
+        //$query->andFilterWhere(['like', 'kn', str_replace ( "\\\\\\\\", "\\", $this->kn )])
         $query->andFilterWhere(['like', 'kn', $this->kn])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'comment', $this->comment])
-			->andFilterWhere(['like', 'area', $this->area])
-			->andFilterWhere(['like', 'flag', $this->flag])
-			->andFilterWhere(['like', 'id_dpt', $this->id_dpt])
-			->andFilterWhere(['like', 'filename', $this->filename])
-			->andFilterWhere(['like', 'id_egrp', $this->id_egrp])
+            ->andFilterWhere(['like', 'area', $this->area])
+            ->andFilterWhere(['like', 'flag', $this->flag])
+            ->andFilterWhere(['like', 'id_dpt', $this->id_dpt])
+            ->andFilterWhere(['like', 'filename', $this->filename])
+            ->andFilterWhere(['like', 'id_egrp', $this->id_egrp])
             ->andFilterWhere(['like', 'username', $this->username])
-			->andFilterWhere(['like', 'protocol', $this->protocol]);
+            ->andFilterWhere(['like', 'protocol', $this->protocol]);
 
         return $dataProvider;
     }

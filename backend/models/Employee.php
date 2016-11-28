@@ -169,14 +169,14 @@ class Employee extends \yii\db\ActiveRecord
         ];
     }
 
-	public function getFullName()
-	{
-		if(!empty($this->fam) and !empty($this->name) and !empty($this->otch)) {
-			return $this->fam . ' ' . $this->name . ' ' . $this->otch;
-		} else{
-			return 'Неполные данные по ФИО';
-		}
-	}
+    public function getFullName()
+    {
+        if(!empty($this->fam) and !empty($this->name) and !empty($this->otch)) {
+            return $this->fam . ' ' . $this->name . ' ' . $this->otch;
+        } else{
+            return 'Неполные данные по ФИО';
+        }
+    }
 
     /**
      * @return \yii\db\ActiveQuery

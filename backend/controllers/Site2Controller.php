@@ -65,10 +65,10 @@ class Site2Controller extends Controller
 
     public function actionIndex()
     {
-		if(!in_array("alvl3", Yii::$app->user->identity->groups))
-		{
-			throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-		}
+        if(!in_array("alvl3", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
         return $this->render('index');
     }
 
@@ -116,10 +116,10 @@ class Site2Controller extends Controller
  
 public function actionCheck()
 {
-	if(!in_array("alvl3", Yii::$app->user->identity->groups))
-	{
-		throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-	}
+    if(!in_array("alvl3", Yii::$app->user->identity->groups))
+    {
+        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+    }
 
     $egrp = new Egrp();
     $id = Yii::$app->request->post('id',0);
@@ -144,10 +144,10 @@ public function actionCheck()
 
 public function actionCheckm()
 {
-	if(!in_array("alvl3", Yii::$app->user->identity->groups))
-	{
-		throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-	}
+    if(!in_array("alvl3", Yii::$app->user->identity->groups))
+    {
+        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+    }
 
     $egrp = new Egrp();
     $num = Yii::$app->request->post('num',0);

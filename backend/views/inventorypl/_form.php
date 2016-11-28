@@ -17,9 +17,9 @@ use backend\models\InventoryParts;
     <?= $form->field($model, 'invnum_inventory')->textInput() ?>
 
     <?= $form->field($model, 'id_inventory_parts')->dropDownList(
-			ArrayHelper::map(InventoryParts::find()->all(),'id','nameparts'),
-			['prompt'=>'Выберите Тип']
-	); ?>
+            ArrayHelper::map(InventoryParts::find()->all(),'id','nameparts'),
+            ['prompt'=>'Выберите Тип']
+    ); ?>
 
     <?= $form->field($model, 'amount_ipl')->textInput() ?>
 

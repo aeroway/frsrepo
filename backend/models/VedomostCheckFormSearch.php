@@ -46,7 +46,7 @@ class VedomostCheckFormSearch extends VedomostCheckForm
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -67,7 +67,7 @@ class VedomostCheckFormSearch extends VedomostCheckForm
         ]);
 
         $query->andFilterWhere(['like', 'user_in', $this->user_in])
-			->andFilterWhere(['like', 'sektors_ip', $this->sektors_ip])
+            ->andFilterWhere(['like', 'sektors_ip', $this->sektors_ip])
             ->andFilterWhere(['like', 'module', $this->module]);
 
         return $dataProvider;

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Добавить запчать', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Обновить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php /*
-		= Html::a('Удалить', ['delete', 'id' => $model->id], [
+        = Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -31,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-			'nameparts',
+            'nameparts',
             'idTypeparts.name',
             'amount',
             'location',
-			'comment_parts',
+            'comment_parts',
         ],
     ]) ?>
 
