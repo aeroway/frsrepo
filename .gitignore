@@ -26,8 +26,13 @@ composer.phar
 
 # phpunit itself is not needed
 phpunit.phar
+
 # local phpunit config
 /phpunit.xml
+
+# yii runtime dir
+/backend/runtime
+/frontend/runtime
 
 #other
 /yii.bat
@@ -39,5 +44,3 @@ phpunit.phar
 /backend/web/docs
 /.bowerrc
 /console
-/backend/runtime
-/frontend/runtime

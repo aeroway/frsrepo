@@ -345,14 +345,14 @@ function status($table)
 
                 <p><a class="btn btn-default" href="?r=otchett/index&table=otchet17">Перейти &raquo;</a></p>
             </div>
-            <div class="col-lg-3" style="">
-                <h2></h2>
+            <div class="col-lg-3" style="<?php statusList('otchet7')?>">
+                <h2>Некорректный КН-2</h2>
                 <p></p>
-                <p><i></i></p>
+                <p><i> </i></p>
 
-                <p></p>
+                <p><?php status('otchet18')?></p>
 
-                <p></p>
+                <p><a class="btn btn-default" href="?r=otchett/index&table=otchet18">Перейти &raquo;</a></p>
             </div>
             <div class="col-lg-3" style="">
                 <h2></h2>

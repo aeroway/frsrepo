@@ -13,6 +13,20 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "adldap/adLDAP",
+                "version": "4.0.4",
+                "source": {
+                    "url": "https://github.com/adldap/adLDAP",
+                    "type": "git",
+                    "reference": "v4.0.4"
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.4",
@@ -23,7 +37,9 @@
         "kartik-v/yii2-grid": "@dev",
         "yiisoft/yii2-jui": "~2.0.0",
         "kartik-v/yii2-krajee-base": "dev-master",
-        "kartik-v/yii2-dialog": "@dev"
+        "kartik-v/yii2-dialog": "@dev",
+        "adldap/adldap": "4.0.4 as 4.0-stable",
+        "edvlerblog/yii2-adldap-module": "v1.0.0"
     },
     "require-dev": {
         "codeception/codeception": "*",
