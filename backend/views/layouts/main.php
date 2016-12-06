@@ -35,21 +35,8 @@ AppAsset::register($this);
                 ],
             ]);
             $menuItems = [
-                ['label' => 'Статистика', 'url' => ['/site/stat']],
-                ['label' => 'Отчёты', 'url' => ['/site/index']],
-                /*
-                ((Yii::$app->user->identity) && (in_array('alvl3',Yii::$app->user->identity->groups))) ?  ['label' => 'Ведомости', 'url' => ['/site2/index']] : '',
-                ((Yii::$app->user->identity) && (in_array('ITUchet',Yii::$app->user->identity->groups))) ? ['label' => 'ОИТ', 'url' => ['inventory/index']] : '', 
-                ((Yii::$app->user->identity) && (in_array('AccountBlockingAdmin',Yii::$app->user->identity->groups))) ? ['label' => 'Аккаунты', 'url' => ['/abemployee/index']] : '',
-                ((Yii::$app->user->identity) && 
-                    (
-                        (in_array('alvl1',Yii::$app->user->identity->groups)) or 
-                        (in_array('alvl2',Yii::$app->user->identity->groups)) or 
-                        (in_array('alvl3',Yii::$app->user->identity->groups)) or 
-                        (in_array('alvl4',Yii::$app->user->identity->groups)) 
-                    )
-                ) ? ['label' => 'Заказ дел', 'url' => ['/req/index']] : '',
-                */
+                ['label' => 'Статистика', 'url' => ['/otchetlist/stat']],
+                ['label' => 'Отчёты', 'url' => ['/otchetlist/index']],
             ];
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

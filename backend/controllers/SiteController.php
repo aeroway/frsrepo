@@ -7,7 +7,7 @@ use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
 
-//use Edvlerblog\Ldap;
+use yii\helpers\Url;
 
 
 /**
@@ -58,12 +58,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
-    }
-
-    public function actionStat()
-    {
-        return $this->render('stat');
+        return Yii::$app->getResponse()->redirect(Yii::$app->urlManagerFrontEnd->createUrl(""));
+        //return $this->render('index');
     }
 
     public function actionLogin()
