@@ -71,7 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
                 'contentOptions' => ['style'=>'width: 250px;'],
-                
             ],
             
 

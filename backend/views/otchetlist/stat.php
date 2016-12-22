@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'description_list',
                 'value' => function($data) {
-                    $arr_tab = array('otchet3', 'otchetn', 'otchet9', 'otchet7', 'otchet14', 'otchet17');
+                    $arr_tab = array('otchet3', 'otchetn', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20');
 
                     if(in_array($data->table_list, $arr_tab))
                     {

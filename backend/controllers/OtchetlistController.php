@@ -30,7 +30,7 @@ class OtchetlistController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat', 'update', 'view'],
+                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'create'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -80,6 +80,13 @@ class OtchetlistController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionStatx($tblname)
+    {
+        return $this->render('statx', [
+            'tblname' => $tblname,
         ]);
     }
 
