@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     if(in_array("OtchetManager", Yii::$app->user->identity->groups))
     {
-        echo Html::dropDownList('action','',ArrayHelper::map(Employee::find()->where(['idm_otdel' => 139])->orderBy(['fam' => SORT_ASC])->all(),'fullName','fullName'),['class'=>'form-control','style'=>'width:90%; margin-bottom:10px; margin-right:10px; float:left']);
+        echo Html::dropDownList('action','',ArrayHelper::map(Employee::find()->where(['or',['idm_otdel' => 139],['idm_otdel' => 3]])->orderBy(['fam' => SORT_ASC])->all(),'fullName','fullName'),['class'=>'form-control','style'=>'width:90%; margin-bottom:10px; margin-right:10px; float:left']);
         echo Html::submitButton('Назначить', ['class' => 'btn btn-info','style'=>'margin-bottom:10px;']);
     }
     ?>

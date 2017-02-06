@@ -144,3 +144,23 @@ a.desc:after {
     cursor:pointer;
     display:none; /* в oбычнoм сoстoянии её нет) */
 }
+
+td > span.glyphicon-bell:before {
+    color: #5bc0de;
+}
+
+td > span.glyphicon-ok:before {
+    color: #5cb85c;
+}
+
+td > span.glyphicon-time:before {
+    color: #f0ad4e;
+}
+
+td > span.glyphicon-remove:before {
+    color: #d9534f;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #ededed;
+}

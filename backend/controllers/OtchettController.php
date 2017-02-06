@@ -190,7 +190,8 @@ class OtchettController extends Controller
         foreach($selection as $id)
         {
             Yii::$app->db->createCommand()
-            ->update(Yii::$app->session->getFlash('table'), ['username' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
+            ->update(Yii::$app->session->getFlash('table'), ['username' => $action, 'status' => 'назначено', 'flag' => 2,], "id = $id")->execute();
+            //->update(Yii::$app->session->getFlash('table'), ['username' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
         }
 
         return $this->redirect(['index', 'table'=> Yii::$app->session->getFlash('table')]);

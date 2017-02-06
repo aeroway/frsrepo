@@ -86,7 +86,7 @@ class Req extends \yii\db\ActiveRecord
                 return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Мачуги">-М</span>';
                 break;
             case 6:
-                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Ленина">-Л</span>';
+                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Фурманова">-Л</span>';
                 break;
             case 7:
                 return '<span class="glyphicon glyphicon-eye-close" title="Подготовлен к передачи на выдачу"> </span>';
@@ -170,7 +170,7 @@ class Req extends \yii\db\ActiveRecord
             'date_in' => 'Дата',
             'user_to' => 'Для кого',
             'kn' => 'Кадастровый (условный) номер',
-            'coment' => 'Coment',
+            'coment' => 'Комментарий',
             'type' => 'Архивный материал',
             'otdel' => 'Отдел',
             'cel' => 'Цель',
@@ -184,7 +184,7 @@ class Req extends \yii\db\ActiveRecord
             'srok' => 'Srok',
             'user_print' => 'Распечатал',
             'print_date' => 'Print Date',
-            'code_mesto' => 'Code Mesto',
+            'code_mesto' => 'Номер короба',
             'date_v' => 'Date V',
             'area_id' => 'Area ID',
             'org' => 'Org',
@@ -203,7 +203,7 @@ class Req extends \yii\db\ActiveRecord
     }
     public function getOtdelsOtdel()
     {
-        return $this->hasOne(Otdel::className(), ['id' => 'otdel']);
+        return $this->hasOne(Otdelreq::className(), ['id' => 'otdel']);
     }
     public function getReqsReqSt()
     {

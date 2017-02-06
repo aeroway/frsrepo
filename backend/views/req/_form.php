@@ -47,7 +47,7 @@ use backend\models\ReqSt;
     <?php
         //print_r(Yii::$app->user->identity->groups);
     ?>
-    <?php  //=$form->field($model, 'user_text')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
+    <?= $form->field($model, 'user_text')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->username]) ?>
 
     <?= $form->field($model, 'user_to')->textInput() ?>
 

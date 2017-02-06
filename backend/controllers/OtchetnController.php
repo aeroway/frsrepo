@@ -190,7 +190,8 @@ class OtchetnController extends Controller
         foreach($selection as $id)
         {
             Yii::$app->db->createCommand()
-            ->update('otchetn', ['usernameon' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
+            ->update('otchetn', ['usernameon' => $action, 'status' => 'назначено', 'flag' => 2,], "id = $id")->execute();
+            //->update('otchetn', ['usernameon' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
         }
 
         return $this->redirect(['index']);

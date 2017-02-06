@@ -4,25 +4,20 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
-use backend\models\ReqSt;
+//use backend\models\ReqSt;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Req */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="req-formstatus">
+<div class="req-setcuruser">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'status')->dropDownList(
-                ArrayHelper::map(ReqSt::find()->orderBy(['text' => SORT_ASC])->all(),'id','text'),
-                ['prompt'=>'Выберите статус']
-    )  ?>
+    <?= $form->field($model, 'cur_user')->textInput(['placeholder' => 'Фамилия И.О.']); ?>
 
-    <?= $form->field($model, 'coment')->textInput() ?>
-
-    <div class="formstatus-group">
+    <div class="setcuruser-group">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить заявку' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

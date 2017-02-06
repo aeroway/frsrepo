@@ -10,8 +10,9 @@ use backend\models\Employee;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OtchetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+$otchett = new Otchett();
 
-$this->title = 'Отчёт';
+$this->title = 'Отчёт: ' . $otchett->otchetList(Otchett::$name);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="otchet-index">
@@ -39,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'rowOptions' => function($model)
         {
+            if(isset($model->control) and $model->control == 1) return ['class'=>'warning'];
             if($model->flag == 1) return ['class'=>'danger'];
             if($model->flag == 2) return ['class'=>'success'];
         },

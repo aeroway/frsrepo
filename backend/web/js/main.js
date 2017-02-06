@@ -1,3 +1,11 @@
+$("body").on("click", "a[href*='setcuruser']", function(e){   
+    $.ajax({
+        url: this,                             
+        success: function (data) {
+        $('#req-setup').html(data);
+        }
+    });
+});
 $("body").on("click", "a[href*='createstatus']", function(e){   
     $.ajax({
         url: this,                             

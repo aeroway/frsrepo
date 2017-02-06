@@ -71,4 +71,17 @@ class Otchett extends \yii\db\ActiveRecord
             'protocol' => 'Протокол',
         ];
     }
+
+    public function otchetList($table)
+    {
+        $rows = (new \yii\db\Query())
+            ->select('name_list')
+            ->from('otchet_list')
+            ->where(['table_list' => $table])
+            ->all();
+
+        foreach($rows[0] as $nameList) {}
+        
+        return $nameList;
+    }
 }

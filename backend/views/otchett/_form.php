@@ -12,7 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'kn')->textInput(['readonly' => true]) ?>
+    <?php
+        $arr = Yii::$app->request->get();
+
+        if($arr["table"] == 'otchet21') {
+            echo $form->field($model, 'kn')->textInput();
+        } else {
+            echo $form->field($model, 'kn')->textInput(['readonly' => true]);
+        }
+    ?>
 
     <?= $form->field($model, 'description')->textInput() ?>
 

@@ -23,7 +23,7 @@ class ReqController extends Controller
         return [
             'access'=>[
                 'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index','createstatus','log','createdatereturn'],
+                'only'=>['create','update','view','delete','index','createstatus','log','createdatereturn','setcuruser'],
                 'rules'=>[
                     [
                         'allow'=>true,
@@ -150,6 +150,28 @@ class ReqController extends Controller
         }
     }
 
+    public function actionSetcuruser($id)
+    {
+        if(in_array("alvl1", Yii::$app->user->identity->groups) or in_array("alvl2", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $model = $this->findModel($id);
+
+        if((in_array("alvl3", Yii::$app->user->identity->groups) or in_array("alvl4", Yii::$app->user->identity->groups)) and $model->load(Yii::$app->request->post()))
+        {
+            $model->save();
+            $this->addLog($id,$model);
+
+            return $this->redirect(['index', 'id' => $model->id]);
+        } else {
+            return $this->renderAjax('setcuruser', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     public function actionCreatestatus($id)
     {
         if(in_array("alvl1", Yii::$app->user->identity->groups) or in_array("alvl2", Yii::$app->user->identity->groups))
@@ -178,7 +200,7 @@ class ReqController extends Controller
             ]);
         }
     }
-///....
+
     public function actionCreatedatereturn($id,$page,$sort)
     {
         $this->checkAccess();
@@ -201,13 +223,14 @@ class ReqController extends Controller
             ]);
         }
     }
-///.....
+
     /**
      * Deletes an existing Req model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
+
     public function actionDelete($id)
     {
         // Удалять запись может назначенный "Пользователь"
@@ -272,7 +295,7 @@ class ReqController extends Controller
 
     private function checkCurrentUser($id)
     {
-        if('23UPR\\'.Yii::$app->user->identity->username !== $this->findModel($id)->user_text)
+        if(Yii::$app->user->identity->username !== $this->findModel($id)->user_text)
         {
             throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
         }

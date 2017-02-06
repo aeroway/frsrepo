@@ -15,15 +15,22 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id', 
+        [
+            'template' => '<div class="input-group col-xs-2">{input}<span class="input-group-btn">' .
+            Html::submitButton('Поиск', ['class' => 'btn btn-default']) . '</span></div>',
+        ])->textInput(['placeholder' => 'УИД']);
+    ?>
 
-    <?= $form->field($model, 'obj_addr') ?>
+    <?= $form->field($model, 'status')->hiddenInput(['value' => ''])->label(false); ?>
 
-    <?= $form->field($model, 'zayavitel_num') ?>
+    <?php ////$form->field($model, 'obj_addr') ?>
 
-    <?= $form->field($model, 'zayavitel_fio') ?>
+    <?php ////$form->field($model, 'zayavitel_num') ?>
 
-    <?= $form->field($model, 'obj_id') ?>
+    <?php ////$form->field($model, 'zayavitel_fio') ?>
+
+    <?php ////$form->field($model, 'obj_id') ?>
 
     <?php // echo $form->field($model, 'kuvd') ?>
 
@@ -78,8 +85,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'inn') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?php //Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php //Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
