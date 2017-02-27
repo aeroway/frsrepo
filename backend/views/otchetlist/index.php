@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a('Создать отчёт', ['create'], ['class' => 'btn btn-success']);
         }
         ?>
+        <?= Html::a('Инструкции', '/backend/docs/instructions.zip', ['class' => 'btn btn-success']); ?>
     </p>
 
     <?php

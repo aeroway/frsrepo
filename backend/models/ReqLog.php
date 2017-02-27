@@ -63,7 +63,7 @@ class ReqLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['otdel', 'type', 'cel', 'zayavitel_fio', 'obj_addr', 'kn', 'kuvd', 'user_text', 'user_to', 'fast'], 'required'],
+            //[['otdel', 'type', 'cel', 'zayavitel_fio', 'obj_addr', 'kn', 'kuvd', 'user_text', 'user_to', 'fast'], 'required'],
             [['obj_addr', 'zayavitel_num', 'zayavitel_fio', 'kuvd', 'user_text', 'user_to', 'kn', 'coment', 'cur_user', 'phone', 'user_last', 'user_print', 'code_mesto', 'org', 'inn', 'scan_doc', 'log_user'], 'string'],
             [['obj_id', 'kuvd_id', 'status', 'type', 'otdel', 'cel', 'fast', 'vedomost_num', 'vedomost_unform', 'area_id', 'log_id'], 'integer'],
             [['date_in', 'date_end', 'srok', 'print_date', 'date_v', 'date_return'], 'safe']

@@ -49,7 +49,7 @@ use backend\models\AbStatus;
 
     <?= $form->field($model, 'act')->dropDownList(
             ['0' => 'Неактивно','1' => 'Активно'],
-            ['prompt'=>'Выберите срочность']
+            ['prompt'=>'Выберите активность']
     ) ?>
 
     <?= $form->field($model, 'dt1')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>

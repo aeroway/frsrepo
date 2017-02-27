@@ -4,6 +4,9 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Req;
+use backend\models\Otdelreq;
+use backend\models\Cel;
+use backend\models\Type;
 use backend\models\ReqLog;
 use backend\models\ReqSearch;
 use backend\models\ReqLogSearch;
@@ -23,7 +26,7 @@ class ReqController extends Controller
         return [
             'access'=>[
                 'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index','createstatus','log','createdatereturn','setcuruser'],
+                'only'=>['create', 'update', 'view', 'delete', 'index', 'log', 'createdatereturn', 'setcuruser'],
                 'rules'=>[
                     [
                         'allow'=>true,
@@ -52,7 +55,7 @@ class ReqController extends Controller
     public function actionIndex()
     {
         $this->checkAccess();
-        
+
         $searchModel = new ReqSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -70,6 +73,7 @@ class ReqController extends Controller
     public function actionView($id)
     {
         $this->checkAccess();
+
         if(in_array("alvl1", Yii::$app->user->identity->groups))
         {
             $this->checkCurrentUser($id);
@@ -83,7 +87,7 @@ class ReqController extends Controller
     public function actionLog($logid)
     {
         $this->checkAccess();
-        if(!in_array("alvl4", Yii::$app->user->identity->groups) and !in_array("alvl3", Yii::$app->user->identity->groups))
+        if(!in_array("alvl3", Yii::$app->user->identity->groups) and !in_array("alvl4", Yii::$app->user->identity->groups))
         {
             throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
         }
@@ -150,21 +154,149 @@ class ReqController extends Controller
         }
     }
 
-    public function actionSetcuruser($id)
+    public function actionPrint($status)
     {
-        if(in_array("alvl1", Yii::$app->user->identity->groups) or in_array("alvl2", Yii::$app->user->identity->groups))
+        if(!in_array("alvl3", Yii::$app->user->identity->groups) and !in_array("alvl4", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $query = Req::find()->select('id')->where(['status' => $status])->asArray()->all();
+
+        if(($status != 5 and $status != 6) or empty($query))
+        {
+            return '<h1>Нет документов на печать.</h1>';
+        }
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        $phpWord->setDefaultFontName('Times New Roman');
+        $phpWord->setDefaultFontSize(12);
+
+        $properties = $phpWord->getDocInfo();
+
+        $properties->setCreator('Stepan Zakharov');
+        $properties->setCompany('FRSKuban');
+        $properties->setTitle('Get request');
+        $properties->setDescription('The service of request from archive');
+        $properties->setCategory('Archives');
+        $properties->setLastModifiedBy('PHPWord');
+        $properties->setCreated(time());
+        $properties->setModified(time());
+        $properties->setSubject('Print to file');
+        $properties->setKeywords('req, archive');
+
+        $sectionStyle = array
+        (
+            'orientation' => 'portrait',
+            'marginTop' => \PhpOffice\PhpWord\Shared\Converter::pixelToTwip(80),
+            'marginLeft' => 1200,
+            'marginRight' => 600,
+            'colsNum' => 1,
+            'pageNumberingStart' => 1,
+        );
+
+        $pStyle = array('align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0,);
+        $fStyle1 = array('bold' => TRUE);
+        $fStyle2 = array('bold' => FALSE);
+
+        $section = $phpWord->addSection($sectionStyle);
+
+        for($i = 0; $i <= count($query)-1; $i++)
+        {
+            $model = $this->findModel($query[$i]["id"]);
+
+            $modelOtdel = Otdelreq::find()->select('text')->where(['id'=>$model->otdel])->one();
+            $modelCel = Cel::find()->select('text')->where(['id'=>$model->cel])->one();
+            $modelType = Type::find()->select('text')->where(['id'=>$model->type])->one();
+
+            $textrun = $section->createTextRun($pStyle);
+            if(!empty($model->org))
+            {
+                $textrun->addText('Банк', $fStyle2);
+                $textrun->addTextBreak(1);
+            }
+            $textrun->addText('Заявка ', $fStyle1);
+            $textrun->addText('№'.$model->id, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Срочность заявки: ', $fStyle1);
+            $textrun->addText($model->fast ? 'Срочная' : 'Обычная', $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Цель получения заявки: ', $fStyle1); 
+            $textrun->addText($modelCel->text, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Дата: ', $fStyle1); 
+            $textrun->addText(date('d.m.Y H:i:s', strtotime($model->date_in)), $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Отдел: ', $fStyle1);
+            $textrun->addText($modelOtdel->text, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Для кого: ', $fStyle1); 
+            $textrun->addText($model->user_to, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Адрес объекта: ', $fStyle1); 
+            $textrun->addText($model->obj_addr, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Архивный материал: ', $fStyle1); 
+            $textrun->addText($modelType->text, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('КН: ', $fStyle1); 
+            $textrun->addText($model->kn, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('КУВД: ', $fStyle1); 
+            $textrun->addText($model->kuvd, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Исполнитель: ', $fStyle1); 
+            $textrun->addText($model->cur_user, $fStyle2);
+            $textrun->addTextBreak(1);
+            $textrun->addText('Срок: ', $fStyle1); 
+            $textrun->addText(date('d.m.Y', strtotime($model->srok)), $fStyle2);
+            $textrun->addTextBreak(2);
+
+            $model->user_print = Yii::$app->user->identity->username;
+            $model->print_date = date("Y-m-d H:i:s");
+            $model->status = 2;
+            $model->save();
+        }
+
+        header("Content-Description: File Transfer");
+        header('Content-Disposition: attachment; filename="word.docx"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save("php://output");
+    }
+
+    public function actionSetcuruser($id, $page, $sort, $status, $idReqsearch)
+    {
+        if(!in_array("alvl3", Yii::$app->user->identity->groups) and !in_array("alvl4", Yii::$app->user->identity->groups))
         {
             throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
         }
 
         $model = $this->findModel($id);
 
-        if((in_array("alvl3", Yii::$app->user->identity->groups) or in_array("alvl4", Yii::$app->user->identity->groups)) and $model->load(Yii::$app->request->post()))
+        if($model->load(Yii::$app->request->post()))
         {
-            $model->save();
-            $this->addLog($id,$model);
+            /*if($model->getAttribute('status') > $model->getOldAttribute('status') or
+                ($model->getAttribute('status') == 5 and $model->getOldAttribute('status') == 6) or
+                ($model->getAttribute('status') == 6 and $model->getOldAttribute('status') == 5)
+              )
+            {*/
+                $model->save();
+                $this->addLog($id, $model);
 
-            return $this->redirect(['index', 'id' => $model->id]);
+                if(!empty($idReqsearch))
+                    return $this->redirect(['index', 'page' => $page, 'sort' => $sort, 'ReqSearch[status]' => $status, 'ReqSearch[id]' => $idReqsearch]);
+                return $this->redirect(['index', 'page' => $page, 'sort' => $sort, 'ReqSearch[status]' => $status]);
+            //}
+            //else 
+            //{
+                //throw new ForbiddenHttpException('Вам запрещено менять статус на значение ниже текущего.');
+            //}
         } else {
             return $this->renderAjax('setcuruser', [
                 'model' => $model,
@@ -172,38 +304,9 @@ class ReqController extends Controller
         }
     }
 
-    public function actionCreatestatus($id)
+    public function actionCreatedatereturn($id, $page, $sort)
     {
-        if(in_array("alvl1", Yii::$app->user->identity->groups) or in_array("alvl2", Yii::$app->user->identity->groups))
-        {
-            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-        }
-
-        $model = $this->findModel($id);
-
-        if(in_array("alvl3", Yii::$app->user->identity->groups) and $model->load(Yii::$app->request->post()))
-        {
-            if($model->getAttribute('status') > $model->getOldAttribute('status')) {
-                $model->save();
-                return $this->redirect(['index', 'id' => $model->id]);
-            } else {
-                throw new ForbiddenHttpException('Вам запрещено менять статус на значение ниже текущего.');
-            }
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->addLog($id,$model);
-            return $this->redirect(['index', 'id' => $model->id]);
-        } else {
-            return $this->renderAjax('createstatus', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionCreatedatereturn($id,$page,$sort)
-    {
-        $this->checkAccess();
+        //$this->checkAccess();
 
         if(!in_array("alvl3", Yii::$app->user->identity->groups))
         {
@@ -215,6 +318,7 @@ class ReqController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         {
             $this->addLog($id,$model);
+
             return $this->redirect(['index', 'page' => $page, 'sort' => $sort]);
 
         } else {
@@ -276,7 +380,7 @@ class ReqController extends Controller
         }
         else
         {
-            /*
+            /* if need to search multiaccess
             $arr1 = Yii::$app->user->identity->groups;
             $arr2 = array("alvl1", "alvl2", "alvl3", "alvl4");
             $g = null;
@@ -303,45 +407,21 @@ class ReqController extends Controller
 
     private function addLog($id,$model)
     {
-        foreach(Yii::$app->request->post() as $fkey) { }
-        foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
-
         $modellog = new ReqLog();
-        $modellog->attributes = [
-            'obj_addr' => isset($attrarr["obj_addr"]) ? $attrarr["obj_addr"] : $model->getOldAttribute('obj_addr'),
-            'zayavitel_num' => isset($attrarr["zayavitel_num"]) ? $attrarr["zayavitel_num"] : $model->getOldAttribute('zayavitel_num'),
-            'zayavitel_fio' => isset($attrarr["zayavitel_fio"]) ? $attrarr["zayavitel_fio"] : $model->getOldAttribute('zayavitel_fio'),
-            'obj_id' => isset($attrarr["obj_id"]) ? $attrarr["obj_id"] : $model->getOldAttribute('obj_id'),
-            'kuvd' => isset($attrarr["kuvd"]) ? $attrarr["kuvd"] : $model->getOldAttribute('kuvd'),
-            'kuvd_id' => isset($attrarr["kuvd_id"]) ? $attrarr["kuvd_id"] : $model->getOldAttribute('kuvd_id'),
-            'user_text' => isset($attrarr["user_text"]) ? $attrarr["user_text"] : $model->getOldAttribute('user_text'),
-            'status' => isset($attrarr["status"]) ? $attrarr["status"] : $model->getOldAttribute('status'),
-            'date_in' => isset($attrarr["date_in"]) ? $attrarr["date_in"] : $model->getOldAttribute('date_in'),
-            'user_to' => isset($attrarr["user_to"]) ? $attrarr["user_to"] : $model->getOldAttribute('user_to'),
-            'kn' => isset($attrarr["kn"]) ? $attrarr["kn"] : $model->getOldAttribute('kn'),
-            'coment' => isset($attrarr["coment"]) ? $attrarr["coment"] : $model->getOldAttribute('coment'),
-            'type' => isset($attrarr["type"]) ? $attrarr["type"] : $model->getOldAttribute('type'),
-            'otdel' => isset($attrarr["otdel"]) ? $attrarr["otdel"] : $model->getOldAttribute('otdel'),
-            'cel' => isset($attrarr["cel"]) ? $attrarr["cel"] : $model->getOldAttribute('cel'),
-            'cur_user' => isset($attrarr["cur_user"]) ? $attrarr["cur_user"] : $model->getOldAttribute('cur_user'),
-            'date_end' => isset($attrarr["date_end"]) ? $attrarr["date_end"] : $model->getOldAttribute('date_end'),
-            'fast' => isset($attrarr["fast"]) ? $attrarr["fast"] : $model->getOldAttribute('fast'),
-            'phone' => isset($attrarr["phone"]) ? $attrarr["phone"] : $model->getOldAttribute('phone'),
-            'vedomost_num' => isset($attrarr["vedomost_num"]) ? $attrarr["vedomost_num"] : $model->getOldAttribute('vedomost_num'),
-            'user_last' => isset($attrarr["user_last"]) ? $attrarr["user_last"] : $model->getOldAttribute('user_last'),
-            'vedomost_unform' => isset($attrarr["vedomost_unform"]) ? $attrarr["vedomost_unform"] : $model->getOldAttribute('vedomost_unform'),
-            'srok' => isset($attrarr["srok"]) ? $attrarr["srok"] : $model->getOldAttribute('srok'),
-            'user_print' => isset($attrarr["user_print"]) ? $attrarr["user_print"] : $model->getOldAttribute('user_print'),
-            'print_date' => isset($attrarr["print_date"]) ? $attrarr["print_date"] : $model->getOldAttribute('print_date'),
-            'code_mesto' => isset($attrarr["code_mesto"]) ? $attrarr["code_mesto"] : $model->getOldAttribute('code_mesto'),
-            'date_v' => isset($attrarr["date_v"]) ? $attrarr["date_v"] : $model->getOldAttribute('date_v'),
-            'area_id' => isset($attrarr["area_id"]) ? $attrarr["area_id"] : $model->getOldAttribute('area_id'),
-            'org' => isset($attrarr["org"]) ? $attrarr["org"] : $model->getOldAttribute('org'),
-            'inn' => isset($attrarr["inn"]) ? $attrarr["inn"] : $model->getOldAttribute('inn'),
-            'date_return' => isset($attrarr["date_return"]) ? $attrarr["date_return"] : $model->getOldAttribute('date_return'),
-            'log_id' => isset($id) ? $id : NULL,
-            'log_user' => Yii::$app->user->identity->username,
-        ];
-        $modellog->insert(true);
+
+        foreach($model as $key => $value)
+        {
+            if($key == 'id')
+                $modellog->log_id = $id;
+
+            if($key != 'id')
+                $modellog->$key = $value;
+        }
+
+        foreach(Yii::$app->request->post() as $fkey) { }
+        foreach($fkey as $skey => $svalue) { $modellog->$skey = $svalue; }
+
+        $modellog->log_user = Yii::$app->user->identity->username;
+        $modellog->save();
     }
 }

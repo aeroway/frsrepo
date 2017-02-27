@@ -20,72 +20,100 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php
+$statusbutton = 
+[
+    'ccuruser'=>function ($url, $model)
+    {
+        $options = [
+            'title' => Yii::t('yii', 'Назначить исполнителя'),
+            'aria-label' => Yii::t('yii', 'Curuser'),
+            'data-toggle' => Yii::t('yii', 'modal'),
+            'data-target' => Yii::t('yii', '#w1'),
+        ];
 
-$statusbutton = [
-                    'cstatus'=>function ($url, $model, $key)
-                    {
-                        $options = [
-                            'title' => Yii::t('yii', 'Сменить статус'),
-                            'aria-label' => Yii::t('yii', 'Status'),
-                            'data-toggle' => Yii::t('yii', 'modal'),
-                            'data-target' => Yii::t('yii', '#w1'),
-                        ];
-                        $url=Yii::$app->getUrlManager()->createUrl(['req/createstatus','id'=>$model['id']]);
+        if(empty(Yii::$app->request->queryParams["page"]))
+        {
+            $page = 1;
+        }
+        else 
+        {
+            $page = Yii::$app->request->queryParams["page"];
+        }
 
-                        return Html::a('<span class="glyphicon glyphicon-transfer"></span>', $url, $options);
+        if(empty(Yii::$app->request->queryParams["sort"]))
+        {
+            $sort = '';
+        }
+        else
+        {
+            $sort = Yii::$app->request->queryParams["sort"];
+        }
 
-                    },
-                    'ccuruser'=>function ($url, $model)
-                    {
-                        $options = [
-                            'title' => Yii::t('yii', 'Назначить исполнителя'),
-                            'aria-label' => Yii::t('yii', 'Curuser'),
-                            'data-toggle' => Yii::t('yii', 'modal'),
-                            'data-target' => Yii::t('yii', '#w1'),
-                        ];
-                        $url=Yii::$app->getUrlManager()->createUrl(['req/setcuruser','id'=>$model['id']]);
+        if(empty(Yii::$app->request->queryParams['ReqSearch']['status']))
+        {
+            $status = '';
+        }
+        else
+        {
+            $status = Yii::$app->request->queryParams['ReqSearch']['status'];
+        }
 
-                        return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, $options);
+        if(!empty(Yii::$app->request->queryParams["ReqSearch"]["id"]))
+            $idReqsearch = Yii::$app->request->queryParams["ReqSearch"]["id"];
+        else
+            $idReqsearch = '';
 
-                    },
-                    'log'=>function ($url, $model)
-                    {
-                        $options = [
-                            'title' => Yii::t('yii', 'История'),
-                            'aria-label' => Yii::t('yii', 'История'),
-                        ];
-                        $url=Yii::$app->getUrlManager()->createUrl(['req/log','logid'=>$model['id']]);
-                            return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $url, $options);
-                    },
-                    'cdatereturn'=>function ($url, $model)
-                    {
-                        $options = [
-                            'title' => Yii::t('yii', 'Назначить дату возврата'),
-                            'aria-label' => Yii::t('yii', 'Return'),
-                            'data-toggle' => Yii::t('yii', 'modal'),
-                            'data-target' => Yii::t('yii', '#w1'),
-                        ];
-                        if(empty(Yii::$app->request->queryParams["page"])) {
-                            $page = 1;
-                        } else {
-                            $page = Yii::$app->request->queryParams["page"];
-                        }
-                        if(empty(Yii::$app->request->queryParams["sort"])) {
-                            $sort = '';
-                        } else {
-                            $sort = Yii::$app->request->queryParams["sort"];
-                        }
-                        $url=Yii::$app->getUrlManager()->createUrl(['req/createdatereturn','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
-                            return Html::a('<span class="glyphicon glyphicon-time"></span>', $url, $options);
-                    },
-                ];
+        $url=Yii::$app->getUrlManager()->createUrl(['req/setcuruser', 'id' => $model["id"], 'page' => $page, 'sort' => $sort, 'status' => $status, 'idReqsearch' => $idReqsearch]);
 
-if (in_array("alvl4", Yii::$app->user->identity->groups))
+        return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, $options);
+    },
+    'log'=>function ($url, $model)
+    {
+        $options = [
+            'title' => Yii::t('yii', 'История'),
+            'aria-label' => Yii::t('yii', 'История'),
+        ];
+        $url=Yii::$app->getUrlManager()->createUrl(['req/log','logid'=>$model['id']]);
+            return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $url, $options);
+    },
+    'cdatereturn'=>function ($url, $model)
+    {
+        $options = [
+            'title' => Yii::t('yii', 'Назначить дату возврата'),
+            'aria-label' => Yii::t('yii', 'Return'),
+            'data-toggle' => Yii::t('yii', 'modal'),
+            'data-target' => Yii::t('yii', '#w1'),
+        ];
+
+        if(empty(Yii::$app->request->queryParams["page"]))
+        {
+            $page = 1;
+        }
+        else 
+        {
+            $page = Yii::$app->request->queryParams["page"];
+        }
+
+        if(empty(Yii::$app->request->queryParams["sort"]))
+        {
+            $sort = '';
+        }
+        else
+        {
+            $sort = Yii::$app->request->queryParams["sort"];
+        }
+
+        $url=Yii::$app->getUrlManager()->createUrl(['req/createdatereturn','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+            return Html::a('<span class="glyphicon glyphicon-time"></span>', $url, $options);
+    },
+];
+
+if(in_array("alvl4", Yii::$app->user->identity->groups))
 {
     $buttons =     [
                     'class' => 'yii\grid\ActionColumn',
                     'buttons'=>$statusbutton,
-                    'template' => '{view} {update} {cstatus} {log} {ccuruser}',
+                    'template' => '{view} {update} {cdatereturn} {log} {ccuruser}',
                     'contentOptions'=>['style'=>'width: 31px;'],
                 ];
 }
@@ -94,7 +122,7 @@ elseif (in_array("alvl3", Yii::$app->user->identity->groups))
     $buttons =  [
                     'class' => 'yii\grid\ActionColumn',
                     'buttons'=>$statusbutton,
-                    'template' => '{view} {cstatus} {log} {cdatereturn} {ccuruser}',
+                    'template' => '{view} {ccuruser}',
                     'contentOptions'=>['style'=>'width: 31px;'],
                 ];
 }
@@ -115,6 +143,7 @@ elseif (in_array("alvl1", Yii::$app->user->identity->groups))
                 ];
 }
 ?>
+
 <div class="req-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -122,21 +151,31 @@ elseif (in_array("alvl1", Yii::$app->user->identity->groups))
 
     <p>
         <?php
-            if(in_array("alvl1", Yii::$app->user->identity->groups)) {
+            if(in_array("alvl1", Yii::$app->user->identity->groups))
+            {
                 echo Html::a('Создать', ['create'], ['class' => 'btn btn-success']);
             }
         ?>
+        <?= Html::a('Сброс фильтров', ['index'], ['class' => 'btn btn-warning']); ?>
+
+        <?php if(in_array("alvl3", Yii::$app->user->identity->groups) or in_array("alvl4", Yii::$app->user->identity->groups)) : ?>
+        <?php $urlm = Yii::$app->getUrlManager()->createUrl(['req/print','status' => 5]); ?>
+        <?= Html::a('Печать Мачуга', $urlm, ['class' => 'btn btn-success']); ?>
+        <?php $urlf = Yii::$app->getUrlManager()->createUrl(['req/print','status' => 6]); ?>
+        <?= Html::a('Печать Фурманова', $urlf, ['class' => 'btn btn-success']); ?>
+        <?php endif; ?>
     </p>
 
-    <?php
-    Modal::begin([
-        'header' => '<h3>Указать</h3>',
-    ]);
-        ActiveForm::begin();
-        echo '<div id="req-setup"></div>';
-        ActiveForm::end();
-    Modal::end();
-    ?>
+<?php
+Modal::begin([
+    'header' => '<h3>Указать</h3>',
+]);
+    ActiveForm::begin();
+    echo '<div id="req-setup"></div>';
+    ActiveForm::end();
+Modal::end();
+?>
+
 <?php Pjax::begin(); ?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

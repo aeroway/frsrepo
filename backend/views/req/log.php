@@ -74,16 +74,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['index']]
                 'contentOptions'=>['style'=>'width: 130px;'],
             ],
             //*Для кого 'user_to',
-            /*[
+            /*
+            [
                 'attribute' => 'otdelsOtdel.text',
                 'label' => 'Отдел',
-            ],*/
+            ],
+            */
+            /*
             [
                 'attribute' => 'date_in',
                 //'format' => ['raw', 'Y-m-d H:i:s'],
                 'format' =>  ['date', 'php:d.m.Y H:i:s'],
                 'contentOptions' => ['style'=>'width: 90px;'],
             ],
+            */
             [
                 'attribute' => 'cur_user',
                 'contentOptions'=>['style'=>'width: 115px;'],
@@ -93,11 +97,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['index']]
                 'contentOptions'=>['style'=>'width: 115px;'],
             ],
             'log_user',
+            /*
             [
                 'attribute' => 'date_return',
                 'format' =>  ['date', 'php:d.m.Y'],
                 'contentOptions' => ['style'=>'width: 90px;'],
             ],
+            */
             // 'zayavitel_num',
             // 'obj_id',
             // 'kuvd_id',

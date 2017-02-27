@@ -86,7 +86,7 @@ class Req extends \yii\db\ActiveRecord
                 return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Мачуги">-М</span>';
                 break;
             case 6:
-                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Фурманова">-Л</span>';
+                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Фурманова">-Ф</span>';
                 break;
             case 7:
                 return '<span class="glyphicon glyphicon-eye-close" title="Подготовлен к передачи на выдачу"> </span>';
