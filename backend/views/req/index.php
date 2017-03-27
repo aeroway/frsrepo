@@ -163,6 +163,8 @@ elseif (in_array("alvl1", Yii::$app->user->identity->groups))
         <?= Html::a('Печать Мачуга', $urlm, ['class' => 'btn btn-success']); ?>
         <?php $urlf = Yii::$app->getUrlManager()->createUrl(['req/print','status' => 6]); ?>
         <?= Html::a('Печать Фурманова', $urlf, ['class' => 'btn btn-success']); ?>
+        <?php $urlf = Yii::$app->getUrlManager()->createUrl(['req/print','status' => 11]); ?>
+        <?= Html::a('Печать Районы', $urlf, ['class' => 'btn btn-success']); ?>
         <?php endif; ?>
     </p>
 

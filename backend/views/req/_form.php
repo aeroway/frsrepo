@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
-use backend\models\Otdel;
+use backend\models\Otdelreq;
 use backend\models\Type;
 use backend\models\Cel;
 use backend\models\Req;
@@ -21,7 +21,7 @@ use backend\models\ReqSt;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'otdel')->dropDownList(
-            ArrayHelper::map(Otdel::find()->all(),'id','text'),
+            ArrayHelper::map(Otdelreq::find()->all(),'id','text'),
             ['prompt'=>'Выберите отдел']
     ) ?>
 

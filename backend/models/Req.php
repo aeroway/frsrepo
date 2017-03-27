@@ -61,7 +61,7 @@ class Req extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['otdel', 'type', 'cel', 'zayavitel_fio', 'obj_addr', 'kn', 'kuvd', 'user_text', 'user_to', 'fast'], 'required'],
+            [['otdel', 'type', 'cel', 'obj_addr'], 'required'],
             [['obj_addr', 'zayavitel_num', 'zayavitel_fio', 'kuvd', 'user_text', 'user_to', 'kn', 'coment', 'cur_user', 'phone', 'user_last', 'user_print', 'code_mesto', 'org', 'inn', 'scan_doc'], 'string'],
             [['obj_id', 'kuvd_id', 'status', 'type', 'otdel', 'cel', 'fast', 'vedomost_num', 'vedomost_unform', 'area_id'], 'integer'],
             [['date_in', 'date_end', 'srok', 'print_date', 'date_v', 'date_return'], 'safe']
@@ -96,6 +96,9 @@ class Req extends \yii\db\ActiveRecord
                 break;
             case 9:
                 return '<span class="glyphicon glyphicon-repeat" title="Расписка возвращена"> </span>';
+                break;
+            case 11:
+                return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Районы">-Р</span>';
                 break;
             default:
                 return $this->status;

@@ -44,12 +44,13 @@ class ReqSearch extends Req
     {
         if(in_array("alvl1", Yii::$app->user->identity->groups))
         {
-            $query = Req::find()->where(['user_text'=>Yii::$app->user->identity->username]);
+            $query = Req::find()->where(['or', ['user_text'=>Yii::$app->user->identity->username], ['user_text'=> '23UPR\\' . Yii::$app->user->identity->username], ['user_text'=> '23UPRS\\' . Yii::$app->user->identity->username]]);
+
+            if(in_array("alvl3", Yii::$app->user->identity->groups))
+                $query = Req::find();
         }
         else
-        {
             $query = Req::find();
-        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

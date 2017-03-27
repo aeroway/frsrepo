@@ -163,7 +163,7 @@ class ReqController extends Controller
 
         $query = Req::find()->select('id')->where(['status' => $status])->asArray()->all();
 
-        if(($status != 5 and $status != 6) or empty($query))
+        if(($status != 5 and $status != 6 and $status != 11) or empty($query))
         {
             return '<h1>Нет документов на печать.</h1>';
         }
@@ -399,7 +399,7 @@ class ReqController extends Controller
 
     private function checkCurrentUser($id)
     {
-        if(Yii::$app->user->identity->username !== $this->findModel($id)->user_text)
+        if(Yii::$app->user->identity->username !== $this->findModel($id)->user_text AND '23UPR\\' . Yii::$app->user->identity->username !== $this->findModel($id)->user_text AND '23UPRS\\' . Yii::$app->user->identity->username !== $this->findModel($id)->user_text)
         {
             throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
         }
