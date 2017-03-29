@@ -19,11 +19,17 @@ use backend\models\Lbo;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'type')->textInput() ?>
+    <?php // echo $form->field($model, 'type')->textInput() ?>
 
-    <?= $form->field($model, 'okpd')->textInput() ?>
+    <?php
+    if(strpos(Yii::$app->request->get("r"),'create'))
+        echo $form->field($model, 'okpd')->textInput()
+    ?>
 
-    <?= $form->field($model, 'name_object')->textInput() ?>
+    <?php
+    if(strpos(Yii::$app->request->get("r"),'create'))
+        echo $form->field($model, 'name_object')->textInput()
+    ?>
 
     <?= $form->field($model, 'outlay')->textInput() ?>
 
@@ -33,14 +39,20 @@ use backend\models\Lbo;
 
     <?= $form->field($model, 'special')->textInput() ?>
 
-    <?= $form->field($model, 'sum')->textInput() ?>
+    <?php // $form->field($model, 'sum')->textInput() ?>
 
-    <?= $form->field($model, 'year')->dropDownList(
+    <?php
+    if(strpos(Yii::$app->request->get("r"),'create'))
+        echo $form->field($model, 'year')->dropDownList(
             ArrayHelper::map(Lbo::find()->all(), 'year', 'year'),
             ['prompt'=>'Выберите год']
-    ); ?>
+        );
+    ?>
 
-    <?= $form->field($model, 'st_id')->hiddenInput(['value' => $id])->label(false); ?>
+    <?php
+    if(strpos(Yii::$app->request->get("r"),'create'))
+        $form->field($model, 'st_id')->hiddenInput(['value' => $id])->label(false);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Редактировать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

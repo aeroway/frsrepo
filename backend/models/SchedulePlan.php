@@ -12,6 +12,14 @@ use Yii;
  * @property double $sum
  * @property string $comment
  * @property integer $pm_id
+ * @property double $sum_fact
+ * @property double $sum_contract
+ * @property string $name_doc
+ * @property string $date_doc
+ * @property string $date_exp_from
+ * @property string $date_exp_to
+ * @property string $inn
+ * @property string $name_org
  *
  * @property PurchasePlan[] $purchasePlans
  * @property PurchaseMethod $pm
@@ -36,12 +44,13 @@ class SchedulePlan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'comment'], 'string'],
-            [['sum', 'sum_fact'], 'number'],
+            [['name', 'comment', 'name_doc', 'inn', 'name_org'], 'string'],
+            [['sum', 'sum_fact', 'sum_contract'], 'number'],
             [['pm_id'], 'integer'],
             [['pm_id'], 'exist', 'skipOnError' => true, 'targetClass' => PurchaseMethod::className(), 'targetAttribute' => ['pm_id' => 'id']],
             [['pp_id'], 'integer'],
             [['pp_id'], 'exist', 'skipOnError' => true, 'targetClass' => PurchasePlan::className(), 'targetAttribute' => ['pp_id' => 'id']],
+            [['date_doc', 'date_exp_from', 'date_exp_to'], 'safe'],
         ];
     }
 
@@ -58,6 +67,13 @@ class SchedulePlan extends \yii\db\ActiveRecord
             'sum_fact' => 'Фактическая сумма',
             'pm_id' => 'Способ закупки',
             'pp_id' => 'План закупок',
+            'sum_contract' => 'Сумма по контракту',
+            'name_doc' => 'Наименование документа',
+            'date_doc' => 'Дата документа',
+            'date_exp_from' => 'Срок действия с',
+            'date_exp_to' => 'Срок действия по',
+            'inn' => 'ИНН',
+            'name_org' => 'Наименование юр. лица',
         ];
     }
 
@@ -81,6 +97,11 @@ class SchedulePlan extends \yii\db\ActiveRecord
         }
 
         return false;
+    }
+
+    public function getSumAllField()
+    {
+        return $this->name_doc . ' ' . $this->date_doc . ' ' . $this->date_exp_from . ' ' . $this->date_exp_to . ' ' . $this->name_org;
     }
 
     /**

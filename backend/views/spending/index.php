@@ -10,7 +10,7 @@ use backend\models\PurchasePlan;
 /* @var $searchModel backend\models\SpendingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Расход';
+$this->title = 'Смета';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="spending-index">
@@ -19,7 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать расход', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать смету', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
     </p>
 <?php
     $button =

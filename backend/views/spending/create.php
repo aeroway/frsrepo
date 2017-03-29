@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Spending */
 
-$this->title = 'Создать расход';
-$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['index']];
+$this->title = 'Создать смету';
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="spending-create">

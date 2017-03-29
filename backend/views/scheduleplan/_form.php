@@ -34,6 +34,18 @@ use backend\models\PurchaseMethod;
 
     <?= $form->field($model, 'pp_id')->hiddenInput(['value' => $id])->label(false); ?>
 
+    <?= $form->field($model, 'name_doc')->textInput() ?>
+
+    <?= $form->field($model, 'date_doc')->textInput() ?>
+
+    <?= $form->field($model, 'date_exp_from')->textInput() ?>
+
+    <?= $form->field($model, 'date_exp_to')->textInput() ?>
+
+    <?= $form->field($model, 'inn')->textInput() ?>
+
+    <?= $form->field($model, 'name_org')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Редактировать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

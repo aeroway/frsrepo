@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?php // echo $form->field($model, 'type') ?>
 
     <?= $form->field($model, 'okpd') ?>
 

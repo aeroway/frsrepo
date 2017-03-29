@@ -4,11 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use backend\models\SchedulePlan;
+use backend\models\Purchaseplan;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\PurchaseplanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
 $this->title = 'План закупок';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,10 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать план закупок', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Расходы', Yii::$app->getUrlManager()->createUrl(['spending/index']), ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Создать план закупок', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
     </p>
 <?php
     $button =
@@ -79,25 +78,46 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'showFooter' => true,
+        'footerRowOptions' => ['style' => 'font-weight: bold;'],
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'type',
+            //'type',
             'okpd',
             'name_object',
-            'outlay',
-            'p_year',
-            'c_year',
+            [
+                'attribute' => 'outlay',
+                'value' => 'outlay',
+                'footer' => PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["outlay"],
+            ],
+            [
+                'attribute' => 'p_year',
+                'value' => 'p_year',
+                'footer' => PurchasePlan::find()->select('SUM(p_year) as p_year')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["p_year"],
+            ],
+            [
+                'attribute' => 'c_year',
+                'value' => 'c_year',
+                'footer' => PurchasePlan::find()->select('SUM(c_year) as c_year')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["c_year"],
+            ],
             'special',
-            'sum',
+            [
+                'label' => 'Всего',
+                'value' => function($data) {
+                    return PurchasePlan::find()->select('(p_year + c_year + special) as sum')->where(['id' => $data["id"]])->one()["sum"];
+                },
+                'footer' => (PurchasePlan::find()->select('SUM(p_year) as sum')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["sum"] + PurchasePlan::find()->select('SUM(c_year) as sum')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["sum"] + PurchasePlan::find()->select('SUM(special) as sum')->where(['st_id' => Yii::$app->request->queryParams["id"]])->one()["sum"]),
+            ],
             //'year',
             [
                 'label' => 'По плану',
                 'value' => function($data) {
                     return SchedulePlan::find()->select('SUM(sum) as sum')->where(['pp_id' => $data["id"]])->one()["sum"];
-                }
+                },
+                'footer' => SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => Yii::$app->request->queryParams["id"]])])->one()["sum"],
             ],
             [
                 'label' => 'Экономия',
@@ -116,6 +136,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     else
                         return ['style' => ''];
                 },
+                'footer' => (SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => Yii::$app->request->queryParams["id"]])])->one()["sum"] - 
+                    SchedulePlan::find()->select('SUM(sum_fact) as sum_fact')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => Yii::$app->request->queryParams["id"]])])->one()["sum_fact"]),
             ],
 
             //['class' => 'yii\grid\ActionColumn'],

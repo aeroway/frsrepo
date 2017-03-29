@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\PurchaseMethod */
 
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
 $this->title = 'Создать способ закупки';
 $this->params['breadcrumbs'][] = ['label' => 'Способ закупки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Spending */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="spending-view">

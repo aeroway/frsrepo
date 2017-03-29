@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\LboSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['spending/index']];
 $this->title = 'Лимит бюджетных организаций';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,8 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Создать ЛБО', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('План закупок', Yii::$app->getUrlManager()->createUrl(['purchaseplan/index']), ['class' => 'btn btn-info']) ?>
     </p>
 <?php
     $button =

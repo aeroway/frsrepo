@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\PurchasemethodSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
 $this->title = 'Способ закупки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,8 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Создать способ закупки', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('План закупок', Yii::$app->getUrlManager()->createUrl(['purchaseplan/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
     </p>
 <?php
     $button =

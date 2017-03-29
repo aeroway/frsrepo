@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Lbo */
 
+$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['spending/index']];
 $this->title = 'Редактировать ЛБО: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'ЛБО', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

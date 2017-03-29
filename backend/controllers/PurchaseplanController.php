@@ -89,7 +89,7 @@ class PurchaseplanController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            return $this->redirect(['index', 'page' => $page, 'sort' => $sort]);
+            return $this->redirect(['index', 'page' => $page, 'sort' => $sort, 'id' => $model->st_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Spending */
 
-$this->title = 'Редактировать расход: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['index']];
+$this->title = 'Редактировать смету: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Редактировать';
 ?>

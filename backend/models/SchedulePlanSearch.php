@@ -19,8 +19,8 @@ class SchedulePlanSearch extends SchedulePlan
     {
         return [
             [['id', 'pm_id', 'pp_id'], 'integer'],
-            [['name', 'comment'], 'safe'],
-            [['sum'], 'number'],
+            [['name', 'comment', 'name_doc'], 'safe'],
+            [['sum', 'sum_fact', 'sum_contract'], 'number'],
         ];
     }
 
@@ -62,6 +62,9 @@ class SchedulePlanSearch extends SchedulePlan
         $query->andFilterWhere([
             'id' => $this->id,
             'sum' => $this->sum,
+            'sum_fact' => $this->sum_fact,
+            'sum_contract' => $this->sum_contract,
+            'name_doc' => $this->name_doc,
             'pm_id' => $this->pm_id,
             'pp_id' => $this->pp_id,
         ]);

@@ -6,6 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Lbo */
 
+$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['spending/index']];
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'ЛБО', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

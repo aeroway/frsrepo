@@ -10,6 +10,8 @@ use yii\bootstrap\Alert;
 /* @var $searchModel backend\models\SchedulePlanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
+$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $id]];
 $this->title = 'План график';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Создать план график', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Расходы', Yii::$app->getUrlManager()->createUrl(['spending/index']), ['class' => 'btn btn-info']) ?>
         <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Расходы', Yii::$app->getUrlManager()->createUrl(['spending/index']), ['class' => 'btn btn-info']) ?>
 
         <?php
         $ppbody = '<div style="height: 120px;"><div style="width: 50%; float: left;">';
@@ -112,6 +114,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>'pm.name',
             ],
             'sum_fact',
+            'sum_contract',
+            [
+                'value' => 'sumAllField',
+                'format' => 'html'
+            ],
+            //'name_doc',
+            //'date_doc',
+            //'date_exp_from',
+            //'date_exp_to',
+            //'inn',
+            //'name_org',
 
             //['class' => 'yii\grid\ActionColumn'],
             $button,
