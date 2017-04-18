@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use backend\models\PurchasePlan;
 use backend\models\SchedulePlan;
 use backend\models\SchedulePlanSearch;
 use yii\web\Controller;
@@ -38,11 +39,13 @@ class ScheduleplanController extends Controller
     {
         $searchModel = new SchedulePlanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = PurchasePlan::findOne($id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'id' => $id,
+            'model' => $model,
         ]);
     }
 
@@ -53,8 +56,11 @@ class ScheduleplanController extends Controller
      */
     public function actionView($id)
     {
+        $modelpp = PurchasePlan::findOne($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modelpp' => $modelpp,
         ]);
     }
 
@@ -86,6 +92,7 @@ class ScheduleplanController extends Controller
     public function actionUpdate($id, $page, $sort)
     {
         $model = $this->findModel($id);
+        $modelpp = PurchasePlan::findOne($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
@@ -93,6 +100,7 @@ class ScheduleplanController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelpp' => $modelpp,
             ]);
         }
     }

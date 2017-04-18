@@ -32,6 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'special',
             //'sum',
             'year',
+            //'is_top',
+            //'f_row',
+            //'is_percent',
+            //'st_id',
         ],
     ]) ?>
 

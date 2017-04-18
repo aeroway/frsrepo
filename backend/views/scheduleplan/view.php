@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\SchedulePlan */
 
 $this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
-$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $model->pp_id]];
+$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $modelpp->st_id]];
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'План график', 'url' => ['index', 'id' => $model->pp_id]];
 $this->params['breadcrumbs'][] = $this->title;

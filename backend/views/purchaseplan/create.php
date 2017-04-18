@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\PurchasePlan */
 
@@ -18,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'id' => $id,
+        'fe' => 0,
     ]) ?>
 
 </div>

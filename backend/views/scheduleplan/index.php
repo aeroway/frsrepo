@@ -11,7 +11,7 @@ use yii\bootstrap\Alert;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
-$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $id]];
+$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $model->st_id]];
 $this->title = 'План график';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -22,9 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Создать план график', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Расходы', Yii::$app->getUrlManager()->createUrl(['spending/index']), ['class' => 'btn btn-info']) ?>
+        
 
         <?php
         $ppbody = '<div style="height: 120px;"><div style="width: 50%; float: left;">';
@@ -35,18 +33,25 @@ $this->params['breadcrumbs'][] = $this->title;
         {
             if($key == 'okpd' and !empty($value))
                 $ppbody .= '<b>ОКПД:</b> ' . $value . '<br>';
+
             if($key == 'name_object' and !empty($value))
                 $ppbody .= '<b>Название:</b> ' . $value . '<br>';
+
             if($key == 'outlay' and !empty($value))
                 $ppbody .= '<b>Смета:</b> ' . $value . '<br>';
+
             if($key == 'p_year' and !empty($value))
                 $ppbody .= '<b>Предыдущий год:</b> ' . $value . '<br>';
+
             if($key == 'c_year' and !empty($value))
                 $ppbody .= '<b>Текущий год:</b> ' . $value . '<br>';
+
             if($key == 'special' and !empty($value))
                 $ppbody .= '<b>Особые закупки:</b> ' . $value . '<br>';
+
             if($key == 'sum' and !empty($value))
                 $ppbody .= '<b>Всего:</b> ' . $value . '<br>';
+
             if($key == 'year' and !empty($value))
                 $ppbody .= '<b>Год ПЗ:</b> ' . $value . '<br>';
         }
@@ -85,13 +90,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 } else {
                     $page = Yii::$app->request->queryParams["page"];
                 }
+
                 if(empty(Yii::$app->request->queryParams["sort"])) {
                     $sort = '';
                 } else {
                     $sort = Yii::$app->request->queryParams["sort"];
                 }
 
-                $url=Yii::$app->getUrlManager()->createUrl(['scheduleplan/update','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+                $url=Yii::$app->getUrlManager()->createUrl(['scheduleplan/update', 'id' => $model['id'], 'page' => $page, 'sort' => $sort]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
@@ -110,8 +116,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'sum',
             'comment',
             [
-                'attribute'=>'pm_id',
-                'value'=>'pm.name',
+                'attribute' => 'pm_id',
+                'value' => 'pm.name',
             ],
             'sum_fact',
             'sum_contract',

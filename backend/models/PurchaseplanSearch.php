@@ -42,7 +42,7 @@ class PurchaseplanSearch extends PurchasePlan
      */
     public function search($params)
     {
-        $query = PurchasePlan::find()->where(["st_id" => $params["id"]]);
+        $query = PurchasePlan::find()->where(["st_id" => $params["id"]])->andWhere(['is_top' => 1]);
 
         // add conditions that should always apply here
 

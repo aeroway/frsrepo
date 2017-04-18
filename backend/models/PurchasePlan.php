@@ -17,6 +17,9 @@ use Yii;
  * @property double $special
  * @property double $sum
  * @property integer $st_id
+ * @property integer $is_top
+ * @property integer $f_row
+ * @property integer $is_percent
  * @property safe $year
  *
  * @property SchedulePlan $pp
@@ -42,7 +45,7 @@ class PurchasePlan extends \yii\db\ActiveRecord
     {
         return [
             [['year'], 'required'],
-            [['st_id'], 'integer'],
+            [['st_id', 'is_top', 'f_row', 'is_percent'], 'integer'],
             [['type', 'okpd', 'name_object'], 'string'],
             [['outlay', 'p_year', 'c_year', 'special', 'sum', 'year'], 'number'],
         ];
@@ -64,7 +67,10 @@ class PurchasePlan extends \yii\db\ActiveRecord
             'special' => 'Особые закупки',
             'sum' => 'Всего',
             'year' => 'Год ПЗ',
+            'is_top' => 'is top',
             'st_id' => 'st_id',
+            'f_row' => 'f row',
+            'is_percent' => '5%',
         ];
     }
 
@@ -72,15 +78,40 @@ class PurchasePlan extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert))
         {
-            if((
-                    Lbo::find()->select('SUM(sum) as sum')->where(['year' => $this->year])->one()["sum"] - 
-                    (PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['year' => $this->year])->one()["outlay"] - (PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['id' => $this->id])->one()["outlay"] - $this->outlay))
-                ) >= 0 )
+            if ((
+                    Lbo::find()->select('SUM(sum) as sum')
+                               ->where(['year' => $this->year])->one()["sum"] - (
 
-                return true;
+                               PurchasePlan::find()->select('SUM(outlay) as outlay')
+                                                   ->where(['year' => $this->year])
+                                                   ->one()["outlay"] - (
+
+                               PurchasePlan::find()->select('SUM(outlay) as outlay')
+                                                   ->where(['id' => $this->id])
+                                                   ->one()["outlay"] - $this->outlay))
+                ) >= 0 )
+            {
+                if (self::UpdateAll(['is_top' => 0], ['st_id' => $this->st_id, 'f_row' => $this->f_row]))
+
+                    return true;
+            }
             else
             {
-                Yii::$app->session->setFlash('false', Yii::$app->params["false"] . (Lbo::find()->select('SUM(sum) as sum')->where(['year' => $this->year])->one()["sum"] - (PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['year' => $this->year])->one()["outlay"] - PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['id' => $this->id])->one()["outlay"])));
+                Yii::$app->session->setFlash('false',
+
+                    Yii::$app->params["false"] . (
+
+                        Lbo::find()->select('SUM(sum) as sum')
+                                   ->where(['year' => $this->year])
+                                   ->one()["sum"] - (
+
+                        PurchasePlan::find()->select('SUM(outlay) as outlay')
+                                            ->where(['year' => $this->year])
+                                            ->one()["outlay"] -
+
+                        PurchasePlan::find()->select('SUM(outlay) as outlay')
+                                            ->where(['id' => $this->id])
+                                            ->one()["outlay"])));
 
                 return false;
             }
@@ -89,10 +120,22 @@ class PurchasePlan extends \yii\db\ActiveRecord
         return false;
     }
 
-    public function sumSp()
+    public function afterSave($insert, $changedAttributes)
     {
-        
-        return '!!!';
+        parent::afterSave($insert, $changedAttributes);
+
+        SchedulePlan::UpdateAll(['pp_id' => Yii::$app->db6->getLastInsertID()], ['pp_id' => Yii::$app->request->queryParams["id"]]);
+    }
+
+    public function getSumSp()
+    {
+        $str = self::find()->select('outlay')
+                           ->where(['and', ['f_row' => $this->f_row], ['is_top' => 0]])
+                           ->orderBy('id DESC')
+                           ->one()["outlay"];
+
+        if(!empty($str))
+            return $this->outlay . '<br><sub><b>' . $str . '</b></sub>';
     }
 
     /**

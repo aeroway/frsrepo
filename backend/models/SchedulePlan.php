@@ -81,16 +81,36 @@ class SchedulePlan extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert))
         {
-            if((
-                    PurchasePlan::find()->select('outlay')->where(['id' => $this->pp_id])->one()["outlay"] - 
-                    ((SchedulePlan::find()->select('SUM(sum) as sum')->where(['pp_id' => $this->pp_id])->one()["sum"]) - (SchedulePlan::find()->select('sum')->where(['id' => $this->id])->one()["sum"] - $this->sum))
+            if ((
+                    PurchasePlan::find()->select('outlay')
+                                        ->where(['id' => $this->pp_id])->one()["outlay"] - ((
+
+                    SchedulePlan::find()->select('SUM(sum) as sum')
+                                        ->where(['pp_id' => $this->pp_id])->one()["sum"]) - (
+
+                    SchedulePlan::find()->select('sum')
+                                        ->where(['id' => $this->id])
+                                        ->one()["sum"] - $this->sum))
                 ) >= 0 )
 
                 return true;
             else
             {
-                Yii::$app->session->setFlash('false', Yii::$app->params["false"] . (((PurchasePlan::find()->select('outlay')->where(['id' => $this->pp_id])->one()["outlay"]) -
-                (SchedulePlan::find()->select('SUM(sum) as sum')->where(['pp_id' => $this->pp_id])->one()["sum"])) + SchedulePlan::find()->select('sum')->where(['id' => $this->id])->one()["sum"]));
+                Yii::$app->session->setFlash('false', 
+
+                    Yii::$app->params["false"] . (((
+                    
+                        PurchasePlan::find()->select('outlay')
+                                            ->where(['id' => $this->pp_id])
+                                            ->one()["outlay"]) - (
+
+                        SchedulePlan::find()->select('SUM(sum) as sum')
+                                            ->where(['pp_id' => $this->pp_id])
+                                            ->one()["sum"])) + 
+                                            
+                        SchedulePlan::find()->select('sum')
+                                            ->where(['id' => $this->id])
+                                            ->one()["sum"]));
 
                 return false;
             }
@@ -101,7 +121,11 @@ class SchedulePlan extends \yii\db\ActiveRecord
 
     public function getSumAllField()
     {
-        return $this->name_doc . ' ' . $this->date_doc . ' ' . $this->date_exp_from . ' ' . $this->date_exp_to . ' ' . $this->name_org;
+        return $this->name_doc
+        . ' от '.date('d.m.Y', time($this->date_doc))
+        . ' срок действия с ' . date('d.m.Y', time($this->date_exp_from)) 
+        . ' по ' . date('d.m.Y', time($this->date_exp_to))          
+        . ' ' . $this->name_org;
     }
 
     /**

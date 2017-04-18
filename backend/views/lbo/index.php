@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\LboSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->params['breadcrumbs'][] = ['label' => 'Расход', 'url' => ['spending/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
 $this->title = 'Лимит бюджетных организаций';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -32,18 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'aria-label' => Yii::t('yii', 'Редактировать'),
                 ];
 
-                if(empty(Yii::$app->request->queryParams["page"])) {
+                if(empty(Yii::$app->request->queryParams["page"]))
                     $page = 1;
-                } else {
+                else
                     $page = Yii::$app->request->queryParams["page"];
-                }
-                if(empty(Yii::$app->request->queryParams["sort"])) {
-                    $sort = '';
-                } else {
-                    $sort = Yii::$app->request->queryParams["sort"];
-                }
 
-                $url=Yii::$app->getUrlManager()->createUrl(['lbo/update','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+                if(empty(Yii::$app->request->queryParams["sort"]))
+                    $sort = '';
+                else
+                    $sort = Yii::$app->request->queryParams["sort"];
+
+                $url = Yii::$app->getUrlManager()->createUrl(['lbo/update', 'id' => $model['id'], 'page' => $page, 'sort' => $sort]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
