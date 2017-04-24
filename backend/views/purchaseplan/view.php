@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'f_row',
             //'is_percent',
             //'st_id',
+            'parentRows',
         ],
     ]) ?>
 

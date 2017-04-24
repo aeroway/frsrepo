@@ -1,9 +1,12 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Lbo;
+use backend\models\Okpd2Sprav;
+use kartik\select2\Select2;
+use yii\web\JsExpression;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\PurchasePlan */
@@ -24,7 +27,26 @@ use backend\models\Lbo;
     <?php
     if(strpos(Yii::$app->request->get("r"), 'create'))
     {
-        echo $form->field($model, 'okpd')->textInput();
+        echo $form->field($model, 'okpd')->widget(Select2::classname(), [
+            'language' => 'ru',
+            'options' => ['placeholder' => 'Выберите ОКПД'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'tags' => true,
+                'minimumInputLength' => 3,
+                'language' => [
+                    'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+                ],
+                'ajax' => [
+                    'url' => Url::to(['okpdlist']),
+                    'dataType' => 'json',
+                    'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                ],
+                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                'templateResult' => new JsExpression('function(okpd) { return okpd.text + " - " + (okpd.name ? okpd.name : ""); }'),
+                'templateSelection' => new JsExpression('function (okpd) { return okpd.text; }'),
+            ],
+        ]);
     }
     else
     {
@@ -67,7 +89,7 @@ use backend\models\Lbo;
     <?php
     if(strpos(Yii::$app->request->get("r"),'create'))
     {
-        echo $form->field($model, 'st_id')->hiddenInput(['value' => $id])->label(false);
+        echo $form->field($model, 'st_id')->hiddenInput(['value' => $id ? $id : $model->st_id])->label(false);
     }
     else
     {
@@ -78,6 +100,43 @@ use backend\models\Lbo;
     ?>
 
     <?= $form->field($model, 'is_percent')->checkbox(); ?>
+
+    <?php
+    if (empty($model->econom)) {
+
+        $initValueText = [];
+        $model->econom = [];
+
+    } else {
+
+        $initValueText = $model->getParentRowsAsArray();
+        $model->econom = explode(',', $model->econom);
+
+    }
+
+    echo $form->field($model, 'econom')->widget(Select2::classname(), [
+        'initValueText' => $initValueText,
+        'options' => [
+            'placeholder' => 'Выберите ОКПД',
+            'multiple' => true,
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'minimumInputLength' => 3,
+            'language' => [
+                'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+            ],
+            'ajax' => [
+                'url' => Url::to(['okpdlistexist']),
+                'dataType' => 'json',
+                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+            ],
+            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+            'templateResult' => new JsExpression('function(econom) { return econom.text + " - " + (econom.name ? econom.name : ""); }'),
+            'templateSelection' => new JsExpression('function (econom) { return econom.text; }'),
+        ],
+    ]);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Редактировать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

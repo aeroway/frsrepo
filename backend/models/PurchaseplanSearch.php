@@ -19,7 +19,7 @@ class PurchaseplanSearch extends PurchasePlan
     {
         return [
             [['id'], 'integer'],
-            [['type', 'okpd', 'name_object'], 'safe'],
+            [['type', 'okpd', 'econom', 'name_object'], 'safe'],
             [['outlay', 'p_year', 'c_year', 'special', 'sum'], 'number'],
         ];
     }
@@ -70,6 +70,7 @@ class PurchaseplanSearch extends PurchasePlan
 
         $query->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'okpd', $this->okpd])
+            ->andFilterWhere(['like', 'econom', $this->econom])
             ->andFilterWhere(['like', 'name_object', $this->name_object]);
 
         return $dataProvider;

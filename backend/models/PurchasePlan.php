@@ -20,7 +20,8 @@ use Yii;
  * @property integer $is_top
  * @property integer $f_row
  * @property integer $is_percent
- * @property safe $year
+ * @property string $year
+ * @property safe $econom
  *
  * @property SchedulePlan $pp
  */
@@ -45,6 +46,7 @@ class PurchasePlan extends \yii\db\ActiveRecord
     {
         return [
             [['year'], 'required'],
+            [['econom'], 'safe'],
             [['st_id', 'is_top', 'f_row', 'is_percent'], 'integer'],
             [['type', 'okpd', 'name_object'], 'string'],
             [['outlay', 'p_year', 'c_year', 'special', 'sum', 'year'], 'number'],
@@ -60,6 +62,7 @@ class PurchasePlan extends \yii\db\ActiveRecord
             'id' => 'ID',
             'type' => 'Тип',
             'okpd' => 'ОКПД',
+            'econom' => 'Экономия',
             'name_object' => 'Название',
             'outlay' => 'Смета',
             'p_year' => 'Прошлый год',
@@ -71,6 +74,7 @@ class PurchasePlan extends \yii\db\ActiveRecord
             'st_id' => 'st_id',
             'f_row' => 'f row',
             'is_percent' => '5%',
+            'parentRows' => 'Экономия',
         ];
     }
 
@@ -135,7 +139,38 @@ class PurchasePlan extends \yii\db\ActiveRecord
                            ->one()["outlay"];
 
         if(!empty($str))
-            return $this->outlay . '<br><sub><b>' . $str . '</b></sub>';
+            return '<b>' . $this->outlay . '</b>' . '<br><sub>' . $str . '</sub>';
+    }
+
+    public function getParentRows()
+    {
+        if(empty($this->econom))
+            return '';
+
+        $out = '';
+        $array = explode(',', $this->econom);
+
+        for ($i = 0; $i <= count($array)-1; $i++)
+        {
+            $data = self::find()->where(['id' => $array[$i]])->one();
+            $out .= $data->okpd . ' - ' . $data->name_object . '; ';
+        }
+
+        return $out;
+    }
+
+    public function getParentRowsAsArray()
+    {
+        $out = array();
+        $array = explode(',', $this->econom);
+
+        for ($i=0; $i <= count($array)-1; $i++)
+        {
+            $data = self::find()->where(['id' => $array[$i]])->one();
+            $out[$array[$i]] = $data->okpd . ' - ' . $data->name_object;
+        }
+
+        return $out;
     }
 
     /**

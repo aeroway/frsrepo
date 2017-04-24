@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
 use backend\models\Spending;
+use backend\models\Okpd2Sprav;
+use yii\db\Query;
 
 /**
  * PurchaseplanController implements the CRUD actions for PurchasePlan model.
@@ -70,48 +72,40 @@ class PurchaseplanController extends Controller
     {
         $model = new PurchasePlan();
 
-        if ($fe > 0)
-        {
-            /*
-            $post = Yii::$app->request->post('PurchasePlan');
-            $model->type = $post['type'];
-            $model->okpd = $post['okpd'];
-            $model->name_object = $post['name_object'];
-            $model->outlay = $post['outlay'];
-            $model->p_year = $post['p_year'];
-            $model->c_year = $post['c_year'];
-            $model->special = $post['special'];
-            //$model->sum = $post['sum'];
-            $model->st_id = $post['st_id'];
-            $model->f_row = $post['f_row'];
-            $model->year = $post['year'];
-            */
+        if ($fe > 0) {
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->load(Yii::$app->request->post())) {
+
+                if($model->econom)
+                    $model->econom = implode(",", $model->econom);
+
+                $model->save();
+
                 return $this->redirect(['index', 'id' => $model->st_id]);
+
             } else {
+
                 return $this->render('update', [
                     'model' => $model,
                 ]);
+
             }
 
-            /*
-            if ($model->save())
-            {
-                return $this->redirect(['index', 'id' => $model->st_id]);
-            }
-            */
-        }
-        else
-        {
+        } else {
+
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
                 return $this->redirect(['index', 'id' => $id]);
+
             } else {
+
                 return $this->render('create', [
                     'model' => $model,
                     'id' => $id,
                 ]);
+
             }
+
         }
     }
 
@@ -147,6 +141,54 @@ class PurchaseplanController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionOkpdlist($q = null, $id = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '', 'name' => '']];
+
+        if (!is_null($q))
+        {
+            $query = new Query;
+            $query->select('code as id, code AS text, name')
+                ->from('okpd2_sprav')
+                ->where(['or', ['like', 'code', $q], ['like', 'name', $q]])
+                ->limit(20);
+            $command = $query->createCommand(\Yii::$app->db6);
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        elseif ($id > 0)
+        {
+            $out['results'] = ['id' => $id, 'text' => Okpd2Sprav::find($id)->code, 'name' => Okpd2Sprav::find($id)->name];
+        }
+
+        return $out;
+    }
+
+    public function actionOkpdlistexist($q = null, $id = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '', 'name' => '']];
+
+        if (!is_null($q))
+        {
+            $query = new Query;
+            $query->select('id, okpd AS text, name_object AS name')
+                ->from('purchase_plan')
+                ->where(['and', ['=', 'is_top', 1], ['or', ['like', 'okpd', $q], ['like', 'name_object', $q]]])
+                ->limit(20);
+            $command = $query->createCommand(\Yii::$app->db6);
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        elseif ($id > 0)
+        {
+            $out['results'] = ['id' => $id, 'text' => PurchasePlan::find($id)->okpd, 'name' => PurchasePlan::find($id)->name_object];
+        }
+
+        return $out;
     }
 
     /**
