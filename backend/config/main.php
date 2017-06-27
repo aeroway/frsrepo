@@ -39,6 +39,11 @@ return [
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'nullDisplay' => '',
+            'dateFormat' => 'dd.MM.yyyy',
+            'datetimeFormat' => 'd-M-Y H:i:s',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'RUR',
         ],
         'urlManager' => [
             // here is your backend URL rules

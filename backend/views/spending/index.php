@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать смету', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать вид расходов', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Способ закупки', Yii::$app->getUrlManager()->createUrl(['purchasemethod/index']), ['class' => 'btn btn-info']) ?>
         <?= Html::a('Лимит БО', Yii::$app->getUrlManager()->createUrl(['lbo/index']), ['class' => 'btn btn-info']) ?>
     </p>
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'aria-label' => Yii::t('yii', 'Создать ПЗ'),
                 ];
 
-                $url=Yii::$app->getUrlManager()->createUrl(['purchaseplan/create', 'id' => $model['id']]);
+                $url=Yii::$app->getUrlManager()->createUrl(['purchaseplan/create', 'sid' => $model['id']]);
 
                 return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, $options);
             },
@@ -89,30 +89,28 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Смета',
                 'value' => function($data) {
-                    return PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['st_id' => $data["id"]])->one()["outlay"];
+                    return PurchasePlan::getSpendingIndexOutlay($data["id"]);
                 }
             ],
             [
                 'label' => 'Всего',
                 'value' => function($data) {
-                    return PurchasePlan::find()->select('SUM(sum) as sum')->where(['st_id' => $data["id"]])->one()["sum"];
+                    return PurchasePlan::getSpendingIndexSum($data["id"]);
                 }
             ],
             [
                 'label' => 'По плану',
                 'value' => function($data) {
-                    return SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $data["id"]])])->one()["sum"];
+                    return SchedulePlan::getSpendingIndexSum($data["id"]);
                 }
             ],
             [
                 'label' => 'Экономия',
                 'value' => function($data) {
-                    return SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $data["id"]])])->one()["sum"] - 
-                    SchedulePlan::find()->select('SUM(sum_fact) as sum_fact')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $data["id"]])])->one()["sum_fact"];
+                    return SchedulePlan::spendingEconom($data["id"]);
                 },
                 'contentOptions' => function ($data) {
-                    $sum = (SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $data["id"]])])->one()["sum"] - 
-                    SchedulePlan::find()->select('SUM(sum_fact) as sum_fact')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $data["id"]])])->one()["sum_fact"]);
+                    $sum = SchedulePlan::spendingEconom($data["id"]);
 
                     if($sum > 0)
                         return ['style' => 'background-color: #5cb85c;'];

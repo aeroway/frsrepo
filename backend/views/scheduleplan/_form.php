@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\PurchaseMethod;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\SchedulePlan */
@@ -32,15 +33,16 @@ use backend\models\PurchaseMethod;
             ['prompt'=>'Выберите способ закупки']
     ); ?>
 
-    <?= $form->field($model, 'pp_id')->hiddenInput(['value' => $id])->label(false); ?>
+    <?= $form->field($model, 'pp_id')->hiddenInput(['value' => $sid])->label(false); ?>
 
     <?= $form->field($model, 'name_doc')->textInput() ?>
 
-    <?= $form->field($model, 'date_doc')->textInput() ?>
 
-    <?= $form->field($model, 'date_exp_from')->textInput() ?>
+    <?= $form->field($model, 'date_doc')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['class' => 'form-control'],]) ?>
 
-    <?= $form->field($model, 'date_exp_to')->textInput() ?>
+    <?= $form->field($model, 'date_exp_from')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['class' => 'form-control'],]) ?>
+
+    <?= $form->field($model, 'date_exp_to')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['class' => 'form-control'],]) ?>
 
     <?= $form->field($model, 'inn')->textInput() ?>
 

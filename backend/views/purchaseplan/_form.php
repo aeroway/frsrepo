@@ -20,7 +20,7 @@ use yii\helpers\Url;
         echo "<div class='alert alert-danger'>" . Yii::$app->session->getFlash('false') . "</div>";
     ?>
 
-    <?php $form = ActiveForm::begin(['action' => 'index.php?r=purchaseplan/create&id=' . $_GET['id'] . '&fe=' . $fe]); ?>
+    <?php $form = ActiveForm::begin(['action' => 'index.php?r=purchaseplan/create&sid=' . $_GET['sid'] . '&fe=' . $fe]); ?>
 
     <?php // echo $form->field($model, 'type')->textInput() ?>
 
@@ -89,7 +89,7 @@ use yii\helpers\Url;
     <?php
     if(strpos(Yii::$app->request->get("r"),'create'))
     {
-        echo $form->field($model, 'st_id')->hiddenInput(['value' => $id ? $id : $model->st_id])->label(false);
+        echo $form->field($model, 'st_id')->hiddenInput(['value' => $sid ? $sid : $model->st_id])->label(false);
     }
     else
     {
@@ -117,7 +117,7 @@ use yii\helpers\Url;
     echo $form->field($model, 'econom')->widget(Select2::classname(), [
         'initValueText' => $initValueText,
         'options' => [
-            'placeholder' => 'Выберите ОКПД',
+            'placeholder' => 'ОКПД',
             'multiple' => true,
         ],
         'pluginOptions' => [

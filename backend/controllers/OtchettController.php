@@ -127,18 +127,7 @@ class OtchettController extends Controller
 
             if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\'.strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->username)) )
             {
-                /*
-                if (!($this->findModel($id)->username == '23UPR\\'.'Захарова АН'))
-                {
-                    if (!($this->findModel($id)->username == '23UPR\\'.'Пиценко СВ'))
-                    {
-                        if (!($this->findModel($id)->username == '23UPR\\'.'Звягина ИВ'))
-                        {*/
-                            throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
-                        /*}
-                    }
-                }
-                */
+                throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
             }
 
             $model->save();

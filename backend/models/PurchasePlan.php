@@ -84,20 +84,25 @@ class PurchasePlan extends \yii\db\ActiveRecord
         {
             if ((
                     Lbo::find()->select('SUM(sum) as sum')
-                               ->where(['year' => $this->year])->one()["sum"] - (
+                               ->where(['year' => $this->year])
+                               ->one()["sum"] - (
 
-                               PurchasePlan::find()->select('SUM(outlay) as outlay')
-                                                   ->where(['year' => $this->year])
-                                                   ->one()["outlay"] - (
+                               self::find()->select('SUM(outlay) as outlay')
+                                           ->where(['year' => $this->year])
+                                           ->one()["outlay"] - (
 
-                               PurchasePlan::find()->select('SUM(outlay) as outlay')
-                                                   ->where(['id' => $this->id])
-                                                   ->one()["outlay"] - $this->outlay))
+                               self::find()->select('SUM(outlay) as outlay')
+                                           ->where(['id' => $this->id])
+                                           ->one()["outlay"] - $this->outlay))
                 ) >= 0 )
             {
-                if (self::UpdateAll(['is_top' => 0], ['st_id' => $this->st_id, 'f_row' => $this->f_row]))
+                if ($this->id !== 0) {
+                    if (self::UpdateAll(['is_top' => 0], ['st_id' => $this->st_id, 'f_row' => $this->f_row]))
 
                     return true;
+                }
+
+                return true;
             }
             else
             {
@@ -109,11 +114,11 @@ class PurchasePlan extends \yii\db\ActiveRecord
                                    ->where(['year' => $this->year])
                                    ->one()["sum"] - (
 
-                        PurchasePlan::find()->select('SUM(outlay) as outlay')
+                        self::find()->select('SUM(outlay) as outlay')
                                             ->where(['year' => $this->year])
                                             ->one()["outlay"] -
 
-                        PurchasePlan::find()->select('SUM(outlay) as outlay')
+                        self::find()->select('SUM(outlay) as outlay')
                                             ->where(['id' => $this->id])
                                             ->one()["outlay"])));
 
@@ -128,7 +133,11 @@ class PurchasePlan extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        SchedulePlan::UpdateAll(['pp_id' => Yii::$app->db6->getLastInsertID()], ['pp_id' => Yii::$app->request->queryParams["id"]]);
+        //Без этой строчки потеряется связь в SchedulePlan: дочерние объекты закрепляются за вновь созданным родителем
+        SchedulePlan::UpdateAll(['pp_id' => Yii::$app->db6->getLastInsertID()], ['pp_id' => Yii::$app->request->queryParams["sid"]]);
+
+        //Историческая свзяь в PurchasePlan
+        PurchasePlan::UpdateAll(['f_row' => Yii::$app->db6->getLastInsertID()], ['id' => Yii::$app->request->queryParams["sid"]]);
     }
 
     public function getSumSp()
@@ -138,8 +147,13 @@ class PurchasePlan extends \yii\db\ActiveRecord
                            ->orderBy('id DESC')
                            ->one()["outlay"];
 
-        if(!empty($str))
+        if (!empty($str) and $this->outlay == $str)
+            return $this->outlay;
+
+        if (!empty($str))
             return '<b>' . $this->outlay . '</b>' . '<br><sub>' . $str . '</sub>';
+
+        return $this->outlay;
     }
 
     public function getParentRows()
@@ -171,6 +185,32 @@ class PurchasePlan extends \yii\db\ActiveRecord
         }
 
         return $out;
+    }
+
+    public static function getPurchasePlanSum($name, $id)
+    {
+        return PurchasePlan::find()
+            ->select('SUM(' . $name . ') as ' . $name . '')
+            ->where(['and', ['st_id' => $id], ['is_top' => '1']])
+            ->one()["$name"];
+    }
+
+    public static function getPurchasePlanSumSpecial($id)
+    {
+        return PurchasePlan::find()
+                ->select('(ISNULL(p_year, 0) + ISNULL(c_year, 0) + ISNULL(special, 0)) as [sum]')
+                ->where(['id' => $id])
+                ->one()["sum"];
+    }
+
+    public static function getSpendingIndexOutlay($id)
+    {
+        return PurchasePlan::find()->select('SUM(outlay) as outlay')->where(['st_id' => $id])->one()["outlay"];
+    }
+
+    public static function getSpendingIndexSum($id)
+    {
+        return PurchasePlan::find()->select('SUM(sum) as sum')->where(['st_id' => $id])->one()["sum"];
     }
 
     /**

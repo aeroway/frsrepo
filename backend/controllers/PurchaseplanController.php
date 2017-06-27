@@ -41,7 +41,7 @@ class PurchaseplanController extends Controller
     {
         $searchModel = new PurchaseplanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $smeta = Spending::findOne($id);
+        $smeta = Spending::find()->where(['id'=>$id])->one();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -68,7 +68,7 @@ class PurchaseplanController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id, $fe = 0)
+    public function actionCreate($sid, $fe = 0)
     {
         $model = new PurchasePlan();
 
@@ -81,27 +81,35 @@ class PurchaseplanController extends Controller
 
                 $model->save();
 
-                return $this->redirect(['index', 'id' => $model->st_id]);
+                return $this->redirect(['index',
+                 'id' => $model->st_id
+                 ]);
 
             } else {
 
                 return $this->render('update', [
                     'model' => $model,
+                    'id' => $model->st_id
                 ]);
 
             }
 
         } else {
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if  ((Yii::$app->request->post()) && ($model->load(Yii::$app->request->post()))) {
 
-                return $this->redirect(['index', 'id' => $id]);
+                if($model->econom) {
+                    $model->econom = implode(",", $model->econom);
+                }
+                $model->save();
+
+                return $this->redirect(['index', 'id' => $sid]);
 
             } else {
 
                 return $this->render('create', [
                     'model' => $model,
-                    'id' => $id,
+                    'sid' => $sid,
                 ]);
 
             }
@@ -115,15 +123,16 @@ class PurchaseplanController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $page, $sort)
+    public function actionUpdate($sid, $page, $sort)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($sid);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'page' => $page, 'sort' => $sort, 'id' => $model->st_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'id' => $model->st_id
             ]);
         }
     }

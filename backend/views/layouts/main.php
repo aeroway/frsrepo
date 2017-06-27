@@ -85,17 +85,5 @@ AppAsset::register($this);
 
     <?php $this->endBody() ?>
 </body>
-    <script>
-        $( ".field-req-scan_doc" ).hide();
-        $('#req-type').change(function() {
-            var select = $(this).val();
-            if ( select == '5' ) {
-                $( ".field-req-scan_doc" ).show();
-            } else {
-                $('#req-scan_doc').val('');
-                $( ".field-req-scan_doc" ).hide();
-            }
-        });
-    </script>
 </html>
 <?php $this->endPage() ?>

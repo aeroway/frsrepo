@@ -42,7 +42,25 @@ class PurchaseplanSearch extends PurchasePlan
      */
     public function search($params)
     {
-        $query = PurchasePlan::find()->where(["st_id" => $params["id"]])->andWhere(['is_top' => 1]);
+        if (isset($params["hist_id"])) {
+
+            $subqId = PurchasePlan::find()
+                ->select("econom")
+                ->andWhere(['id' => $params["hist_id"]])
+                ->one()["econom"];
+
+            if (empty($subqId))
+                $query = PurchasePlan::find()->where(["id" => 0]);
+            else
+                $query = PurchasePlan::find()->where('id IN('.$subqId.')');
+
+        } else {
+
+            $query = PurchasePlan::find()
+                ->where(["st_id" => $params["id"]])
+                ->andWhere(['is_top' => 1]);
+
+        }
 
         // add conditions that should always apply here
 

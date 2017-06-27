@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\PurchasePlan */
 
-$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
-$this->title = 'Создать план закупок';
-$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['index', 'id' => $id]];
+$this->params['breadcrumbs'][] = ['label' => 'Главная', 'url' => ['spending/index']];
+$this->title = 'Создать смету';
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['index', 'id' => $sid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="purchase-plan-create">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'id' => $id,
+        'sid' => $sid,
         'fe' => 0,
     ]) ?>
 

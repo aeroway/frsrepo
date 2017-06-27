@@ -22,7 +22,7 @@ class OtchetnController extends Controller
         return [
             'access'=>[
                 'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index'],
+                'only'=>['create', 'update', 'view', 'delete', 'index'],
                 'rules'=>[
                     [
                         'allow'=>true,
@@ -103,20 +103,6 @@ class OtchetnController extends Controller
      * @param integer $id
      * @return mixed
      */
-/* Можно удалить
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-*/
 
     public function actionUpdate($id)
     {
@@ -127,27 +113,21 @@ class OtchetnController extends Controller
             foreach(Yii::$app->request->post() as $fkey) { }
             foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-            if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\'.strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->usernameon)) )
-            {/*
-                if (!($this->findModel($id)->usernameon == '23UPR\\'.'Захарова АН'))
-                {
-                    if (!($this->findModel($id)->usernameon == '23UPR\\'.'Пиценко СВ'))
-                    {
-                        if (!($this->findModel($id)->usernameon == '23UPR\\'.'Звягина ИВ'))
-                        {*/
-                            throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
-                        /*}
-                    }
-                }
-            */}
+            if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\' . strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->usernameon)) )
+            {
+                throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
+            }
 
             $model->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
+
         } else {
+
             return $this->render('update', [
                 'model' => $model,
             ]);
+
         }
     }
 
@@ -189,12 +169,14 @@ class OtchetnController extends Controller
 
         foreach($selection as $id)
         {
-            Yii::$app->db->createCommand()
-            ->update('otchetn', ['usernameon' => $action, 'status' => 'назначено', 'flag' => 2,], "id = $id")->execute();
-            //->update('otchetn', ['usernameon' => $action, 'status' => 'назначено',], "id = $id and (flag = 2 or status = 'В работе')")->execute();
+            Yii::$app->db->createCommand()->update('otchetn', [
+                'usernameon' => $action, 
+                'status' => 'назначено', 
+                'flag' => 2,
+            ], "id = $id")
+            ->execute();
         }
 
         return $this->redirect(['index']);
-
     }
 }

@@ -35,16 +35,16 @@ class ScheduleplanController extends Controller
      * Lists all SchedulePlan models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex($sid)
     {
         $searchModel = new SchedulePlanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = PurchasePlan::findOne($id);
+        $model = PurchasePlan::findOne($sid);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'id' => $id,
+            'sid' => $sid,
             'model' => $model,
         ]);
     }
@@ -56,29 +56,33 @@ class ScheduleplanController extends Controller
      */
     public function actionView($id)
     {
-        $modelpp = PurchasePlan::findOne($id);
+        $model = $this->findModel($id);
+        $modelpp = PurchasePlan::find()->where(['id'=>$model->pp_id])->one();
 
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'modelpp' => $modelpp,
-        ]);
+            return $this->render('view', [
+                'model' => $model,
+                'modelpp' => $modelpp,
+                'sid' =>  $model->pp_id,
+            ]);
+        
     }
+    
 
     /**
      * Creates a new SchedulePlan model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate($sid)
     {
         $model = new SchedulePlan();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $id]);
+            return $this->redirect(['index', 'sid' => $sid]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'id' => $id,
+                'sid' => $sid,
             ]);
         }
     }
@@ -89,18 +93,23 @@ class ScheduleplanController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id, $page, $sort)
+    public function actionUpdate($sid, $page, $sort)
     {
-        $model = $this->findModel($id);
-        $modelpp = PurchasePlan::findOne($id);
+        $model = $this->findModel($sid);
+        $modelpp = PurchasePlan::find()->where(['id'=>$model->pp_id])->one();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            return $this->redirect(['index', 'id' => $model->pp_id, 'page' => $page, 'sort' => $sort]);
+            return $this->redirect(['index',
+             'sid' => $model->pp_id, 
+             'page' => $page, 
+             'sort' => $sort
+             ]);
         } else {
             return $this->render('update', [
                 'model' => $model,
                 'modelpp' => $modelpp,
+                'sid' =>  $model->pp_id,
             ]);
         }
     }

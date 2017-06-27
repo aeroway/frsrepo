@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\SchedulePlan;
-
+use backend\models\PurchasePlan;
 /**
  * SchedulePlanSearch represents the model behind the search form about `backend\models\SchedulePlan`.
  */
@@ -42,7 +42,9 @@ class SchedulePlanSearch extends SchedulePlan
      */
     public function search($params)
     {
-        $query = SchedulePlan::find()->where(["pp_id" => $params["id"]]);
+        $id = PurchasePlan::find()->where(['id'=>$params["sid"]])->one()->id;
+        
+        $query = SchedulePlan::find()->where(["pp_id" => $id]);
 
         // add conditions that should always apply here
 

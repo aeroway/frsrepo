@@ -2,6 +2,8 @@
 
 namespace backend\models;
 
+use backend\models\PurchasePlan;
+
 use Yii;
 
 /**
@@ -26,6 +28,11 @@ use Yii;
  */
 class SchedulePlan extends \yii\db\ActiveRecord
 {
+    public static $spendingEId;
+    public static $spendingResult;
+    public static $schedulePlanSum;
+    public static $schedulePlanSumfact;
+    
     public static function getDb()
     {
         return \Yii::$app->db6;  
@@ -82,15 +89,20 @@ class SchedulePlan extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert))
         {
             if ((
-                    PurchasePlan::find()->select('outlay')
-                                        ->where(['id' => $this->pp_id])->one()["outlay"] - ((
+                    PurchasePlan::find()
+                        ->select('outlay')
+                        ->where(['id' => $this->pp_id])
+                        ->one()["outlay"] - ((
 
-                    SchedulePlan::find()->select('SUM(sum) as sum')
-                                        ->where(['pp_id' => $this->pp_id])->one()["sum"]) - (
+                    SchedulePlan::find()
+                        ->select('SUM(sum) as sum')
+                        ->where(['pp_id' => $this->pp_id])
+                        ->one()["sum"]) - (
 
-                    SchedulePlan::find()->select('sum')
-                                        ->where(['id' => $this->id])
-                                        ->one()["sum"] - $this->sum))
+                    SchedulePlan::find()
+                        ->select('sum')
+                        ->where(['id' => $this->id])
+                        ->one()["sum"] - $this->sum))
                 ) >= 0 )
 
                 return true;
@@ -99,18 +111,21 @@ class SchedulePlan extends \yii\db\ActiveRecord
                 Yii::$app->session->setFlash('false', 
 
                     Yii::$app->params["false"] . (((
-                    
-                        PurchasePlan::find()->select('outlay')
-                                            ->where(['id' => $this->pp_id])
-                                            ->one()["outlay"]) - (
 
-                        SchedulePlan::find()->select('SUM(sum) as sum')
-                                            ->where(['pp_id' => $this->pp_id])
-                                            ->one()["sum"])) + 
+                        PurchasePlan::find()
+                            ->select('outlay')
+                            ->where(['id' => $this->pp_id])
+                            ->one()["outlay"]) - (
+
+                        SchedulePlan::find()
+                            ->select('SUM(sum) as sum')
+                            ->where(['pp_id' => $this->pp_id])
+                            ->one()["sum"])) + 
                                             
-                        SchedulePlan::find()->select('sum')
-                                            ->where(['id' => $this->id])
-                                            ->one()["sum"]));
+                        SchedulePlan::find()
+                            ->select('sum')
+                            ->where(['id' => $this->id])
+                            ->one()["sum"]));
 
                 return false;
             }
@@ -122,9 +137,9 @@ class SchedulePlan extends \yii\db\ActiveRecord
     public function getSumAllField()
     {
         return $this->name_doc
-        . ' от '.date('d.m.Y', time($this->date_doc))
-        . ' срок действия с ' . date('d.m.Y', time($this->date_exp_from)) 
-        . ' по ' . date('d.m.Y', time($this->date_exp_to))          
+        . ($this->date_doc ? ' от ' . Yii::$app->formatter->asDate($this->date_doc) : '')
+        . ($this->date_exp_from ? ' срок действия с ' . Yii::$app->formatter->asDate($this->date_exp_from) : '')
+        . ($this->date_exp_to ? ' по ' . Yii::$app->formatter->asDate($this->date_exp_to) : '')
         . ' ' . $this->name_org;
     }
 
@@ -141,6 +156,84 @@ class SchedulePlan extends \yii\db\ActiveRecord
      */
     public function getPp()
     {
-        return $this->hasOne(PurchasePlan::className(), ['id' => 'pp_id']);
+        return $this->hasOne(PurchasePlan::className(), ['f_row' => 'pp_id']);
+    }
+
+    public static function spendingEconom($id)
+    {
+        if(SchedulePlan::$spendingEId and SchedulePlan::$spendingEId === $id)
+        {
+            return SchedulePlan::$spendingResult;
+        }
+        else
+        {
+            SchedulePlan::$spendingEId = $id;
+            SchedulePlan::$spendingResult = 
+                SchedulePlan::find()
+                    ->select('SUM(sum) as sum')
+                    ->where(['IN', 'pp_id', 
+                        PurchasePlan::find()
+                            ->select('id')
+                            ->where(['st_id' => $id])])
+                            ->one()["sum"] - 
+                        SchedulePlan::find()
+                            ->select('SUM(sum_fact) as sum_fact')
+                            ->where(['IN', 'pp_id', 
+                                PurchasePlan::find()
+                                    ->select('id')
+                                    ->where(['st_id' => $id])])
+                                    ->one()["sum_fact"];
+        }
+
+        return SchedulePlan::$spendingResult;
+    }
+
+    public static function getSpendingSum($name, $id)
+    {
+        return SchedulePlan::find()
+            ->select('SUM(' . $name . ') as ' . $name . '')
+            ->where(['IN', 'pp_id', 
+                PurchasePlan::find()
+                    ->select('id')
+                    ->where(['and', ['st_id' => $id], ['is_top' => '1']])
+            ])
+            ->one()["$name"];
+    }
+
+    public static function schedulePlanSum($sid)
+    {
+        if(!SchedulePlan::$schedulePlanSum)
+            SchedulePlan::$schedulePlanSum = 
+                SchedulePlan::find()
+                    ->select('SUM(sum) as sum')
+                    ->where(['pp_id' => $sid])
+                    ->one()["sum"];
+
+        return SchedulePlan::$schedulePlanSum;
+    }
+
+    public static function schedulePlanSumfact($sid)
+    {
+        if(!SchedulePlan::$schedulePlanSumfact)
+            SchedulePlan::$schedulePlanSumfact = 
+                SchedulePlan::find()
+                    ->select('SUM(sum_fact) as sum_fact')
+                    ->where(['pp_id' => $sid])
+                    ->one()["sum_fact"];
+
+        return SchedulePlan::$schedulePlanSumfact;
+    }
+
+    public static function getschedulePlanSumi($name, $id)
+    {
+        return SchedulePlan::find()
+            ->select('SUM(' . $name . ') as ' . $name . '')
+            ->where(['and', ['pp_id' => $id]])
+            ->one()["$name"];
+    }
+
+    public static function getSpendingIndexSum($id)
+    {
+        return SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $id])])->one()["sum"];
     }
 }

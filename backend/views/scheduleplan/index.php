@@ -10,8 +10,8 @@ use yii\bootstrap\Alert;
 /* @var $searchModel backend\models\SchedulePlanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['spending/index']];
-$this->params['breadcrumbs'][] = ['label' => 'План закупок', 'url' => ['purchaseplan/index', 'id' => $model->st_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Главная', 'url' => ['spending/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Смета', 'url' => ['purchaseplan/index', 'id' => $model->st_id]];
 $this->title = 'План график';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать план график', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать план график', ['create', 'sid' => $sid], ['class' => 'btn btn-success']) ?>
         
 
         <?php
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $pp2body = '<div style="width: 50%; float: right;">';
 
         
-        foreach(PurchasePlan::find()->where(['id' => $id])->asArray()->one() as $key => $value)
+        foreach(PurchasePlan::find()->where(['id' => $sid])->asArray()->one() as $key => $value)
         {
             if($key == 'okpd' and !empty($value))
                 $ppbody .= '<b>ОКПД:</b> ' . $value . '<br>';
@@ -57,10 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         $ppbody .= '</div>';
 
-        $pp2body .= '<b>Планируемая сумма (всего):</b> ' . SchedulePlan::find()->select('SUM(sum) as sum')->from('schedule_plan')->where(['pp_id' => $id])->one()["sum"] . '<br>' .
-                    '<b>Фактическая сумма (всего): </b> ' . SchedulePlan::find()->select('SUM(sum_fact) as sum_fact')->from('schedule_plan')->where(['pp_id' => $id])->one()["sum_fact"] . '<br>' .
-                    '<b>Экономия: </b> ' . (SchedulePlan::find()->select('SUM(sum) as sum')->from('schedule_plan')->where(['pp_id' => $id])->one()["sum"] - 
-                    SchedulePlan::find()->select('SUM(sum_fact) as sum_fact')->from('schedule_plan')->where(['pp_id' => $id])->one()["sum_fact"]) .
+        $pp2body .= '<b>Планируемая сумма (всего):</b> ' . SchedulePlan::schedulePlanSum($sid) . '<br>' .
+                    '<b>Фактическая сумма (всего): </b> ' . SchedulePlan::schedulePlanSumfact($sid) . '<br>' .
+                    '<b>Экономия: </b> ' . (SchedulePlan::schedulePlanSum($sid) - 
+                    SchedulePlan::schedulePlanSumfact($sid)) .
 
         '</div></div>';
 
@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $sort = Yii::$app->request->queryParams["sort"];
                 }
 
-                $url=Yii::$app->getUrlManager()->createUrl(['scheduleplan/update', 'id' => $model['id'], 'page' => $page, 'sort' => $sort]);
+                $url=Yii::$app->getUrlManager()->createUrl(['scheduleplan/update', 'sid' => $model['id'], 'page' => $page, 'sort' => $sort]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
@@ -120,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'pm.name',
             ],
             'sum_fact',
-            'sum_contract',
+            //'sum_contract',
             [
                 'value' => 'sumAllField',
                 'format' => 'html'
