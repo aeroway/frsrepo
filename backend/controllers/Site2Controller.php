@@ -9,8 +9,6 @@ use common\models\LoginForm;
 use yii\filters\VerbFilter;
 use app\models\Egrp;
 use yii\web\ForbiddenHttpException;
-//use Edvlerblog\Ldap;
-
 
 use backend\models\VedomostCheckForm;
 use backend\models\VedomostCheckFormSearch;
@@ -150,30 +148,26 @@ public function actionCheckm()
     }
 
     $egrp = new Egrp();
-    $num = Yii::$app->request->post('num',0);
-    if ($num>0)
+    $num = Yii::$app->request->post('num', 0);
+
+    if ($num > 0)
     {
-    //echo $num.'<br />'.Yii::$app->user->identity->username."<br />".$_SERVER['REMOTE_ADDR'];
-    //exit();
-    $res = $egrp->vedomostm($num,Yii::$app->user->identity->username,$_SERVER['REMOTE_ADDR']);
-    //print_r($res);
-    //exit();
-    if (!is_null($res)) {
-        $otvet = json_decode($res);
-    }
-    return $this->render('checkm', [
-        'result' => 'Ведомость № '.$otvet->NMB,
-        'otvet' => $otvet
+        $res = $egrp->vedomostm($num, Yii::$app->user->identity->username, $_SERVER['REMOTE_ADDR']);
+
+        if (!is_null($res)) {
+            $otvet = json_decode($res);
+        }
+
+        return $this->render('checkm', [
+            'result' => 'Ведомость № '.$otvet->NMB,
+            'otvet' => $otvet
         ]);
-    }
-    else {
-        
-        $result='';
-        return $this->render('checkm',['result'=>$result]);
+    } else {
+        $result = '';
+
+        return $this->render('checkm', ['result' => $result]);
     }
 }
-
-
 
 //////////////////////////////////////
 

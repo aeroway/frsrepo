@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use backend\models\Otchett;
 use yii\helpers\ArrayHelper;
 use backend\models\Employee;
+use yii\bootstrap\Alert;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OtchetSearch */
@@ -14,6 +15,15 @@ $otchett = new Otchett();
 
 $this->title = 'Отчёт: ' . $otchett->otchetList(Otchett::$name);
 $this->params['breadcrumbs'][] = $this->title;
+
+if(Otchett::$name == 'otchet29')
+    echo Alert::widget([
+        'options' => [
+            'class' => 'alert-info'
+        ],
+        'body' => '<h4>Слева площадь ЕГРП. Справа площадь ГКН.</h4>'
+    ]);
+
 ?>
 <div class="otchet-index">
 

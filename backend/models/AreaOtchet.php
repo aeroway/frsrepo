@@ -5,19 +5,16 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "Area".
+ * This is the model class for table "area".
  *
  * @property integer $id
+ * @property string $kn
  * @property string $name
- * @property integer $status
+ * @property string $id_dpt
+ * @property string $fl
  */
-class Area extends \yii\db\ActiveRecord
+class AreaOtchet extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return \Yii::$app->db2;  
-    }
-
     /**
      * @inheritdoc
      */
@@ -32,9 +29,7 @@ class Area extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['name'], 'required'],
-            [['name'], 'string'],
-            [['status'], 'integer']
+            [['kn', 'name', 'id_dpt', 'fl'], 'string'],
         ];
     }
 
@@ -45,9 +40,10 @@ class Area extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'kn' => 'Kn',
             'name' => 'Отдел',
-            'status' => 'Status',
+            'id_dpt' => 'Id Dpt',
+            'fl' => 'Fl',
         ];
     }
-
 }

@@ -35,7 +35,7 @@ AppAsset::register($this);
                 ],
             ]);
             $menuItems = [
-                ['label' => 'Статистика', 'url' => ['/otchetlist/stat']],
+                //['label' => 'Статистика', 'url' => ['/otchetlist/stat']],
                 ['label' => 'Отчёты', 'url' => ['/otchetlist/index']],
             ];
             if (Yii::$app->user->isGuest) {

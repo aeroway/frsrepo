@@ -55,6 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data) {
                     if($data->table_list == 'otchetn')
                         return "<a href='/backend/index.php?r=otchetn/index'>$data->name_list</a>";
+                    elseif($data->table_list == 'otchet_pay')
+                        return "<a href='/backend/index.php?r=otchet-pay/index'>$data->name_list</a>";
                     else
                         return "<a href='/backend/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
 
@@ -73,7 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'contentOptions' => ['style'=>'width: 250px;'],
             ],
-            
 
             //['class' => 'yii\grid\ActionColumn'],
             $button,

@@ -229,11 +229,16 @@ class SchedulePlan extends \yii\db\ActiveRecord
         return SchedulePlan::find()
             ->select('SUM(' . $name . ') as ' . $name . '')
             ->where(['and', ['pp_id' => $id]])
+            ->andWhere('sum_fact is not null')
             ->one()["$name"];
     }
 
     public static function getSpendingIndexSum($id)
     {
-        return SchedulePlan::find()->select('SUM(sum) as sum')->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $id])])->one()["sum"];
+        return SchedulePlan::find()
+            ->select('SUM(sum) as sum')
+            ->where(['IN', 'pp_id', PurchasePlan::find()->select('id')->where(['st_id' => $id])])
+            ->andWhere('sum_fact is not null')
+            ->one()["sum"];
     }
 }

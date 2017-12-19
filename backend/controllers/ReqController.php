@@ -74,10 +74,12 @@ class ReqController extends Controller
     {
         $this->checkAccess();
 
+        /*
         if(in_array("alvl1", Yii::$app->user->identity->groups))
         {
             $this->checkCurrentUser($id);
         }
+        */
 
         return $this->render('view', [
             'model' => $this->findModel($id),

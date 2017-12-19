@@ -37,6 +37,7 @@ class Otchetn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['reason1', 'status', 'comment', 'dateon', 'usernameon'], 'required'],
             [['area', 'status', 'reason1', 'reason2', 'offer', 'comment', 'condnum', 'flag', 'usernameon', 'filename'], 'string'],
             [['id_dpt', 'id_egrp'], 'integer'],
             [['dateon', 'date_update', 'date_load'], 'safe']
@@ -68,19 +69,18 @@ class Otchetn extends \yii\db\ActiveRecord
             'date_load' => 'Загружено',
         ];
     }
-    
-    public function getAllErrors($idotdel){
-        
-        //$sql = "select count(id) count_ from otchetn
-//                where status = 'Исправлен'
-//                group by area";
-//        
-//        //area = (select name from area where id = ".$idotdel.") and 
-//        $model = new Area;
-//        $data = $model->query($sql);
-//        
+
+    public function getAllErrors($idotdel)
+    {
+        /*
+        $sql = "select count(id) count_ from otchetn
+                where status = 'Исправлен'
+                group by area";
+
+        area = (select name from area where id = ".$idotdel.") and 
+        $model = new Area;
+        $data = $model->query($sql);
+        */
         return $idotdel;
-        
-        
     }
 }
