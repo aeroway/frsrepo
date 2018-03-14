@@ -99,11 +99,11 @@ class OtchettController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -132,7 +132,7 @@ class OtchettController extends Controller
 
             $model->save();
 
-            return $this->redirect(['view', 'id' => $model->id, 'table'=> Otchett::$name]);
+            return $this->redirect(['view', 'id' => $model->id, 'table' => Otchett::$name]);
         } else {
             return $this->render('update', [
                 'model' => $model,

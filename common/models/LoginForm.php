@@ -51,7 +51,7 @@ class LoginForm extends Model
             }
             */
             //LDAP
-            if (!\Yii::$app->Ldap->authenticate($this->username, $this->password)) {
+            if (!\Yii::$app->Ldap->authenticate($this->username, $this->password) && !\Yii::$app->LdapKadastr->authenticate($this->username, $this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }

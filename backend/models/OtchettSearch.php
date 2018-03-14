@@ -45,7 +45,7 @@ class OtchettSearch extends Otchett
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['kn'=>SORT_DESC, 'area' => SORT_ASC]]
+            'sort'=> ['defaultOrder' => ['kn' => SORT_DESC, 'area' => SORT_ASC]]
         ]);
 
         $this->load($params);

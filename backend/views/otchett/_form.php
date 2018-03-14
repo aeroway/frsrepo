@@ -20,9 +20,13 @@ use yii\widgets\ActiveForm;
         } else {
             echo $form->field($model, 'kn')->textInput(['readonly' => true]);
         }
-    ?>
 
-    <?= $form->field($model, 'description')->textInput() ?>
+        if($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36') {
+            echo $form->field($model, 'description')->textInput(['readonly' => true]);
+        } else {
+            echo $form->field($model, 'description')->textInput();
+        }
+    ?>
 
     <?= $form->field($model, 'status')->dropDownList(
             ['Исправлен' => 'Исправлен','Невозможно исправить' => 'Невозможно исправить','В работе' => 'В работе'],
@@ -34,6 +38,8 @@ use yii\widgets\ActiveForm;
 
         if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+        } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36') {
+            echo $form->field($model, 'comment')->textArea(['readonly' => true]);
         } else {
             echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
         }
@@ -45,7 +51,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
-    <?= $form->field($model, 'protocol')->textInput() ?>
+    <?= $form->field($model, 'protocol')->textInput(['maxlength' => 100]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

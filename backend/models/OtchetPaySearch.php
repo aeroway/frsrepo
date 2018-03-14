@@ -20,7 +20,7 @@ class OtchetPaySearch extends OtchetPay
         return [
             [['id'], 'integer'],
             [['number', 'payer_name', 'payer_id', 'payer_date', 'note', 'date_load', 'status'], 'safe'],
-            [['sum'], 'number'],
+            [['sum', 'flag'], 'number'],
         ];
     }
 
@@ -62,6 +62,7 @@ class OtchetPaySearch extends OtchetPay
         $query->andFilterWhere([
             'id' => $this->id,
             'sum' => $this->sum,
+            'flag' => $this->flag,
             'payer_date' => $this->payer_date,
             'date_load' => $this->date_load,
         ]);

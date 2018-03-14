@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
+use backend\models\OtchetnstatSearch;
+use yii\filters\AccessControl;
 
 /**
  * OtchetPayController implements the CRUD actions for OtchetPay model.
@@ -21,10 +23,20 @@ class OtchetPayController extends Controller
     public function behaviors()
     {
         return [
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['create', 'update', 'view', 'delete', 'index'],
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];

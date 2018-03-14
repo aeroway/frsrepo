@@ -39,10 +39,10 @@ if(in_array("AdminInventory", Yii::$app->user->identity->groups))
                     'title' => Yii::t('yii', 'История'),
                     'aria-label' => Yii::t('yii', 'История'),
                 ];
-                $customurl=Yii::$app->getUrlManager()->createUrl(['inventory/log','invnum'=>$model['invnum']]);
+                $customurl = Yii::$app->getUrlManager()->createUrl(['inventory/log', 'invnum' => $model['invnum']]);
                     return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $customurl, $options);
             },
-            'update'=>function ($url, $model, $key)
+            'update' => function ($url, $model, $key)
             {
                 $options = [
                     'title' => Yii::t('yii', 'Редактировать'),
@@ -62,7 +62,7 @@ if(in_array("AdminInventory", Yii::$app->user->identity->groups))
                     $sort = Yii::$app->request->queryParams["sort"];
                 }
 
-                $url=Yii::$app->getUrlManager()->createUrl(['inventory/updatee','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+                $url = Yii::$app->getUrlManager()->createUrl(['inventory/updatee','id' => $model['id'], 'page' => $page, 'sort' => $sort]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
@@ -95,7 +95,7 @@ if(in_array("AdminInventory", Yii::$app->user->identity->groups))
                     $sort = Yii::$app->request->queryParams["sort"];
                 }
 
-                $url=Yii::$app->getUrlManager()->createUrl(['inventory/updatee','id'=>$model['id'], 'page'=>$page, 'sort'=>$sort]);
+                $url = Yii::$app->getUrlManager()->createUrl(['inventory/updatee','id' => $model['id'], 'page' => $page, 'sort' => $sort]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
@@ -146,31 +146,25 @@ Modal::end();
             [
                 'attribute' => 'date',
                 'format' =>  ['date', 'php:M d Y'],
-                'contentOptions' => ['style'=>'width: 100px; text-align: center;'],
-
-                //'value' => function($searchModel) {
-                //    $date = new DateTime($searchModel->date);
-                //    return $date->format('M d Y');
-                //}
-
+                'contentOptions' => ['style' => 'width: 100px; text-align: center;'],
             ],
             // 'id_status',
             'comment',
             [
-                'attribute'=>'authority',
-                'contentOptions' =>function ($model, $key, $index, $column){
+                'attribute' => 'authority',
+                'contentOptions' => function ($model, $key, $index, $column) {
                     return ['class' => 'name'];
                 },
-                'content'=>function($data){
+                'content' => function($data) {
                     return $data["authority"] ? 'Да' : '-';
                 }
             ],
             [
-                'attribute'=>'waybill',
-                'contentOptions' =>function ($model, $key, $index, $column){
+                'attribute' => 'waybill',
+                'contentOptions' => function ($model, $key, $index, $column) {
                     return ['class' => 'name'];
                 },
-                'content'=>function($data){
+                'content' => function($data) {
                     return $data["waybill"] ? 'Да' : '-';
                 }
             ],

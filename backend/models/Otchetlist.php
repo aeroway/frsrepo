@@ -59,6 +59,10 @@ class OtchetList extends \yii\db\ActiveRecord
             $controller = 'otchetn';
         elseif($table == 'otchet_pay')
             $controller = 'otchet-pay';
+        elseif($table == 'otchetur' || $table == 'otchet999')
+            $controller = 'otchetur';
+        elseif($table == 'otchetfiz')
+            $controller = 'otchetfiz';
         else 
             $controller = 'otchett';
 
@@ -142,19 +146,24 @@ class OtchetList extends \yii\db\ActiveRecord
         $lcl_echo = "<b>исправлен</b>: $otchetStatus0<br>";
         $lcl_echo .= "<b>невозможно исправить</b>: $otchetStatus1<br>";
 
+        if($controller === 'otchet-pay')
+            $cont = 'OtchetPay';
+        else
+            $cont = ucfirst($controller);
+
         if($otchetNull != 0)
         {
-            $lcl_echo .= "<b><a style='color: orange' href='/backend/index.php?" . ucfirst($controller) . "Search[status]=не+назначено&r=$controller/index&table=$table'>не назначено</a></b>: $otchetNull<br>";
+            $lcl_echo .= "<b><a style='color: orange' href='/backend/index.php?" . $cont . "Search[status]=не+назначено&r=$controller/index&table=$table'>не назначено</a></b>: $otchetNull<br>";
         }
 
         if($otchetNazn != 0)
         {
-            $lcl_echo .= "<b><a style='color: green' href='/backend/index.php?" . ucfirst($controller) . "Search[status]=назначено&r=$controller/index&table=$table'>назначено</a></b>: $otchetNazn<br>";
+            $lcl_echo .= "<b><a style='color: green' href='/backend/index.php?" . $cont . "Search[status]=назначено&r=$controller/index&table=$table'>назначено</a></b>: $otchetNazn<br>";
         }
 
         if($otchetRepeat != 0)
         {
-            $lcl_echo .= "<b><a style='color: red' href='/backend/index.php?" . ucfirst($controller) . "Search[flag]=1&r=$controller/index&table=$table'>повторные ошибки</a></b>: $otchetRepeat<br>";
+            $lcl_echo .= "<b><a style='color: red' href='/backend/index.php?" . $cont . "Search[flag]=1&r=$controller/index&table=$table'>повторные ошибки</a></b>: $otchetRepeat<br>";
         }
 
         if($otchetWork != 0)
@@ -163,7 +172,7 @@ class OtchetList extends \yii\db\ActiveRecord
         }
         $lcl_echo .= "<br><p><b>Всего:</b> $otchetSum</p>";
 
-        if($table <> 'otchet_pay')
+        if($table <> 'otchet_pay' && $table <> 'otchet999')
             $lcl_echo .= Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
 
         return $lcl_echo;

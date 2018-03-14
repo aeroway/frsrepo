@@ -82,13 +82,20 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public static function findByUsername($username)
     {
         $result = \Yii::$app->Ldap->user()->info($username);
+        $resultKadastr = \Yii::$app->LdapKadastr->user()->info($username);
 
         if ($result)
         {
             $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($username));
 
             return new static($out);
+        } else if ($resultKadastr)
+        {
+            $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->LdapKadastr->user()->groups($username));
+
+            return new static($out);
         }
+        
         else
         {
             die('Неверный логин или пароль');

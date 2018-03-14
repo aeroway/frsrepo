@@ -7,7 +7,7 @@ function statusList($label)
 {
     if ( !(Yii::$app->user->identity) ) { return 'display:none'; }
     if ( $label == '' ) { return 'display:block;'; }
-    if ( (!array_intersect ( $label, Yii::$app->user->identity->groups )) ) { return 'display:none;'; }
+    if ( (!array_intersect ( $label, !empty(Yii::$app->user->identity->groups) ? Yii::$app->user->identity->groups : array('0' => '') )) ) { return 'display:none;'; }
 }
 
 // Генерация кнопок

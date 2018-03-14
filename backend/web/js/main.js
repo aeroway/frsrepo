@@ -1,4 +1,4 @@
-$("body").on("click", "a[href*='setcuruser']", function(e) {
+﻿$("body").on("click", "a[href*='setcuruser']", function(e) {
     $.ajax({
         url: this,
         success: function (data) {
@@ -39,6 +39,15 @@ $("body").on("click", "a[href*='updatee']", function(e) {
         url: this,
         success: function (data) {
             $('#inventory-parts-setup').html(data);
+        }
+    });
+});
+
+$("body").on("click", "a[href*='createmodal']", function(e) {
+    $.ajax({
+        url: this,
+        success: function (data) {
+            $('#planstages-modal').html(data);
         }
     });
 });
@@ -88,4 +97,5 @@ $(document).ready(function() {
             $( ".field-req-scan_doc" ).hide();
         }
     });
+
 });

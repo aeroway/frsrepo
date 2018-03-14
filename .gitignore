@@ -43,4 +43,4 @@ phpunit.phar
 /environments
 /backend/web/docs
 /.bowerrc
-/console
+

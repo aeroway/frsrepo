@@ -41,8 +41,8 @@ return [
             'nullDisplay' => '',
             'dateFormat' => 'dd.MM.yyyy',
             'datetimeFormat' => 'd-M-Y H:i:s',
-            'decimalSeparator' => ',',
-            'thousandSeparator' => ' ',
+            'decimalSeparator' => '.',
+            'thousandSeparator' => '',
             'currencyCode' => 'RUR',
         ],
         'urlManager' => [

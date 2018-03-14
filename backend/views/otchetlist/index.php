@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'layout' => "{summary}\n{pager}\n{items}\n{pager}",
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -57,6 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return "<a href='/backend/index.php?r=otchetn/index'>$data->name_list</a>";
                     elseif($data->table_list == 'otchet_pay')
                         return "<a href='/backend/index.php?r=otchet-pay/index'>$data->name_list</a>";
+                    elseif($data->table_list == 'otchetur' || $data->table_list == 'otchet999')
+                        return "<a href='/backend/index.php?r=otchetur/index&table=$data->table_list'>$data->name_list</a>";
+                    elseif($data->table_list == 'otchetfiz')
+                        return "<a href='/backend/index.php?r=otchetfiz/index'>$data->name_list</a>";
                     else
                         return "<a href='/backend/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
 

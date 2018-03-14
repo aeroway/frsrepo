@@ -11,6 +11,7 @@ use yii\bootstrap\Alert;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OtchetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
 $otchett = new Otchett();
 
 $this->title = 'Отчёт: ' . $otchett->otchetList(Otchett::$name);
@@ -29,22 +30,27 @@ if(Otchett::$name == 'otchet29')
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php Yii::$app->session->setFlash('table', Otchett::$name); ?>
 
     <p>
-        <?php
-        /*= Html::a('Create Otchet', ['create'], ['class' => 'btn btn-success']) */
-        Yii::$app->session->setFlash('table',Otchett::$name);
-        ?>
+        <?php /* echo Html::a('Create Otchet', ['create'], ['class' => 'btn btn-success']) */ ?>
     </p>
 
     <?=Html::beginForm(['otchett/bulk'],'post');?>
     <?php
     if(in_array("OtchetManager", Yii::$app->user->identity->groups))
     {
-        echo Html::dropDownList('action','',ArrayHelper::map(Employee::find()->where(['or',['idm_otdel' => 139],['idm_otdel' => 3],['idm_otdel' => 170]])->orderBy(['fam' => SORT_ASC])->all(),'fullName','fullName'),['class'=>'form-control','style'=>'width:90%; margin-bottom:10px; margin-right:10px; float:left']);
-        echo Html::submitButton('Назначить', ['class' => 'btn btn-info','style'=>'margin-bottom:10px;']);
+        echo Html::dropDownList('action', '', ArrayHelper::map(Employee::find()
+            ->where(['or', ['idm_otdel' => 139], ['idm_otdel' => 3], ['idm_otdel' => 170]])
+            ->orderBy(['fam' => SORT_ASC])
+            ->all(),
+        'fullName', 'fullName'),
+        ['class' => 'form-control', 'style' => 'width: 90%; margin-bottom: 10px; margin-right: 10px; float: left']);
+
+        echo Html::submitButton('Назначить', ['class' => 'btn btn-info', 'style' => 'margin-bottom: 10px;']);
     }
     ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -97,17 +103,17 @@ if(Otchett::$name == 'otchet29')
             //['class' => 'yii\grid\ActionColumn'],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'buttons'=>
+                'buttons' =>
                 [
-                    'view'=>function ($url, $model) 
+                    'view' => function ($url, $model)
                     {
-                        $customurl=Yii::$app->getUrlManager()->createUrl(['otchett/view','id'=>$model['id'],'table'=> Otchett::$name]);
+                        $customurl = Yii::$app->getUrlManager()->createUrl(['otchett/view', 'id' => $model['id'], 'table' => Otchett::$name]);
 
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $customurl);
                     },
-                    'update'=>function ($url, $model) 
+                    'update' => function ($url, $model)
                     {
-                        $customurl=Yii::$app->getUrlManager()->createUrl(['otchett/update','id'=>$model['id'],'table'=> Otchett::$name]);
+                        $customurl = Yii::$app->getUrlManager()->createUrl(['otchett/update', 'id' => $model['id'], 'table' => Otchett::$name]);
 
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $customurl);
                     }
