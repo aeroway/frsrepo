@@ -19,7 +19,7 @@ class GznViolationsSearch extends GznViolations
     {
         return [
             [['id'], 'integer'],
-            [['decision_punishment', 'date_due', 'payment_doc', 'decision_cancellation', 'decision_appeal', 'gzn_obj_id', 'date_outgoing',
+            [['decision_punishment', 'date_due', 'note', 'payment_doc', 'place_proceeding', 'date_check', 'adm_affairs', 'decision_cancellation', 'decision_appeal', 'gzn_obj_id', 'date_outgoing',
               'date_performance', 'violation_decision_end', 'violation_protocol', 'adm_punishment_id', 'types_punishment_id'], 'safe'],
             [['amount_fine', 'amount_fine_collected', 'violation_area'], 'number'],
         ];
@@ -43,7 +43,10 @@ class GznViolationsSearch extends GznViolations
      */
     public function search($params)
     {
-        $query = GznViolations::find()->where(['gzn_obj_id' => !empty($_GET['id']) ? $_GET['id'] : '']);
+        if(!empty($_GET['id']))
+            $query = GznViolations::find()->where(['gzn_obj_id' => $_GET['id']]);
+        else
+            $query = GznViolations::find();
 
         // add conditions that should always apply here
 
@@ -71,15 +74,19 @@ class GznViolationsSearch extends GznViolations
             'date_outgoing' => $this->date_outgoing,
             'violation_area' => $this->violation_area,
             'date_performance' => $this->date_performance,
+            'gzn_obj_id' => $this->gzn_obj_id,
         ]);
 
         $query->andFilterWhere(['like', 'decision_punishment', $this->decision_punishment])
+            ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', 'payment_doc', $this->payment_doc])
+            ->andFilterWhere(['like', 'place_proceeding', $this->place_proceeding])
+            ->andFilterWhere(['like', 'date_check', $this->date_check])
+            ->andFilterWhere(['like', 'adm_affairs', $this->adm_affairs])
             ->andFilterWhere(['like', 'decision_cancellation', $this->decision_cancellation])
             ->andFilterWhere(['like', 'decision_appeal', $this->decision_appeal])
             ->andFilterWhere(['like', 'name', $this->adm_punishment_id])
-            ->andFilterWhere(['like', 'name', $this->types_punishment_id])
-            //->andFilterWhere(['like', 'name', $this->gzn_obj_id])
+            ->andFilterWhere(['like', 'types_punishment_id', $this->types_punishment_id])
             ->andFilterWhere(['like', 'violation_decision_end', $this->violation_decision_end])
             ->andFilterWhere(['like', 'violation_protocol', $this->violation_protocol]);
 

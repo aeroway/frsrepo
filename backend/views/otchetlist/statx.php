@@ -55,6 +55,7 @@ $tblview = array(
     'otchet34' => 'stat_34',
     'otchet35' => 'stat_35',
     'otchet36' => 'stat_36',
+    'otchet37' => 'stat_37',
     'otchetn' => 'stat_n',
     'otchetur' => 'stat_ur',
     'otchetfiz' => 'stat_fiz',
@@ -92,6 +93,7 @@ if(
     or $tblname == 'otchet34'
     or $tblname == 'otchet35'
     or $tblname == 'otchet36'
+    or $tblname == 'otchet37'
     or $tblname == 'otchetn'
     or $tblname == 'otchetur'
     or $tblname == 'otchetfiz'

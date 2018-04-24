@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\GznViolations;
 use backend\models\GznViolationsSearch;
+use backend\models\GznAllviolationsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,13 +23,13 @@ class GznViolationsController extends Controller
     public function behaviors()
     {
         return [
-            'access'=>[
-                'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index'],
-                'rules'=>[
+            'access' => [
+                'class' => AccessControl::classname(),
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'violations'],
+                'rules' => [
                     [
-                        'allow'=>true,
-                        'roles'=>['@']
+                        'allow' => true,
+                        'roles' => ['@']
                     ],
                 ]
             ],
@@ -56,6 +57,22 @@ class GznViolationsController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionViolations()
+    {
+        if(!in_array("GznEdit", Yii::$app->user->identity->groups) && !in_array("GznDelete", Yii::$app->user->identity->groups) && !in_array("GznView", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $searchModel = new GznViolationsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('violations', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

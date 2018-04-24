@@ -24,7 +24,7 @@ class PlantaskController extends Controller
         return [
             'access'=> [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'update', 'view', 'delete', 'index'],
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'stat'],
                 'rules' => [
                     [
                         'allow' => true,

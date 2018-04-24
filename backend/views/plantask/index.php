@@ -13,8 +13,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Вид обращения', 'url' 
 $this->title = 'Задания';
 $this->params['breadcrumbs'][] = $this->title;
 
-
-//Plantask::getEmployeeDepartmentCount();
 ?>
 <div class="plantask-index">
 

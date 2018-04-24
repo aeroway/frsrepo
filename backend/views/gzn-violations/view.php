@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             //'id',
+            'adm_affairs',
+            'note',
             [
                 'attribute' => 'gznObject',
                 'label' => 'Объект проверки',
@@ -82,6 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'violation_decision_end',
                 'format' =>  ['date', 'php:d M Y'],
             ],
+            'place_proceeding',
             [
                 'attribute' => 'violation_protocol',
                 'format' =>  ['date', 'php:d M Y'],
@@ -97,6 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
+            'date_check',
         ],
     ]) ?>
 

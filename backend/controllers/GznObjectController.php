@@ -25,13 +25,13 @@ class GznObjectController extends Controller
     public function behaviors()
     {
         return [
-            'access'=>[
-                'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index'],
-                'rules'=>[
+            'access' => [
+                'class' => AccessControl::classname(),
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'stat', 'reset', 'index2'],
+                'rules'=> [
                     [
-                        'allow'=>true,
-                        'roles'=>['@']
+                        'allow' => true,
+                        'roles' => ['@']
                     ],
                 ]
             ],
@@ -56,7 +56,18 @@ class GznObjectController extends Controller
         }
 
         $searchModel = new GznObjectSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $params = Yii::$app->request->queryParams;
+
+        if (count($params) <= 1) {
+            $params = Yii::$app->session['GznObjectSearch'];
+            if(isset(Yii::$app->session['GznObjectSearch']['page']))
+                $_GET['page'] = Yii::$app->session['GznObjectSearch']['page'];
+        } else {
+            Yii::$app->session['GznObjectSearch'] = $params;
+        }
+
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -84,6 +95,11 @@ class GznObjectController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionStat()
+    {
+        return $this->render('stat');
     }
 
     /**
@@ -184,7 +200,8 @@ class GznObjectController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        //return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['index']);
                     }
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -231,5 +248,28 @@ class GznObjectController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+	public function actionSelectpunishment()
+	{
+		$model = new GznObject();
+		$id = Yii::$app->request->get('id');
+        $name = Yii::$app->request->get('name');
+
+		if ($id)
+		{
+			// Найти всех сотрудников в отделе
+			$result = $model->getAmountFineCollected($id, $name);
+			return $result;
+        }
+
+		return 0;
+	}
+
+    // reset session
+    public function actionReset()
+    {
+        Yii::$app->session['GznObjectSearch'] = '';
+        return $this->redirect(['index']);
     }
 }

@@ -21,15 +21,18 @@ use backend\models\GznTypesPunishment;
 
     <div class="row">
         <div class="col-md-4">
+        <?= $form->field($model, 'adm_affairs')->textInput() ?>
+        <?= $form->field($model, 'note')->textArea(['rows' => '4']) ?>
         <?= $form->field($model, 'adm_punishment_id')->dropDownList(
                 ArrayHelper::map(GznAdmPunishment::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'),
                 ['prompt' => 'Выберите статью']
         ) ?>
         <?= $form->field($model, 'violation_protocol')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
-        <?= $form->field($model, 'decision_punishment')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'onchange' => 'changeDateDue(this.value)'],]) ?>
-        <?= $form->field($model, 'violation_area')->textInput(['value' => Yii::$app->formatter->asDecimal($model->violation_area, 1), 'pattern' => '\d+(\.\d{1})?']) ?>
+        <?= $form->field($model, 'place_proceeding')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         </div>
         <div class="col-md-4">
+        <?= $form->field($model, 'decision_punishment')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control', 'onchange' => 'changeDateDue(this.value)'],]) ?>
+        <?= $form->field($model, 'violation_area')->textInput(['value' => Yii::$app->formatter->asDecimal($model->violation_area, 1), 'pattern' => '\d+(\.\d{1})?']) ?>
         <?= $form->field($model, 'types_punishment_id')->dropDownList(
                 ArrayHelper::map(GznTypesPunishment::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'),
                 ['prompt' => 'Выберите вид наказания']
@@ -37,7 +40,6 @@ use backend\models\GznTypesPunishment;
         <?= $form->field($model, 'amount_fine')->textInput(['value' => Yii::$app->formatter->asDecimal($model->amount_fine, 2), 'pattern' => '\d+(\.\d{2})?']) ?>
         <?= $form->field($model, 'amount_fine_collected')->textInput(['value' => Yii::$app->formatter->asDecimal($model->amount_fine_collected, 2), 'pattern' => '\d+(\.\d{2})?']) ?>
         <?= $form->field($model, 'payment_doc')->textInput() ?>
-        <?= $form->field($model, 'date_due')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?php
         if(strpos(Yii::$app->request->get("r"), 'create')) {
             if (!empty($_GET['sid'])) {
@@ -58,11 +60,13 @@ use backend\models\GznTypesPunishment;
         ?>
         </div>
         <div class="col-md-4">
+        <?= $form->field($model, 'date_due')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'decision_appeal')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'decision_cancellation')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'violation_decision_end')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'date_outgoing')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'date_performance')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
+        <?= $form->field($model, 'date_check')->textInput() ?>
         </div>
     </div>
 

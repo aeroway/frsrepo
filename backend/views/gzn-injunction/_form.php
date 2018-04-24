@@ -23,9 +23,9 @@ use yii\jui\DatePicker;
         <?= $form->field($model, 'act_checking')->textInput() ?>
         </div>
         <div class="col-md-4">
-        <?= $form->field($model, 'date_protocol')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'repeated')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'decision_judge')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
+        <?= $form->field($model, 'date_protocol')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         </div>
         <div class="col-md-4">
         <?= $form->field($model, 'decision_judge_j')->textInput() ?>

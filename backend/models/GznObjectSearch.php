@@ -21,7 +21,7 @@ class GznObjectSearch extends GznObject
     {
         return [
             [['id', 'land_num', 'success', 'checklist'], 'integer'],
-            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName'], 'safe'],
+            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'date_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName'], 'safe'],
             [['land_area'], 'number'],
         ];
     }
@@ -120,6 +120,7 @@ class GznObjectSearch extends GznObject
             'authoritie_check' => $this->authoritie_check,
             'land_area' => $this->land_area,
             'date_enforcement' => $this->date_enforcement,
+            'date_check' => $this->date_check,
             'a.name' => $this->gzn_type_check_id,
             'area_id' => $this->area_id,
         ]);

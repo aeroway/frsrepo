@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\helpers\Url;
 use backend\models\GznViolationsSearch;
 use backend\models\GznTypeCheck;
@@ -9,7 +10,7 @@ use yii\helpers\ArrayHelper;
 
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\GznObjectSearch */
+/* @var $searchModel backend\models\GznViolationsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Объект проверок';
@@ -18,15 +19,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="gzn-object-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-    <?php
+        <?php
         if(in_array("GznEdit", Yii::$app->user->identity->groups) || in_array("GznDelete", Yii::$app->user->identity->groups))
         {
             echo Html::a('Создать', ['create'], ['class' => 'btn btn-success']);
         }
-    ?>
+        ?>
+        <?= Html::a('Сброс фильтров', ['reset'], ['class' => 'btn btn-warning']); ?>
+        <?= Html::a('Статистика', ['stat'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Нарушения', ['gzn-violations/violations'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Предписания', ['gzn-injunction/injunction'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?php
@@ -75,18 +80,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'aria-label' => Yii::t('yii', 'Редактировать'),
                 ];
 
-                if(empty(Yii::$app->request->queryParams["page"])) {
-                    $page = 1;
-                } else {
-                    $page = Yii::$app->request->queryParams["page"];
-                }
-                if(empty(Yii::$app->request->queryParams["sort"])) {
-                    $sort = '';
-                } else {
-                    $sort = Yii::$app->request->queryParams["sort"];
-                }
-
-                $url = Yii::$app->getUrlManager()->createUrl(['gzn-object/update', 'id' => $model['id'], 'page' => $page, 'sort' => $sort]);
+                $url = Yii::$app->getUrlManager()->createUrl([
+                    'gzn-object/update',
+                    'id' => $model['id'],
+                    //'page' => empty(Yii::$app->request->queryParams["page"]) ? 1 : Yii::$app->request->queryParams["page"],
+                    //'sort' => empty(Yii::$app->request->queryParams["sort"]) ? '' : Yii::$app->request->queryParams["sort"],
+                ]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
             }
@@ -98,9 +97,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'export' => false,
+        'pjax' => false,
+        'rowOptions' => function($model)
+        {
+            return $model->datePerformancePrescription;
+        },
+        'containerOptions' => ['style' => 'overflow: visible'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'value' => function($model, $key, $index, $column) {
+                    return GridView::ROW_COLLAPSED;
+                },
+                'detail' => function($model, $key, $index, $column) {
+                    $searchModel = new GznViolationsSearch();
+                    $searchModel->gzn_obj_id = $model->id;
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+                    return Yii::$app->controller->renderPartial('_gznviolation', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                    ]);
+                },
+            ],
+            //['class' => 'yii\grid\SerialColumn'],
             //'id',
             [
                 'attribute' => 'gzn_type_check_id',
@@ -111,9 +132,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(GznTypeCheck::find()->asArray()->all(), 'name', 'name'),
             ],
             [
+                'label' => 'Орган проводивший мер-я',
                 'attribute' => 'authoritie_check',
                 'filter' => ['МВД' => 'МВД', 'МЗК' => 'МЗК', 'КубЗК' => 'КубЗК', 'Прокуратура' => 'Прокуратура', 'ТО' => 'ТО', 'ТО внеплан' => 'ТО внеплан', 'ТО 28.1' => 'ТО 28.1'],
             ],
+            'order_check',
             'kn',
             // 'land_num',
             /*
@@ -125,7 +148,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             */
             // 'kn_cost',
-            // 'order_check',
             'act_check',
             // 'date_enforcement',
             // 'land_category',
@@ -156,6 +178,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'IconСhecklist',
                 'contentOptions'=>['style' => 'text-align: center;'],
                 'filter' => ['1' => '✔ - Проверка внесена в ЕРП', '0' => '✖ - Проверка не внесена ЕРП'],
+            ],
+            //Дата выдачи предписания
+            [
+                'label' => 'Предписания',
+                'value' => 'DateIssuePrescription',
+                'format' => 'html',
             ],
 
             //['class' => 'yii\grid\ActionColumn'],

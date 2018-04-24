@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use backend\models\GznInjunction;
 
 /**
- * GznInjunctionSearch represents the model behind the search form of `backend\models\GznInjunction`.
+ * GznAllInjunctionSearch represents the model behind the search form of `backend\models\GznInjunction`.
  */
-class GznInjunctionSearch extends GznInjunction
+class GznAllInjunctionSearch extends GznInjunction
 {
     /**
      * @inheritdoc
@@ -41,10 +41,14 @@ class GznInjunctionSearch extends GznInjunction
      */
     public function search($params)
     {
-        if(!empty($_GET['id']))
-            $query = GznInjunction::find()->where(['gzn_violations_id' => $_GET['id']]);
-        else
-            $query = GznInjunction::find();
+        $query = GznInjunction::find()
+
+        ->where(['and', 
+            ['or', ['=', 'decision_judge', ''], ['decision_judge' => null]],
+            ['or', ['=', 'act_checking', ''], ['act_checking' => null]],
+            ['or', ['=', 'repeated', ''], ['repeated' => null]],
+            ['<=', 'not_done', date('Y-m-d', strtotime("+7 days"))],
+        ]);
 
         // add conditions that should always apply here
 

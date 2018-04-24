@@ -17,6 +17,7 @@ use Yii;
  * @property string $order_check
  * @property string $act_check
  * @property string $date_enforcement
+ * @property string $date_check
  * @property string $land_category
  * @property string $requisites_land_user
  * @property string $address_land_plot
@@ -51,11 +52,11 @@ class GznObject extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gzn_type_check_id', 'authoritie_check', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
+            [['gzn_type_check_id', 'authoritie_check', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'date_check', 'address_land_plot', 'type_func_use', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
             [['gzn_type_check_id', 'land_num', 'land_category_id', 'land_user_category_id', 'area_id', 'success', 'checklist'], 'integer'],
-            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector'], 'string'],
+            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'full_name_inspector'], 'string'],
             [['land_area'], 'double'],
-            [['date_enforcement'], 'safe'],
+            [['date_enforcement', 'date_check', 'description_violation'], 'safe'],
             [['gzn_type_check_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznTypeCheck::className(), 'targetAttribute' => ['gzn_type_check_id' => 'id']],
             [['land_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznLandCategory::className(), 'targetAttribute' => ['land_category_id' => 'id']],
             [['land_user_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznLandUserCategory::className(), 'targetAttribute' => ['land_user_category_id' => 'id']],
@@ -70,9 +71,9 @@ class GznObject extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gzn_type_check_id' => 'Тип проверки',
+            'gzn_type_check_id' => 'Тип мероприятия',
             'area_id' => 'Район',
-            'authoritie_check' => 'Орган проводивший проверку',
+            'authoritie_check' => 'Орган проводивший мероприятия',
             'kn' => 'Кадастровый номер',
             'land_num' => 'Количество земельных участков',
             'success' => 'Результативность',
@@ -82,11 +83,12 @@ class GznObject extends \yii\db\ActiveRecord
             'order_check' => 'На основании',
             'act_check' => 'Наименование проверяемого лица',
             'date_enforcement' => 'Акт (проверки/обследования)',
+            'date_check' => 'Год проверки',
             'land_category' => 'Распоряжение',
             'requisites_land_user' => 'Реквизиты и телефон землепользователя',
             'address_land_plot' => 'Адрес земельного участка',
             'type_func_use' => 'Вид функционального использования',
-            'description_violation' => '№ административного дела',
+            'description_violation' => 'Акт без нарушения',
             'full_name_inspector' => 'ФИО инспектора',
             'land_category_id' => 'Категория земель',
             'land_user_category_id' => 'Категория землепользователя',
@@ -113,6 +115,176 @@ class GznObject extends \yii\db\ActiveRecord
             default:
                 return '<span class="glyphicon glyphicon-remove" title="Проверка не внесена в ЕРП"> </span>';
         }
+    }
+
+    // Срок исполнения предписания
+    public function getDatePerformancePrescription()
+    {
+        /*
+            Не подсвечивать, если заполнены даты:
+            1. Акт проверки исполнения предписания - act_checking
+            2. Протокол по ст. 19.5 ч.25 КоАП РФ - repeated
+            3. Протокол по ст. 19.5 ч.26 КоАП РФ - decision_judge
+        */
+
+        $sqlDatePrescription = '
+            SELECT not_done, act_checking, repeated, decision_judge
+            FROM [gzn_injunction] inj
+            INNER JOIN [gzn_violations] vi ON vi.id = inj.[gzn_violations_id]
+            INNER JOIN [gzn_object] ob ON ob.id = vi.[gzn_obj_id]
+            WHERE ob. id = ' . $this->id;
+
+        $allDatePrescription = \Yii::$app->db->createCommand($sqlDatePrescription)->queryAll();
+
+        foreach($allDatePrescription as $datePrescription) {
+            if($datePrescription["act_checking"] > 0 || $datePrescription["repeated"] > 0 || $datePrescription["decision_judge"] > 0)
+                return;
+
+            if(date('Y-m-d', strtotime($datePrescription["not_done"])) <= date('Y-m-d', strtotime("+7 days")))
+                return ['class' => 'success'];
+        }
+    }
+
+    //Дата выдачи предписания
+    public function getDateIssuePrescription()
+    {
+        $localVarOut = '';
+
+        $sqlDatePrescription = '
+            SELECT count_term_execution
+            FROM [gzn_injunction] inj
+            INNER JOIN [gzn_violations] vi ON vi.id = inj.[gzn_violations_id]
+            INNER JOIN [gzn_object] ob ON ob.id = vi.[gzn_obj_id]
+            WHERE ob. id = ' . $this->id;
+
+        $allDatePrescription = \Yii::$app->db->createCommand($sqlDatePrescription)->queryAll();
+
+        foreach($allDatePrescription as $datePrescription) {
+            $localVarOut .= Yii::$app->formatter->asDate($datePrescription["count_term_execution"], 'php:d M Y') . '<br>';
+        }
+
+        return $localVarOut;
+    }
+
+    // returns the statistic of conducted surveys
+    private function getAmountConductedSurveys($name)
+    {
+        $resultStr = '';
+        $localVarOut = '';
+        $localVarOut .= "<h4>$name</h4>";
+        $localVarOut .= '<table class="table table-bordered table-striped">';
+
+        $amountDateCheck =
+          GznObject::find()
+            ->select('date_check')
+            ->groupBy('date_check')
+            ->createCommand()
+            ->queryAll();
+
+        $localVarOut .= '<thead><tr><td>Отдел</td>';
+
+        foreach($amountDateCheck as $amount) {
+            $localVarOut .= "<td><b>$amount[date_check]</b></td>";
+        }
+
+        $localVarOut .= '</tr></thead>';
+
+        $resultStr .= 'select distinct(a.name),';
+        for($i = 0; $i < count($amountDateCheck); $i++)
+        {
+            if($i == 0)
+                $resultStr .= "(select count(id) from gzn_object where area_id = go.area_id and gzn_type_check_id = 3 and date_check = '" . $amountDateCheck[$i]['date_check'] . "') as y" . $amountDateCheck[$i]['date_check'];
+            else
+                $resultStr .= ",(select count(id) from gzn_object where area_id = go.area_id and gzn_type_check_id = 3 and date_check = '" . $amountDateCheck[$i]['date_check'] . "') as y" . $amountDateCheck[$i]['date_check'];
+        }
+        $resultStr .= ' from gzn_object go left join area a on a.id = go.area_id';
+
+        $resultF = \Yii::$app->db->createCommand($resultStr)->queryAll();
+
+        $localVarOut .= '<tbody>';
+
+        foreach($resultF as $resFv)
+        {
+            $localVarOut .= '<tr>';
+            foreach($resFv as $resSv)
+            {
+                $localVarOut .= '<td>' . $resSv . '</td>';
+            }
+            $localVarOut .= '</tr>';
+        }
+        $localVarOut .= '</tbody>';
+        $localVarOut .= '</table>';
+
+        return ($localVarOut);
+    }
+
+    // returns the amount of the fine collected
+    public function getAmountFineCollected($id, $name)
+    {
+        $resultStr = '';
+        $localVarOut = '';
+        $localVarOut .= "<h4>$name</h4>";
+        $localVarOut .= '<table class="table table-bordered table-striped">';
+
+        $amountDateCheck =
+          GznObject::find()
+            ->select('date_check')
+            ->groupBy('date_check')
+            ->createCommand()
+            ->queryAll();
+
+        $localVarOut .= '<thead><tr><td>Отдел</td>';
+
+        foreach($amountDateCheck as $amount) {
+            $localVarOut .= "<td><b>$amount[date_check]</b></td>";
+        }
+
+        $localVarOut .= '</tr></thead>';
+
+        $resultStr .= 'select distinct(a.name),';
+        for($i = 0; $i < count($amountDateCheck); $i++)
+        {
+            if($i > 0) $resultStr .= ', ';
+            $resultStr .= "(
+              SELECT CASE WHEN SUM(amount_fine_collected) IS NULL THEN 0 ELSE SUM(amount_fine_collected) END
+              FROM [gzn_violations] vi, [gzn_object] ob, [area] a
+              WHERE [adm_punishment_id] = " . $id . "
+                AND vi.gzn_obj_id = ob.id
+                AND amount_fine_collected IS NOT NULL
+                AND go.area_id = ob.area_id
+                AND a.id = ob.area_id and ob.date_check = '" . $amountDateCheck[$i]['date_check'] . "'
+            ) as y" . $amountDateCheck[$i]['date_check'];
+        }
+        $resultStr .= ' FROM gzn_object go RIGHT JOIN area a ON a.id = go.area_id';
+
+        $resultF = \Yii::$app->db->createCommand($resultStr)->queryAll();
+
+        $localVarOut .= '<tbody>';
+
+        foreach($resultF as $resFv)
+        {
+            $localVarOut .= '<tr>';
+            foreach($resFv as $resSv)
+            {
+                $localVarOut .= '<td>' . (is_numeric($resSv) ? number_format($resSv, 2, '.', '') : $resSv) . '</td>';
+            }
+            $localVarOut .= '</tr>';
+        }
+        $localVarOut .= '</tbody>';
+        $localVarOut .= '</table>';
+
+        return ($localVarOut);
+    }
+
+    public function getGznViolationsCount()
+    {
+        $localVarOut = '';
+
+        //$localVarOut .= self::getAmountFineCollected(1, 'Сумма взысканного штрафа по ст. 7.1 КоАП РФ');
+        //$localVarOut .= self::getAmountFineCollected(3, 'Сумма взысканного штрафа по ст. 8.8 ч. 1 КоАП РФ');
+        $localVarOut .= self::getAmountConductedSurveys('Проведено административных обследований');
+
+        return $localVarOut;
     }
 
     /**

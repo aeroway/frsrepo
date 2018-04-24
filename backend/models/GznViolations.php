@@ -14,12 +14,16 @@ use Yii;
  * @property double $violation_area
  * @property double $amount_fine
  * @property double $amount_fine_collected
+ * @property string $note
  * @property string $payment_doc
+ * @property string $place_proceeding
+ * @property string $adm_affairs
  * @property string $decision_cancellation
  * @property string $decision_appeal
  * @property string $date_performance
  * @property string $date_outgoing
  * @property string $violation_decision_end
+ * @property string $date_check
  * @property string $violation_protocol
  * @property int $adm_punishment_id
  * @property int $types_punishment_id
@@ -45,10 +49,11 @@ class GznViolations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['gzn_obj_id', 'decision_punishment', 'date_due', 'violation_area', 'amount_fine', 'place_proceeding', 'adm_affairs', 'violation_protocol', 'adm_punishment_id', 'date_check'], 'required'],
             [['date_due', 'violation_decision_end', 'decision_cancellation', 'decision_appeal', 'decision_punishment', 'violation_protocol', 'date_outgoing', 'date_performance', ], 'date', 'format' => 'Y-m-d'],
             [['gzn_obj_id', 'adm_punishment_id', 'types_punishment_id'], 'integer'],
-            [['payment_doc'], 'string'],
-            [['date_due', 'date_performance', 'date_outgoing', 'violation_protocol', 'decision_punishment', 'decision_appeal', 'decision_cancellation', 'violation_decision_end'], 'safe'],
+            [['payment_doc', 'adm_affairs', 'note', 'date_check'], 'string'],
+            [['date_due', 'date_performance', 'date_outgoing', 'violation_protocol', 'decision_punishment', 'decision_appeal', 'decision_cancellation', 'violation_decision_end', 'place_proceeding'], 'safe'],
             [['violation_area', 'amount_fine', 'amount_fine_collected'], 'double'],
             [['gzn_obj_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznObject::className(), 'targetAttribute' => ['gzn_obj_id' => 'id']],
             [['adm_punishment_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznAdmPunishment::className(), 'targetAttribute' => ['adm_punishment_id' => 'id']],
@@ -69,7 +74,11 @@ class GznViolations extends \yii\db\ActiveRecord
             'amount_fine' => 'Размер штрафа',
             'violation_area' => 'S наруш. (кв.м.)',
             'amount_fine_collected' => 'Сумма взысканного штрафа',
+            'note' => 'Примечание',
+            'place_proceeding' => 'Определение о месте и времени рассмотрения дела',
+            'date_check' => 'Год платежа',
             'payment_doc' => '№ платёжного поручения',
+            'adm_affairs' => '№ административного дела',
             'decision_cancellation' => 'Отмена постановления',
             'decision_appeal' => 'Обжалование постановления',
             'date_performance' => 'ФССП дата исполнения',

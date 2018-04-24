@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\GznInjunction;
 use backend\models\GznInjunctionSearch;
+use backend\models\GznAllInjunctionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,7 +25,7 @@ class GznInjunctionController extends Controller
         return [
             'access'=>[
                 'class'=>AccessControl::classname(),
-                'only'=>['create', 'update', 'view', 'delete', 'index'],
+                'only'=>['create', 'update', 'view', 'delete', 'index', 'injunction'],
                 'rules'=>[
                     [
                         'allow'=>true,
@@ -56,6 +57,22 @@ class GznInjunctionController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionInjunction()
+    {
+        if(!in_array("GznEdit", Yii::$app->user->identity->groups) && !in_array("GznDelete", Yii::$app->user->identity->groups) && !in_array("GznView", Yii::$app->user->identity->groups))
+        {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $searchModel = new GznAllInjunctionSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('injunction', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

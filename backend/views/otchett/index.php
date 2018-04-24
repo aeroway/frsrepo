@@ -41,7 +41,7 @@ if(Otchett::$name == 'otchet29')
     if(in_array("OtchetManager", Yii::$app->user->identity->groups))
     {
         echo Html::dropDownList('action', '', ArrayHelper::map(Employee::find()
-            ->where(['or', ['idm_otdel' => 139], ['idm_otdel' => 3], ['idm_otdel' => 170]])
+            ->where(['and', ['or', ['idm_otdel' => 139], ['idm_otdel' => 3], ['idm_otdel' => 170]], ['status' => 1]])
             ->orderBy(['fam' => SORT_ASC])
             ->all(),
         'fullName', 'fullName'),

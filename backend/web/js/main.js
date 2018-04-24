@@ -98,4 +98,33 @@ $(document).ready(function() {
         }
     });
 
+    /* Для ГЗН */
+	$( "#selectPunishment" ).change(function()
+	{
+		if($("select#selectPunishment").val() != '')
+		{
+			$.ajax(
+			{
+				type: 'GET',
+				url: 'index.php?r=gzn-object/selectpunishment',
+				data: 'id=' + $("select#selectPunishment").val() + '&name="' + $("#selectPunishment option:selected").html() + '"',
+				success: function(data)
+				{
+					if (data==0)
+					{
+						alert('Данные отсутствуют.');
+						$("#gznobject-punishment").empty();
+						$("#gznobject-punishment").append( $('<option value="">Нет данных</option>'));
+					}
+					else
+					{
+						$("#gznobject-punishment").empty();
+						$("#gznobject-punishment").append( $(data));
+						//alert('Данные получены.');
+					}
+				}
+			});
+		}
+	});
+
 });

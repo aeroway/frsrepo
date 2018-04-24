@@ -15,16 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="gzn-violations-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-    <?php
-        if(in_array("GznEdit", Yii::$app->user->identity->groups) || in_array("GznDelete", Yii::$app->user->identity->groups))
-        {
-            echo Html::a('Создать', ['create', 'sid' => !empty($_GET['id']) ? $_GET['id'] : '',], ['class' => 'btn btn-success']);
-        }
-    ?>
-    </p>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php
 
@@ -108,12 +99,20 @@ $this->params['breadcrumbs'][] = $this->title;
             //'violation_area',
             //'date_check',
             [
+                //'attribute' => 'gznObjActCheck',
+                'label' => 'Проверяемый',
+                'value' => function($data) {
+                    return $data->gznObj->act_check;
+                },
+            ],
+            [
                 'attribute' => 'adm_punishment_id',
                 'value' => function($data) {
                     if(empty($data->admPunishment->name)) {
                         return '';
                     } else {
-                        return Html::a(Html::encode($data->admPunishment->name), Url::to(['gzn-injunction/index', 'id' => $data['id'], 'pid' => $data['gzn_obj_id']]));
+                        return $data->admPunishment->name;
+                        //return Html::a(Html::encode($data->admPunishment->name), Url::to(['gzn-injunction/index', 'id' => $data['id'], 'pid' => $data['gzn_obj_id']]));
                     }
                 },
                 'format' => 'raw',
@@ -192,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             //['class' => 'yii\grid\ActionColumn'],
-            $button,
+            //$button,
         ],
     ]); ?>
 </div>

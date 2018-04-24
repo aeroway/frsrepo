@@ -69,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'areaOtchet.name',
                 'label' => 'Привязан к району',
             ],
+            'date_check',
         ],
     ]) ?>
 
