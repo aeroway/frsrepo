@@ -13,6 +13,7 @@ use backend\models\Model;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use yii\helpers\Html;
 
 /**
  * GznObjectController implements the CRUD actions for GznObject model.
@@ -27,7 +28,7 @@ class GznObjectController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'update', 'view', 'delete', 'index', 'stat', 'reset', 'index2'],
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'stat', 'reset'],
                 'rules'=> [
                     [
                         'allow' => true,
@@ -87,13 +88,9 @@ class GznObjectController extends Controller
             throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
         }
 
-        if(!in_array("GznEdit", Yii::$app->user->identity->groups) && !in_array("GznDelete", Yii::$app->user->identity->groups) && !in_array("GznView", Yii::$app->user->identity->groups))
-        {
-            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
-        }
-
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modelViolationId' => GznViolations::find()->select(["id"])->where(['gzn_obj_id' => $id])->all(),
         ]);
     }
 
@@ -258,12 +255,20 @@ class GznObjectController extends Controller
 
 		if ($id)
 		{
-			// Найти всех сотрудников в отделе
-			$result = $model->getAmountFineCollected($id, $name);
+            $result = Html::a('Скачать', ['gzn-object/selectpunishmentprint', 'id' => $id, 'name' => $name], ['class' => 'btn btn-info']);
+			// Cумма взысканного штрафа по статьям
+			$result .= $model->getAmountFineCollected($id, $name);
 			return $result;
         }
 
 		return 0;
+	}
+
+	public function actionSelectpunishmentprint($id, $name)
+	{
+        $model = new GznObject();
+
+        $model->getAmountFineCollectedPrint($id, $name);
 	}
 
     // reset session

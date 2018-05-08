@@ -38,7 +38,7 @@ use backend\models\GznTypesPunishment;
                 ['prompt' => 'Выберите вид наказания']
         ) ?>
         <?= $form->field($model, 'amount_fine')->textInput(['value' => Yii::$app->formatter->asDecimal($model->amount_fine, 2), 'pattern' => '\d+(\.\d{2})?']) ?>
-        <?= $form->field($model, 'amount_fine_collected')->textInput(['value' => Yii::$app->formatter->asDecimal($model->amount_fine_collected, 2), 'pattern' => '\d+(\.\d{2})?']) ?>
+        <?= $form->field($model, 'amount_fine_collected')->textInput(['value' => Yii::$app->formatter->asDecimal($model->amount_fine_collected, 2), 'pattern' => '\d+(\.\d{2})?', 'onchange' => 'changeFineCollected(this.value)',]) ?>
         <?= $form->field($model, 'payment_doc')->textInput() ?>
         <?php
         if(strpos(Yii::$app->request->get("r"), 'create')) {
@@ -94,5 +94,13 @@ function changeDateDue(value) {
     var lvPunishment = 'gznviolations-decision_punishment';
     nextDay = new Date();
     document.getElementById(lvAppeal).value = addDays(document.getElementById(lvPunishment).value, 40);
+}
+
+function changeFineCollected(value) {
+    var amountFineCollected = 'gznviolations-amount_fine_collected';
+    var amountFine = 'gznviolations-amount_fine';
+    if(+document.getElementById(amountFine).value < +document.getElementById(amountFineCollected).value) {
+        document.getElementById(amountFineCollected).value = '';
+    }
 }
 </script>

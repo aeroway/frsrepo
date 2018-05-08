@@ -99,6 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'pjax' => false,
+        'layout' => "{pager}\n{summary}\n{items}\n{pager}\n <h3>Итого: " . $dataProvider->getTotalCount() . '</h3>',
         'rowOptions' => function($model)
         {
             return $model->datePerformancePrescription;
@@ -149,6 +150,11 @@ $this->params['breadcrumbs'][] = $this->title;
             */
             // 'kn_cost',
             'act_check',
+            [
+                'label' => 'Кат. землепользователя',
+                'attribute' => 'land_user_category_id',
+                'value' => 'landUserCategory.name',
+            ],
             // 'date_enforcement',
             // 'land_category',
             // 'requisites_land_user',

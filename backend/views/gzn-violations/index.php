@@ -190,6 +190,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
+            [
+                'label' => 'Остаток',
+                'value' => function($data) {
+                    $amountFine = 0;
+                    $amountFineCollected = 0;
+
+                    if(!empty($data->amount_fine))
+                    {
+                        $amountFine = $data->amount_fine;
+                    }
+
+                    if(!empty($data->amount_fine_collected))
+                    {
+                        $amountFineCollected = $data->amount_fine_collected;
+                    }
+
+                    return Yii::$app->formatter->asDecimal($amountFine - $amountFineCollected, 2);
+                },
+                'format' => 'raw',
+            ],
 
             //['class' => 'yii\grid\ActionColumn'],
             $button,

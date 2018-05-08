@@ -21,7 +21,7 @@ class GznObjectSearch extends GznObject
     {
         return [
             [['id', 'land_num', 'success', 'checklist'], 'integer'],
-            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'date_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName'], 'safe'],
+            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'date_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName', 'land_user_category_id'], 'safe'],
             [['land_area'], 'number'],
         ];
     }
@@ -110,6 +110,7 @@ class GznObjectSearch extends GznObject
 
         $query->joinWith('gznTypeCheck a');
         $query->joinWith('areaOtchet b');
+        $query->joinWith('landUserCategory categ');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -135,6 +136,7 @@ class GznObjectSearch extends GznObject
             ->andFilterWhere(['like', 'type_func_use', $this->type_func_use])
             ->andFilterWhere(['like', 'description_violation', $this->description_violation])
             ->andFilterWhere(['like', 'b.name', $this->areaOtchetName])
+            ->andFilterWhere(['like', 'categ.name', $this->land_user_category_id])
             ->andFilterWhere(['like', 'full_name_inspector', $this->full_name_inspector]);
 
         return $dataProvider;

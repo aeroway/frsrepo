@@ -52,7 +52,7 @@ class GznObject extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gzn_type_check_id', 'authoritie_check', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'date_check', 'address_land_plot', 'type_func_use', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
+            [['gzn_type_check_id', 'authoritie_check', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'address_land_plot', 'type_func_use', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
             [['gzn_type_check_id', 'land_num', 'land_category_id', 'land_user_category_id', 'area_id', 'success', 'checklist'], 'integer'],
             [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'full_name_inspector'], 'string'],
             [['land_area'], 'double'],
@@ -218,7 +218,7 @@ class GznObject extends \yii\db\ActiveRecord
         return ($localVarOut);
     }
 
-    // returns the amount of the fine collected
+    // show on a webpage the amount of the fine collected
     public function getAmountFineCollected($id, $name)
     {
         $resultStr = '';
@@ -274,6 +274,95 @@ class GznObject extends \yii\db\ActiveRecord
         $localVarOut .= '</table>';
 
         return ($localVarOut);
+    }
+
+    // save to the word file the amount of the fine collected
+    public function getAmountFineCollectedPrint($id, $name)
+    {
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        $phpWord->setDefaultFontName('Times New Roman');
+        $phpWord->setDefaultFontSize(12);
+
+        $tableStyle = array('borderSize' => 1);
+        $widthCellOne = 3000;
+        $widthCellOther = 1500;
+        $cellStyle = array('borderSize' => 1);
+        $center = $phpWord->addParagraphStyle('p2Style', ['align' => 'center']);
+
+        $sectionStyle = array
+        (
+            'orientation' => 'portrait',
+            'marginTop' => \PhpOffice\PhpWord\Shared\Converter::pixelToTwip(80),
+            'marginLeft' => 1200,
+            'marginRight' => 600,
+            'colsNum' => 1,
+            'pageNumberingStart' => 1,
+        );
+
+        $section = $phpWord->addSection($sectionStyle);
+        $textrun = $section->addTextRun();
+        $textrun->addText('Сумма взысканного штрафа ' . $name);
+
+        $table = $section->addTable($tableStyle);
+        $table->addRow();
+        $table->addCell($widthCellOne, $cellStyle)->addText('Отдел', ['bold' => true]);
+
+        $sql = '';
+
+        $amountDateCheck =
+          GznObject::find()
+            ->select('date_check')
+            ->groupBy('date_check')
+            ->createCommand()
+            ->queryAll();
+
+        foreach($amountDateCheck as $amount) {
+            $table->addCell($widthCellOther, $cellStyle)->addText($amount["date_check"], ['bold' => true], $center);
+        }
+
+        $sql .= 'select distinct(a.name),';
+        for($i = 0; $i < count($amountDateCheck); $i++)
+        {
+            if($i > 0) $sql .= ', ';
+            $sql .= "(
+              SELECT CASE WHEN SUM(amount_fine_collected) IS NULL THEN 0 ELSE SUM(amount_fine_collected) END
+              FROM [gzn_violations] vi, [gzn_object] ob, [area] a
+              WHERE [adm_punishment_id] = " . $id . "
+                AND vi.gzn_obj_id = ob.id
+                AND amount_fine_collected IS NOT NULL
+                AND go.area_id = ob.area_id
+                AND a.id = ob.area_id and ob.date_check = '" . $amountDateCheck[$i]['date_check'] . "'
+            ) as y" . $amountDateCheck[$i]['date_check'];
+        }
+        $sql .= ' FROM gzn_object go RIGHT JOIN area a ON a.id = go.area_id';
+
+        $resultF = \Yii::$app->db->createCommand($sql)->queryAll();
+
+        foreach($resultF as $resFv)
+        {
+            $table->addRow();
+            foreach($resFv as $resSv)
+            {
+                if(is_numeric($resSv)) {
+                    $table->addCell($widthCellOther, $cellStyle)->addText(number_format($resSv, 2, '.', ''), ['bold' => false], $center);
+                } else {
+                    $table->addCell($widthCellOther, $cellStyle)->addText($resSv);
+                }
+            }
+        }
+
+        header("Content-Description: File Transfer");
+        header('Content-Disposition: attachment; filename="word.docx"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save("php://output");
+
+        exit;
     }
 
     public function getGznViolationsCount()

@@ -12,7 +12,7 @@ use backend\models\GznInjunctionSearch;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gzn-violations-index">
- 
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
