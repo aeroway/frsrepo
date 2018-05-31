@@ -41,7 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'gznTypeCheckName',
                 'label' => 'Тип проверки',
             ],
-            'authoritie_check',
+            [
+                'attribute' => 'gznAuthoritieCheck.name',
+                'label' => 'Орган проводивший мероприятия',
+            ],
             'kn',
             'land_num',
             [

@@ -21,7 +21,7 @@ class GznObjectSearch extends GznObject
     {
         return [
             [['id', 'land_num', 'success', 'checklist'], 'integer'],
-            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'date_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName', 'land_user_category_id'], 'safe'],
+            [['authoritie_check_id', 'kn', 'kn_cost', 'order_check', 'act_check', 'date_enforcement', 'date_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'description_violation', 'full_name_inspector', 'gzn_type_check_id', 'area_id', 'areaOtchetName', 'land_user_category_id'], 'safe'],
             [['land_area'], 'number'],
         ];
     }
@@ -80,7 +80,7 @@ class GznObjectSearch extends GznObject
 		$dataProvider->setSort([
 			'attributes' => [
 				'gzn_type_check_id',
-				'authoritie_check',
+				'authoritie_check_id',
 				'kn' => [
 					'asc' => ['c.kn' => SORT_ASC],
 					'desc' => ['c.kn' => SORT_DESC],
@@ -111,6 +111,7 @@ class GznObjectSearch extends GznObject
         $query->joinWith('gznTypeCheck a');
         $query->joinWith('areaOtchet b');
         $query->joinWith('landUserCategory categ');
+        $query->joinWith('gznAuthoritieCheck acheck');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -118,7 +119,7 @@ class GznObjectSearch extends GznObject
             'land_num' => $this->land_num,
             'success' => $this->success,
             'checklist' => $this->checklist,
-            'authoritie_check' => $this->authoritie_check,
+            'acheck.name' => $this->authoritie_check_id,
             'land_area' => $this->land_area,
             'date_enforcement' => $this->date_enforcement,
             'date_check' => $this->date_check,

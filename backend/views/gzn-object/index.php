@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use yii\helpers\Url;
 use backend\models\GznViolationsSearch;
 use backend\models\GznTypeCheck;
+use backend\models\GznAuthoritieCheck;
 use yii\helpers\ArrayHelper;
 
 
@@ -130,12 +131,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(Html::encode($data->gznTypeCheckName), Url::to(['gzn-violations/index', 'id' => $data['id']]));
                 },
                 'format' => 'raw',
-                'filter' => ArrayHelper::map(GznTypeCheck::find()->asArray()->all(), 'name', 'name'),
+                'filter' => Html::activeCheckBoxList($searchModel, 'gzn_type_check_id',
+                                ArrayHelper::map(GznTypeCheck::find()->asArray()->all(), 'name', 'name'), ['multiple' => true]),
             ],
             [
                 'label' => 'Орган проводивший мер-я',
-                'attribute' => 'authoritie_check',
-                'filter' => ['МВД' => 'МВД', 'МЗК' => 'МЗК', 'КубЗК' => 'КубЗК', 'Прокуратура' => 'Прокуратура', 'ТО' => 'ТО', 'ТО внеплан' => 'ТО внеплан', 'ТО 28.1' => 'ТО 28.1'],
+                'attribute' => 'gznAuthoritieCheck.name',
+                'format' => 'raw',
+                'filter' => Html::activeListBox($searchModel, 'authoritie_check_id', 
+                                ArrayHelper::map(GznAuthoritieCheck::find()->asArray()->all(), 'name', 'name'), ['multiple' => true, 'class' => 'form-control']),
             ],
             'order_check',
             'kn',

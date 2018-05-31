@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $gzn_type_check_id
- * @property string $authoritie_check
+ * @property int $authoritie_check_id
  * @property string $kn
  * @property int $land_num
  * @property double $land_area
@@ -52,12 +52,13 @@ class GznObject extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gzn_type_check_id', 'authoritie_check', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'address_land_plot', 'type_func_use', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
-            [['gzn_type_check_id', 'land_num', 'land_category_id', 'land_user_category_id', 'area_id', 'success', 'checklist'], 'integer'],
-            [['authoritie_check', 'kn', 'kn_cost', 'order_check', 'act_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'full_name_inspector'], 'string'],
+            [['gzn_type_check_id', 'authoritie_check_id', 'kn', 'land_num', 'land_area', 'kn_cost', 'order_check', 'act_check', 'address_land_plot', 'type_func_use', 'full_name_inspector', 'land_category_id', 'land_user_category_id'], 'required'],
+            [['gzn_type_check_id', 'authoritie_check_id', 'land_num', 'land_category_id', 'land_user_category_id', 'area_id', 'success', 'checklist'], 'integer'],
+            [['kn', 'kn_cost', 'order_check', 'act_check', 'land_category', 'requisites_land_user', 'address_land_plot', 'type_func_use', 'full_name_inspector'], 'string'],
             [['land_area'], 'double'],
             [['date_enforcement', 'date_check', 'description_violation'], 'safe'],
             [['gzn_type_check_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznTypeCheck::className(), 'targetAttribute' => ['gzn_type_check_id' => 'id']],
+            [['authoritie_check_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznAuthoritieCheck::className(), 'targetAttribute' => ['authoritie_check_id' => 'id']],
             [['land_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznLandCategory::className(), 'targetAttribute' => ['land_category_id' => 'id']],
             [['land_user_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GznLandUserCategory::className(), 'targetAttribute' => ['land_user_category_id' => 'id']],
             [['area_id'], 'exist', 'skipOnError' => true, 'targetClass' => AreaOtchet::className(), 'targetAttribute' => ['area_id' => 'id']],
@@ -73,7 +74,7 @@ class GznObject extends \yii\db\ActiveRecord
             'id' => 'ID',
             'gzn_type_check_id' => 'Тип мероприятия',
             'area_id' => 'Район',
-            'authoritie_check' => 'Орган проводивший мероприятия',
+            'authoritie_check_id' => 'Орган проводивший мероприятия',
             'kn' => 'Кадастровый номер',
             'land_num' => 'Количество земельных участков',
             'success' => 'Результативность',
@@ -398,6 +399,14 @@ class GznObject extends \yii\db\ActiveRecord
     public function getGznTypeCheck()
     {
         return $this->hasOne(GznTypeCheck::className(), ['id' => 'gzn_type_check_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGznAuthoritieCheck()
+    {
+        return $this->hasOne(GznAuthoritieCheck::className(), ['id' => 'authoritie_check_id']);
     }
 
     /**

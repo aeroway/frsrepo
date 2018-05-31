@@ -99,8 +99,17 @@ function changeDateDue(value) {
 function changeFineCollected(value) {
     var amountFineCollected = 'gznviolations-amount_fine_collected';
     var amountFine = 'gznviolations-amount_fine';
+    var dateCheck = 'gznviolations-date_check';
+
     if(+document.getElementById(amountFine).value < +document.getElementById(amountFineCollected).value) {
         document.getElementById(amountFineCollected).value = '';
+        alert("Взысканный штраф больше, чем Размер штрафа.");
+    }
+
+    if(+document.getElementById(amountFineCollected).value > 0) {
+        document.getElementById(dateCheck).required = true;
+    } else {
+        document.getElementById(dateCheck).required = false;
     }
 }
 </script>

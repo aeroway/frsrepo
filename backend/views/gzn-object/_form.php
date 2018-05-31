@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\GznAdmPunishment;
 use backend\models\GznTypesPunishment;
 use backend\models\GznTypeCheck;
+use backend\models\GznAuthoritieCheck;
 use backend\models\AreaOtchet;
 use backend\models\GznLandCategory;
 use backend\models\GznLandUserCategory;
@@ -35,10 +36,15 @@ use wbraganca\dynamicform\DynamicFormWidget;
             ?>
             <?= $form->field($model, 'description_violation')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['class' => 'form-control', 'onchange' => 'changeViolationDate(this.value);'],]) ?>
             <?= $form->field($model, 'act_check')->textInput() ?>
-            <?= $form->field($model, 'authoritie_check')->dropDownList(
-                    ['МВД' => 'МВД', 'МЗК' => 'МЗК', 'КубЗК' => 'КубЗК', 'Прокуратура' => 'Прокуратура', 'ТО' => 'ТО', 'ТО внеплан' => 'ТО внеплан', 'ТО 28.1' => 'ТО 28.1', 'Другие' => 'Другие'],
-                    ['prompt'=>'Выберите орган проводивший мероприятия']
-            ) ?>
+            <?= $form->field($model, 'authoritie_check_id')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map(GznAuthoritieCheck::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'),
+                'language' => 'ru',
+                'options' => ['placeholder' => 'Выберите орган проводивший мероприятия'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+            ?>
             <?= $form->field($model, 'order_check')->textInput() ?>
             <?= $form->field($model, 'land_user_category_id')->dropDownList(
                     ArrayHelper::map(GznLandUserCategory::find()->all(), 'id', 'name'),

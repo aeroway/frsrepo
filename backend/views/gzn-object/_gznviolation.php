@@ -66,3 +66,5 @@ use backend\models\GznInjunctionSearch;
             //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
+</div>
