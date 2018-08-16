@@ -66,7 +66,7 @@ use backend\models\GznTypesPunishment;
         <?= $form->field($model, 'violation_decision_end')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'date_outgoing')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
         <?= $form->field($model, 'date_performance')->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
-        <?= $form->field($model, 'date_check')->textInput() ?>
+        <?= $form->field($model, 'date_check')->textInput(['type' => 'number', 'min' => '1900', 'max' => '2099', 'step' => '1']) ?>
         </div>
     </div>
 

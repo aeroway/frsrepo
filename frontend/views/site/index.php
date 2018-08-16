@@ -49,13 +49,12 @@ function button($gitem)
             ";
     }
 }
-
 ?>
 
 <div class="site-index">
     <div class="jumbotron">
         <h1>Сервисы</h1>
-        <p class="lead">Выберите доступный сервис из списка ниже после авторизации.</p>
+        <p class="lead"><?= !Yii::$app->user->isGuest ?  'Вы вошли как: ' . Yii::$app->user->identity->fio : 'Выберите доступный сервис из списка ниже после авторизации.'; ?></p>
     </div>
     <div class="body-content">
         <div class="row">

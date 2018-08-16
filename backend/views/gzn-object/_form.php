@@ -67,7 +67,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             <?= $form->field($model, 'type_func_use')->textInput() ?>
             <?= $form->field($model, 'requisites_land_user')->textInput() ?>
             <?= $form->field($model, 'full_name_inspector')->textInput() ?>
-            <?= $form->field($model, 'date_check')->textInput() ?>
+            <?= $form->field($model, 'date_check')->textInput(['type' => 'number', 'min' => '1900', 'max' => '2099', 'step' => '1']) ?>
             <?= $form->field($model, 'success')->checkbox(['onchange' => 'changeDescriptionViolation(this);']); ?>
             <?= $form->field($model, 'checklist')->checkbox();?>
             <?php
@@ -94,8 +94,11 @@ use wbraganca\dynamicform\DynamicFormWidget;
         'formId' => 'dynamic-form',
         'formFields' => [
             //'gzn_obj_id',
+            'adm_affairs',
+            'note',
             'adm_punishment_id',
             'violation_protocol',
+            'place_proceeding',
             'decision_punishment',
             'amount_fine',
             'amount_fine_collected',
@@ -108,6 +111,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             'date_outgoing',
             'date_performance',
             'types_punishment_id',
+            'date_check',
         ],
     ]); ?>
 
@@ -156,7 +160,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                         <?= $form->field($modelsGznViolations, "[{$i}]date_outgoing")->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
                         <?= $form->field($modelsGznViolations, "[{$i}]date_performance")->widget(DatePicker::classname(), ['language' => 'ru', 'dateFormat' => 'yyyy-MM-dd','options' => ['class' => 'form-control'],]) ?>
                         <?= $form->field($modelsGznViolations, "[{$i}]types_punishment_id")->dropDownList(ArrayHelper::map(GznTypesPunishment::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'), ['prompt' => 'Выберите вид наказания']) ?>
-                        <?= $form->field($modelsGznViolations, "[{$i}]date_check")->textInput() ?>
+                        <?= $form->field($modelsGznViolations, "[{$i}]date_check")->textInput(['type' => 'number', 'min' => '1900', 'max' => '2099', 'step' => '1']) ?>
                         </div>
                     </div><!-- .row -->
                 </div>

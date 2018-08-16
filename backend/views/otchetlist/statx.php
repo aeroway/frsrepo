@@ -59,6 +59,7 @@ $tblview = array(
     'otchetn' => 'stat_n',
     'otchetur' => 'stat_ur',
     'otchetfiz' => 'stat_fiz',
+    'otchet39' => 'stat_39',
 );
 
 if(
@@ -97,6 +98,7 @@ if(
     or $tblname == 'otchetn'
     or $tblname == 'otchetur'
     or $tblname == 'otchetfiz'
+    or $tblname == 'otchet39'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')
@@ -160,7 +162,7 @@ if(
     exit(1);
 }
 
-$arr_tab = array('otchet3', 'otchetn', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20');
+$arr_tab = array('otchet3', 'otchetn', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20', 'otchet39');
 
 if(in_array($tblname, $arr_tab))
 {

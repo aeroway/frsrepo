@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p style="color:red"><b>Для входа используйте логин и пароль, как на Вашем компьютере (вход в Windows в домене 23UPR).</b></p>
+    <p style="color:red"><b>Для входа используйте логин и пароль, как на Вашем компьютере (вход в Windows в домене 23UPR или Kadastr).</b></p>
     <p style=""><b>В устаревших браузерах Internet Explorer (IE) этот ресурс работать не будет. Заходить в хроме, опере или в любом другом обновлённом браузере.</b></p>
 
     <div class="row">

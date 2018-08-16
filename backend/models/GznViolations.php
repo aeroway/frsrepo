@@ -49,7 +49,7 @@ class GznViolations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gzn_obj_id', 'adm_affairs', 'adm_punishment_id'], 'required'],
+            [['adm_affairs', 'adm_punishment_id'], 'required'],
             [['date_due', 'violation_decision_end', 'decision_cancellation', 'decision_appeal', 'decision_punishment', 'violation_protocol', 'date_outgoing', 'date_performance', ], 'date', 'format' => 'Y-m-d'],
             [['gzn_obj_id', 'adm_punishment_id', 'types_punishment_id'], 'integer'],
             [['payment_doc', 'adm_affairs', 'note', 'date_check'], 'string'],

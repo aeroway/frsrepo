@@ -71,10 +71,22 @@ if(Otchett::$name == 'otchet29')
             ],
             'description',
             'status',
-            'comment',
+            //'comment',
+            [
+                'attribute' => 'comment',
+                'value' => function($data) {
+                    if (Otchett::$name == 'otchet39') {
+                        $dateComment = new DateTime($data->comment);
+                        return $dateComment->format('d.m.Y');
+                    } else {
+                        return $data->comment;
+                    }
+                },
+                'format' => 'raw',
+            ],
             [
                 'attribute' => 'date',
-                'format' =>  ['date', 'php:M d Y'],
+                'format' =>  ['date', 'php:d M Y'],
                 'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
             ],
             [
@@ -94,7 +106,7 @@ if(Otchett::$name == 'otchet29')
             //'filename',
             [
                 'attribute' => 'date_load',
-                'format' =>  ['date', 'php:M d Y'],
+                'format' =>  ['date', 'php:d M Y'],
                 'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
             ],
             'area',

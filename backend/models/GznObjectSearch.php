@@ -91,6 +91,7 @@ class GznObjectSearch extends GznObject
 				'full_name_inspector',
 				'success',
 				'checklist',
+                'date_check',
 				'areaOtchetName' => [
 					'asc' => ['b.name' => SORT_ASC],
 					'desc' => ['b.name' => SORT_DESC],

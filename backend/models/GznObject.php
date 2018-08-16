@@ -230,6 +230,7 @@ class GznObject extends \yii\db\ActiveRecord
         $amountDateCheck =
           GznObject::find()
             ->select('date_check')
+            ->where("date_check <> ' '")
             ->groupBy('date_check')
             ->createCommand()
             ->queryAll();

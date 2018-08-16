@@ -59,9 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'aria-label' => Yii::t('yii', 'Добавить нарушение'),
                 ];
 
-                $url = Yii::$app->getUrlManager()->createUrl(['gzn-violations/create', 'sid' => $model['id']]);
-
-                return Html::a('<span class="glyphicon glyphicon-plus"></span>', $url, $options);
+                return Html::a('<span class="glyphicon glyphicon-plus"></span>', ['gzn-violations/create', 'sid' => $model['id']], $options);
             },
             'view' => function($url, $model)
             {
@@ -84,8 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 $url = Yii::$app->getUrlManager()->createUrl([
                     'gzn-object/update',
                     'id' => $model['id'],
-                    //'page' => empty(Yii::$app->request->queryParams["page"]) ? 1 : Yii::$app->request->queryParams["page"],
-                    //'sort' => empty(Yii::$app->request->queryParams["sort"]) ? '' : Yii::$app->request->queryParams["sort"],
                 ]);
 
                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
@@ -143,6 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'order_check',
             'kn',
+            //'date_check',
             // 'land_num',
             /*
             [

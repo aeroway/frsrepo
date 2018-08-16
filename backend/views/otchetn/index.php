@@ -64,13 +64,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'comment',
             [
                 'attribute' => 'dateon',
-                'format' =>  ['date', 'php:M d Y'],
+                'format' =>  ['date', 'php:d M Y'],
                 'contentOptions' => ['style'=>'text-align: center;'],
             ],
             'usernameon',
             [
                 'attribute' => 'date_load',
-                'format' =>  ['date', 'php:M d Y'],
+                'format' =>  ['date', 'php:d M Y'],
                 'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
             ],
             'flag',

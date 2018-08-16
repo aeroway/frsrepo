@@ -43,7 +43,8 @@
         "adldap/adldap": "4.0.4 as 4.0-stable",
         "edvlerblog/yii2-adldap-module": "v1.0.0",
         "phpoffice/phpword": "^0.13.0",
-        "insolita/yii2-migration-generator": "~2.3"
+        "insolita/yii2-migration-generator": "~2.3",
+        "kartik-v/yii2-mpdf": "*"
     },
     "require-dev": {
         "codeception/codeception": "*",

@@ -270,6 +270,8 @@ class ReqController extends Controller
 
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save("php://output");
+
+        exit;
     }
 
     public function actionSetcuruser($id, $page, $sort, $status, $idReqsearch)

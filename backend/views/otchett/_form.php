@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
             echo $form->field($model, 'kn')->textInput(['readonly' => true]);
         }
 
-        if($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38') {
+        if($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38' or $arr["table"] == 'otchet39') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
         } else {
             echo $form->field($model, 'description')->textInput();
@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
 
         if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
-        } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38') {
+        } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38' or $arr["table"] == 'otchet39') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
         } else {
             echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);

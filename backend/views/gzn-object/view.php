@@ -141,7 +141,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'violation_decision_end',
                             'format' =>  ['date', 'php:d M Y'],
                         ],
-                        'place_proceeding',
+                        [
+                            'attribute' => 'place_proceeding',
+                            'format' =>  ['date', 'php:d M Y'],
+                        ],
                         [
                             'attribute' => 'violation_protocol',
                             'format' =>  ['date', 'php:d M Y'],
