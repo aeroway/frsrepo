@@ -30,7 +30,7 @@ class OtchetlistController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'create'],
+                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'create', 'stat-39-range', 'stat-index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -60,6 +60,7 @@ class OtchetlistController extends Controller
         ]);
     }
 
+    /* not used anymore */
     public function actionStat()
     {
         $searchModel = new OtchetlistSearch();
@@ -68,6 +69,20 @@ class OtchetlistController extends Controller
         return $this->render('stat', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionStatIndex($tblname)
+    {
+        return $this->render('stat-index', [
+            'tblname' => $tblname,
+        ]);
+    }
+
+    public function actionStat39Range($tblname)
+    {
+        return $this->render('stat-39-range', [
+            'tblname' => $tblname,
         ]);
     }
 

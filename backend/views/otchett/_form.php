@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Otchet */
@@ -38,10 +39,11 @@ use yii\widgets\ActiveForm;
 
         if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
-        } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38' or $arr["table"] == 'otchet39') {
+        } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
         } else {
-            echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
+            if ($arr["table"] != 'otchet39')
+                echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
         }
     ?>
 
@@ -51,7 +53,22 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
-    <?= $form->field($model, 'protocol')->textInput(['maxlength' => 100]) ?>
+    <?php
+        if($arr["table"] == 'otchet39') {
+            echo $form->field($model, 'protocol')->widget(Select2::classname(), [
+                'data' => ["Данные не найдены" => "Данные не найдены", "Найдено более одного СНИЛС" => "Найдено более одного СНИЛС"],
+                'language' => 'ru',
+                'options' => ['placeholder' => 'Выберите причину или напишите свою'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'tags' => true
+                ],
+            ]);
+        } else {
+            echo $form->field($model, 'protocol')->textInput(['maxlength' => 100]);
+        }
+    ?>
+    <?php //echo $form->field($model, 'protocol')->textInput(['maxlength' => 100]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

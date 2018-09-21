@@ -15,6 +15,10 @@ use Yii;
  */
 class OraDopDoc extends \yii\db\ActiveRecord
 {
+    public static function getDb()
+    {
+        return \Yii::$app->db8;  
+    }
     /**
      * @inheritdoc
      */

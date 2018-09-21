@@ -41,7 +41,7 @@ class Otchett extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'status', 'comment', 'date', 'username'], 'required'],
+            [['description', 'status', 'date', 'username'], 'required'],
             [['id_dpt', 'id_egrp'], 'integer'],
             [['kn', 'description', 'status', 'comment', 'username', 'area', 'flag', 'filename', 'protocol'], 'string'],
             [['date', 'date_update', 'date_load'], 'safe']

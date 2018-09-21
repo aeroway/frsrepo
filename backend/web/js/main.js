@@ -1,4 +1,5 @@
-﻿$("body").on("click", "a[href*='setcuruser']", function(e) {
+﻿/* Заказ дел из архива */
+$("body").on("click", "a[href*='setcuruser']", function(e) {
     $.ajax({
         url: this,
         success: function (data) {
@@ -25,6 +26,7 @@ $("body").on("click", "a[href*='createdatereturn']", function(e) {
     });
 });
 
+/* Учёт техники */
 $("body").on("click", "a[href*='addparts']", function(e) {
     $.ajax({
         url: this,
@@ -53,6 +55,7 @@ $("body").on("click", "a[href*='createmodal']", function(e) {
 });
 
 $(document).ready(function() {
+    /* Блокировка аккаутов */
     $("#yourSelect").change(function() {
         if($("select#yourSelect").val() != '') {
             $.ajax({
@@ -72,8 +75,7 @@ $(document).ready(function() {
         }
     });
 
-    /* Для бухгалтерии */
-
+    /* Бухгалтерия */
     if($("#purchaseplan-is_percent").attr("checked") != 'checked') {
         $(".field-purchaseplan-econom").hide();
     }
@@ -86,7 +88,7 @@ $(document).ready(function() {
         }
     });
 
-    /* Для архива */
+    /* Архив */
     $(".field-req-scan_doc").hide();
     $('#req-type').change(function() {
         var select = $(this).val();
@@ -98,7 +100,7 @@ $(document).ready(function() {
         }
     });
 
-    /* Для ГЗН */
+    /* ГЗН */
 	$( "#selectPunishment" ).change(function()
 	{
 		if($("select#selectPunishment").val() != '')

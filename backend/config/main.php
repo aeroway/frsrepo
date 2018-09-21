@@ -38,6 +38,7 @@ return [
         ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'Europe/Moscow',
             'nullDisplay' => '',
             'dateFormat' => 'dd.MM.yyyy',
             'datetimeFormat' => 'd-M-Y H:i:s',

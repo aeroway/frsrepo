@@ -24,6 +24,10 @@ use Yii;
  */
 class OraKuvdMain extends \yii\db\ActiveRecord
 {
+    public static function getDb()
+    {
+        return \Yii::$app->db8;  
+    }
     /**
      * @inheritdoc
      */

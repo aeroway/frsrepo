@@ -108,7 +108,7 @@ if(
 
         $localVarOut = '<h1>' . $otchett->otchetList($tblname) . '</h1>';
         $localVarOut .= '<table cellpadding="7" border="2">';
-        $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td><td><b>Исправлено</b></td><td><b>В работе</b></td><td><b>Невозможно исправить</b></td><td><b>Не назначено</b></td><td><b>Повторные</b></td><td><b>Назначено</b></td></tr></head>';
+        $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td><td><b>Исправлено</b></td><td><b>В работе</b></td><td><b>Невозможно исправить</b></td><td><b>Не назначено</b></td><td><b>Повторные</b></td><td><b>Назначено</b></td><td><b>Не исправлено</b></td><td><b>%</b></td></tr></head>';
 
         $localVarOut .= '<body>';
 
@@ -153,6 +153,8 @@ if(
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'Не назначено'])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['flag' => 1])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'назначено'])->count() . '</td>
+                <td> </td>
+                <td> </td>
             </tr>';
     $localVarOut .= '</body>';
     $localVarOut .= '</table>';

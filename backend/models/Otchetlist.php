@@ -55,6 +55,9 @@ class OtchetList extends \yii\db\ActiveRecord
 
     public function getStatusOtchetlist($table)
     {
+        //if($table == 'otchet39')
+            //return Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
+
         if($table == 'otchetn')
             $controller = 'otchetn';
         elseif($table == 'otchet_pay')
@@ -174,6 +177,9 @@ class OtchetList extends \yii\db\ActiveRecord
 
         if($table <> 'otchet_pay' && $table <> 'otchet999')
             $lcl_echo .= Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
+
+        if($table == 'otchet39')
+            $lcl_echo .= "<p>" . Html::a('Статистика за период', ['otchetlist/stat-index', 'tblname' => $table], ['target'=>'_blank']) . "</p>";
 
         return $lcl_echo;
     }

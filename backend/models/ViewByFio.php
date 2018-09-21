@@ -14,6 +14,10 @@ use Yii;
  */
 class ViewByFio extends \yii\db\ActiveRecord
 {
+    public static function getDb()
+    {
+        return \Yii::$app->db8;  
+    }
     /**
      * @inheritdoc
      */

@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
 use yii\helpers\ArrayHelper;
 use backend\models\Otdel;
+use backend\models\Employee;
 use backend\models\AbSystems;
 use backend\models\AbStatus;
 
@@ -25,7 +26,7 @@ use backend\models\AbStatus;
         echo '<label class="control-label">Отдел</label>';
         echo '<select class="form-control" id="yourSelect">';
         echo '<option value="">Выберите Отдел</option>';
-        foreach(ArrayHelper::map(Otdel::find()->orderBy(['text' => SORT_ASC])->all(),'id','text') as $key => $value)
+        foreach(ArrayHelper::map(Otdel::find()->innerJoin('employee', 'otdel.id = employee.idm_otdel')->where(['employee.status' => 1])->orderBy(['text' => SORT_ASC])->all(),'id','text') as $key => $value)
         {
             echo '<option value="'.$key.'">'.$value.'</option>';
         }
