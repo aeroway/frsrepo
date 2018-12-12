@@ -40,16 +40,27 @@ if(Otchett::$name == 'otchet29')
     <?php
     if(in_array("OtchetManager", Yii::$app->user->identity->groups))
     {
-        echo Html::dropDownList('action', '', ArrayHelper::map(Employee::find()
+        $arrayUsers = ArrayHelper::map(Employee::find()
             ->where(['and', ['or', ['idm_otdel' => 139], ['idm_otdel' => 3], ['idm_otdel' => 170]], ['status' => 1]])
             ->orderBy(['fam' => SORT_ASC])
-            ->all(),
-        'fullName', 'fullName'),
-        ['class' => 'form-control', 'style' => 'width: 90%; margin-bottom: 10px; margin-right: 10px; float: left']);
+            ->all(), 'fullName', 'fullName');
+
+        $arrayUsers["1"] = "Выберите пользователя";
+
+        echo Html::dropDownList('action', '1', $arrayUsers, [
+            'class' => 'form-control', 
+            'style' => 'width: 90%; margin-bottom: 10px; margin-right: 10px; float: left'
+        ]);
 
         echo Html::submitButton('Назначить', ['class' => 'btn btn-info', 'style' => 'margin-bottom: 10px;']);
     }
     ?>
+
+    <?php if (Otchett::$name === 'otchet41') : ?>
+        <?php $labelProtocol = ['label' => 'Результат', 'attribute' => 'protocol',]; ?>
+    <?php else: ?>
+        <?php $labelProtocol = ['label' => 'Протокол', 'attribute' => 'protocol',]; ?>
+    <?php endif; ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -110,7 +121,7 @@ if(Otchett::$name == 'otchet29')
                 'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
             ],
             'area',
-            'protocol',
+            $labelProtocol,
 
             //['class' => 'yii\grid\ActionColumn'],
             [

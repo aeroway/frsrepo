@@ -43,10 +43,18 @@ class OtchettSearch extends Otchett
     {
         $query = Otchett::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort'=> ['defaultOrder' => ['kn' => SORT_DESC, 'area' => SORT_ASC]]
-        ]);
+        if (Otchett::$name == 'otchet39') {
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'sort'=> ['defaultOrder' => ['description' => SORT_ASC, 'area' => SORT_ASC]]
+            ]);
+        }
+        else {
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'sort'=> ['defaultOrder' => ['kn' => SORT_DESC, 'area' => SORT_ASC]]
+            ]);
+        }
 
         $this->load($params);
 

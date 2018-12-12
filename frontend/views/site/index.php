@@ -55,6 +55,7 @@ function button($gitem)
     <div class="jumbotron">
         <h1>Сервисы</h1>
         <p class="lead"><?= !Yii::$app->user->isGuest ?  'Вы вошли как: ' . Yii::$app->user->identity->fio : 'Выберите доступный сервис из списка ниже после авторизации.'; ?></p>
+        <a type="button" class="btn btn-success" href="/backend/index.php?r=otchett/index&table=otchet41">Экстер ФГИС ЕГРН</a>
     </div>
     <div class="body-content">
         <div class="row">

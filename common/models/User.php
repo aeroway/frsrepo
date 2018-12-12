@@ -28,11 +28,6 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
-    public static function getDb()
-    {
-        return \Yii::$app->db7;  
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -101,15 +96,31 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        $result = \Yii::$app->Ldap->user()->info($id);
+        $out = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
 
-        if ($result) {
-            return new static (['id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($id)]);
-        }// else {
-            //$out = null;
-        //}
+        if ($out === NULL) {
 
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+            $result = \Yii::$app->Ldap->user()->info($id);
+            $resultKadastr = \Yii::$app->LdapKadastr->user()->info($id);
+
+            if ($result) {
+
+                return new static (['id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($id)]);
+
+            } elseif ($resultKadastr) {
+
+                $out = array('id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->LdapKadastr->user()->groups($id));
+
+                return new static ($out);
+
+            } else {
+
+                $out = new static (null);
+
+            }
+        }
+        
+        return $out;
     }
 
     public static function findIdentityByAccessToken($token, $type = null)

@@ -54,6 +54,7 @@ class OtchetlistSearch extends Otchetlist
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['id' => SORT_DESC]],
         ]);
 
         $this->load($params);

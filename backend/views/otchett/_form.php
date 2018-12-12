@@ -22,22 +22,26 @@ use kartik\select2\Select2;
             echo $form->field($model, 'kn')->textInput(['readonly' => true]);
         }
 
-        if($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38' or $arr["table"] == 'otchet39') {
+        if($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38' or $arr["table"] == 'otchet39' or $arr["table"] == 'otchet41') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
         } else {
             echo $form->field($model, 'description')->textInput();
         }
     ?>
 
-    <?= $form->field($model, 'status')->dropDownList(
-            ['Исправлен' => 'Исправлен','Невозможно исправить' => 'Невозможно исправить','В работе' => 'В работе'],
-            ['prompt'=>'Выберите Статус']
-    ) ?>
+    <?php if($arr["table"] == 'otchet41') : ?>
+        <?= $form->field($model, 'status')->hiddenInput(['readonly' => true, 'value' => 'Исправлен'])->label(false); ?>
+    <?php else : ?>
+        <?= $form->field($model, 'status')->dropDownList(
+                ['Исправлен' => 'Исправлен', 'Невозможно исправить' => 'Невозможно исправить', 'В работе' => 'В работе'],
+                ['prompt'=>'Выберите Статус']
+        ) ?>
+    <?php endif; ?>
 
     <?php
         $arr = Yii::$app->request->get();
 
-        if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16') {
+        if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16' or $arr["table"] == 'otchet41') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
         } elseif($arr["table"] == 'otchet22' or $arr["table"] == 'otchet36' or $arr["table"] == 'otchet37' or $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
@@ -49,7 +53,11 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'date')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
 
-    <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
+    <?php if ($arr["table"] == 'otchet41') : ?>
+        <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->username]) ?>
+    <?php else : ?>
+        <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
+    <?php endif; ?>
 
     <?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
@@ -64,6 +72,18 @@ use kartik\select2\Select2;
                     'tags' => true
                 ],
             ]);
+        } elseif($arr["table"] == 'otchet41') {
+            echo $form->field($model, 'protocol')->widget(Select2::classname(), [
+                'data' => ["Возврат по причине приостановки" => "Возврат по причине приостановки", "Зарегистрировано" => "Зарегистрировано", 
+                    "Ненадлежащее рег. действие" => "Ненадлежащее рег. действие", "Ошибка миграции" => "Ошибка миграции", "Возврат по причине приостановки (повторно)" => "Возврат по причине приостановки (повторно)"],
+                'language' => 'ru',
+                'options' => ['placeholder' => 'Выберите статус обработки'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    //'tags' => true,
+                    'initialize' => true,
+                ],
+            ])->label('Результат');
         } else {
             echo $form->field($model, 'protocol')->textInput(['maxlength' => 100]);
         }

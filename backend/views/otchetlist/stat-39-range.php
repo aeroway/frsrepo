@@ -25,6 +25,7 @@ $otchett = new Otchett();
 $tblst = new Otchetlist();
 $tblview = array(
     'otchet39' => 'stat39Range',
+    'otchet41' => 'stat41Range',
 );
 
 if($tblname == 'otchet39') {
@@ -71,6 +72,75 @@ if($tblname == 'otchet39') {
             <!--<td> </td>
             <td> </td>-->
         </tr>';
+    $localVarOut .= '</body>';
+    $localVarOut .= '</table>';
+
+    echo $localVarOut;
+
+    exit(1);
+}
+
+if($tblname == 'otchet41') {
+    $rows = Yii::$app->db->createCommand("SELECT * FROM $tblview[$tblname]('" . Yii::$app->request->post('fromDate') . "', '" . Yii::$app->request->post('tillDate') . "', '" . Yii::$app->request->post('username') . "')")->queryAll();
+
+    $localVarOut = '<h1>' . $otchett->otchetList($tblname) . '</h1>';
+    $localVarOut .= '<table cellpadding="7" border="2">';
+    $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></td><td><b>Возврат по причине приостановки</b></td><td><b>Зарегистрировано</b></td><td><b>Ненадлежащее рег. действие</b></td><td><b>Ошибка миграции</b></td></tr></head>';
+
+    $localVarOut .= '<body>';
+
+    $i = 1;
+
+    foreach($rows as $val)
+    {
+        $localVarOut .= '<tr>';
+        $localVarOut .= '<td>' . $i++ . '</td>';
+
+        foreach($val as $val2)
+        {
+            $localVarOut .= '<td>' . $val2 . '</td>';
+        }
+
+        $localVarOut .= '</tr>';
+    }
+
+    $localVarOut .= 
+        '<tr>
+            <td> </td>
+            <td> </td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')]])
+                ->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Возврат по причине приостановки']])->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Зарегистрировано']])->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Ненадлежащее рег. действие']])->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Ошибка миграции']])->count() . '</td>
+        </tr>';
+
+    $localVarOut .= '</tr>';
     $localVarOut .= '</body>';
     $localVarOut .= '</table>';
 

@@ -20,20 +20,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="otchetlist-form">
 
-        <?php $form = ActiveForm::begin(['action' => '/backend/index.php?r=otchetlist/stat-39-range&tblname=otchet39', 'id' => 'stat-39-range', 'method' => 'post',]); ?>
+        <?php $form = ActiveForm::begin(['action' => "/backend/index.php?r=otchetlist/stat-39-range&tblname=$tblname", 'id' => 'stat-39-range', 'method' => 'post',]); ?>
 
             <div>
                 <label for="from">От</label>
                 <input type="date" id="fromDate" name="fromDate"
-                       value="2018-08-27"
+                       value="2018-11-27"
                        min="2018-07-01" max="2018-12-31">
             </div>
             <div>
                 <label for="till">До</label>
                 <input type="date" id="tillDate" name="tillDate"
-                       value="2018-08-31"
+                       value="2018-11-30"
                        min="2018-07-01" max="2018-12-31">
             </div>
+            <?php if($tblname === 'otchet41') : ?>
+                <?= '
+                <div>
+                    <input type="text" id="username" name="username" placeholder="Пользователь" size="17">
+                </div>
+                '; ?>
+            <?php endif; ?>
             <br>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Найти</button>

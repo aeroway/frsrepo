@@ -127,14 +127,21 @@ class OtchettController extends Controller
             foreach(Yii::$app->request->post() as $fkey) { }
             foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-            if ( ($model->getOldAttribute('status') == 'Исправлен') and ('23UPR\\'.strtoupper(Yii::$app->user->identity->username) != strtoupper($this->findModel($id)->username)) )
+            if (
+                (($model->getOldAttribute('status') == 'Исправлен') && 
+                (('23UPR\\' . strtoupper(Yii::$app->user->identity->username) != strtoupper($model->getOldAttribute('username'))))) &&
+                (($model->getOldAttribute('status') == 'Исправлен') && 
+                ((strtoupper(Yii::$app->user->identity->username) != strtoupper($model->getOldAttribute('username')))))
+            )
             {
+                //this->findModel($id)->username
                 throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
             }
 
             $model->save();
 
             return $this->redirect(['view', 'id' => $model->id, 'table' => Otchett::$name]);
+            //return $this->redirect(['index', 'table' => Otchett::$name]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -177,6 +184,20 @@ class OtchettController extends Controller
     {
         $action = Yii::$app->request->post('action');
         $selection = (array)Yii::$app->request->post('selection');
+
+        if ($action == 1) {
+
+            if (in_array("OtchetManagerReturn", Yii::$app->user->identity->groups)) {
+                foreach($selection as $id) {
+                    Yii::$app->db->createCommand()
+                        ->update(Yii::$app->session->getFlash('table'), [
+                            'description' => 'Возврат',
+                        ], "id = $id")->execute();
+                }
+            }
+
+            return $this->redirect(['index', 'table' => Yii::$app->session->getFlash('table')]);
+        }
 
         foreach($selection as $id)
         {
