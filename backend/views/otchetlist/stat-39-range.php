@@ -26,6 +26,7 @@ $tblst = new Otchetlist();
 $tblview = array(
     'otchet39' => 'stat39Range',
     'otchet41' => 'stat41Range',
+    'otchet42' => 'stat42Range',
 );
 
 if($tblname == 'otchet39') {
@@ -80,12 +81,12 @@ if($tblname == 'otchet39') {
     exit(1);
 }
 
-if($tblname == 'otchet41') {
+if($tblname == 'otchet41' || $tblname == 'otchet42') {
     $rows = Yii::$app->db->createCommand("SELECT * FROM $tblview[$tblname]('" . Yii::$app->request->post('fromDate') . "', '" . Yii::$app->request->post('tillDate') . "', '" . Yii::$app->request->post('username') . "')")->queryAll();
 
     $localVarOut = '<h1>' . $otchett->otchetList($tblname) . '</h1>';
     $localVarOut .= '<table cellpadding="7" border="2">';
-    $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></td><td><b>Возврат по причине приостановки</b></td><td><b>Зарегистрировано</b></td><td><b>Ненадлежащее рег. действие</b></td><td><b>Ошибка миграции</b></td></tr></head>';
+    $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></td><td><b>Возврат по причине приостановки</b></td><td><b>Возврат по причине приостановки (повторно)</b></td><td><b>Забрали обратно</b></td><td><b>Зарегистрировано</b></td><td><b>Ненадлежащее рег. действие</b></td><td><b>Ошибка миграции</b></td></tr></head>';
 
     $localVarOut .= '<body>';
 
@@ -120,6 +121,18 @@ if($tblname == 'otchet41') {
                     ['<=', 'date', Yii::$app->request->post('tillDate')], 
                     ['like', 'username', Yii::$app->request->post('username')],
                     ['protocol' => 'Возврат по причине приостановки']])->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Возврат по причине приостановки (повторно)']])->count() . '</td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+                ->where(['and', 
+                    ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                    ['<=', 'date', Yii::$app->request->post('tillDate')], 
+                    ['like', 'username', Yii::$app->request->post('username')],
+                    ['protocol' => 'Забрали обратно']])->count() . '</td>
             <td>' . (new \yii\db\Query())->from($tblname)
                 ->where(['and', 
                     ['>=', 'date', Yii::$app->request->post('fromDate')], 

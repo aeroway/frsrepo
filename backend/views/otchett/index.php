@@ -1,8 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-
+//use yii\grid\GridView;
+use kartik\grid\GridView;
+use kartik\export\ExportMenu;
 use backend\models\Otchett;
 use yii\helpers\ArrayHelper;
 use backend\models\Employee;
@@ -24,7 +25,6 @@ if(Otchett::$name == 'otchet29')
         ],
         'body' => '<h4>Слева площадь ЕГРП. Справа площадь ГКН.</h4>'
     ]);
-
 ?>
 <div class="otchet-index">
 
@@ -56,11 +56,27 @@ if(Otchett::$name == 'otchet29')
     }
     ?>
 
-    <?php if (Otchett::$name === 'otchet41') : ?>
+    <?php if (Otchett::$name === 'otchet41' || Otchett::$name === 'otchet42') : ?>
         <?php $labelProtocol = ['label' => 'Результат', 'attribute' => 'protocol',]; ?>
     <?php else: ?>
         <?php $labelProtocol = ['label' => 'Протокол', 'attribute' => 'protocol',]; ?>
     <?php endif; ?>
+
+    <?php
+        $gridColumns = [
+            'kn',
+        ];
+
+        echo ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'exportConfig' => [
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_PDF => false,
+            ],
+        ]);
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

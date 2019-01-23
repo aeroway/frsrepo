@@ -25,16 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <div>
                 <label for="from">От</label>
                 <input type="date" id="fromDate" name="fromDate"
-                       value="2018-11-27"
-                       min="2018-07-01" max="2018-12-31">
+                       value="2019-01-09"
+                       min="2018-09-01" max="2019-12-31">
             </div>
             <div>
                 <label for="till">До</label>
                 <input type="date" id="tillDate" name="tillDate"
-                       value="2018-11-30"
-                       min="2018-07-01" max="2018-12-31">
+                       value="2019-01-10"
+                       min="2018-09-01" max="2019-12-31">
             </div>
-            <?php if($tblname === 'otchet41') : ?>
+            <?php if($tblname === 'otchet41' || $tblname === 'otchet42') : ?>
                 <?= '
                 <div>
                     <input type="text" id="username" name="username" placeholder="Пользователь" size="17">

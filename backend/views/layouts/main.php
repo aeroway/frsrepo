@@ -1,23 +1,23 @@
 <?php
-use backend\assets\AppAsset;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-
-use backend\models\Otchett;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
+use yii\helpers\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\widgets\Breadcrumbs;
+use backend\assets\AppAsset;
+use backend\models\Otchett;
 
+AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -25,13 +25,15 @@ AppAsset::register($this);
 </head>
 <body>
     <?php $this->beginBody() ?>
+
     <div class="wrap">
         <?php
             NavBar::begin([
+                'innerContainerOptions' => ['class' => 'container-fluid'],
                 'brandLabel' => 'Управление Росреестра по Краснодарскому краю',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
+                    'class' => 'navbar-inverse',
                 ],
             ]);
             $menuItems = [
@@ -55,7 +57,7 @@ AppAsset::register($this);
             NavBar::end();
         ?>
 
-        <div class="container">
+        <div class="container-fluid">
         <?php
         if(!empty($this->params['breadcrumbs']))
         {
@@ -77,7 +79,7 @@ AppAsset::register($this);
     </div>
 
     <footer class="footer">
-        <div class="container">
+        <div class="container-fluid">
         <p class="pull-left">&copy; Росреестр <?= date('Y') ?></p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
