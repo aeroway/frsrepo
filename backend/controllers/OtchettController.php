@@ -59,6 +59,44 @@ class OtchettController extends Controller
         ]);
     }
 
+    public function actionImportExcel()
+    {
+        $inputFile = 'uploads/branches_file.xlsx';
+
+        try {
+            $inputFileType = \PHPExcel_IOFactory::indentify($inputFile);
+            $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+            $objPHPExcel = $objReader->load($inputFile);
+        } catch (Exception $e) {
+            die('Error');
+        }
+
+        $sheet = $objPHPExcel->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+        $highestColumn = $sheet->getHighestColumn();
+
+        for ($row = 1; $row <= $highestRow ; $row++) {
+            $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+
+            if ($row == 1) {
+                continue;
+            }
+
+            print_r($rowData);
+            die();
+
+            $otchett = new Otchett();
+            $otchett->kn = $rowData[0][1];
+            $otchett->username = $rowData[0][3];
+            $otchett->comment = $rowData[0][3];
+            $otchett->area = $rowData[0][5];
+            $otchett->save();
+
+            print_r($otchett->getErrors());
+        }
+        die('okay');
+    }
+
     public function actionIndexstat()
     {
         $arr = Yii::$app->request->get();

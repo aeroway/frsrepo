@@ -40,7 +40,7 @@ class Otchett extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        (self::$name === 'otchet41') 
+        (self::$name === 'otchet41' || self::$name === 'otchet42' || self::$name === 'otchet44')
             ? $required = [['status', 'date', 'username', 'protocol'], 'required'] : $required = [['status', 'date', 'username'], 'required'];
 
         return [

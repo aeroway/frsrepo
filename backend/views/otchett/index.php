@@ -56,7 +56,7 @@ if(Otchett::$name == 'otchet29')
     }
     ?>
 
-    <?php if (Otchett::$name === 'otchet41' || Otchett::$name === 'otchet42') : ?>
+    <?php if (Otchett::$name === 'otchet41' || Otchett::$name === 'otchet42'|| Otchett::$name === 'otchet44') : ?>
         <?php $labelProtocol = ['label' => 'Результат', 'attribute' => 'protocol',]; ?>
     <?php else: ?>
         <?php $labelProtocol = ['label' => 'Протокол', 'attribute' => 'protocol',]; ?>
@@ -65,6 +65,7 @@ if(Otchett::$name == 'otchet29')
     <?php
         $gridColumns = [
             'kn',
+            'description',
         ];
 
         echo ExportMenu::widget([

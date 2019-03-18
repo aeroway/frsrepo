@@ -78,13 +78,13 @@ class InventorySearch extends Inventory
             'username' => $this->username,
         ]);
 
-        $query->andFilterWhere(['like', 'invname', $this->invname])
-            ->andFilterWhere(['like', 'invnum', $this->invnum])
-            ->andFilterWhere(['like', 'location', $this->location])
-            ->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'inventory_moo.name', $this->id_moo])
-            ->andFilterWhere(['like', 'inventory_status.name', $this->id_status])
-            ->andFilterWhere(['like', 'inventory_typetech.name', $this->id_typetech]);
+        $query->andFilterWhere(['ilike', 'invname', $this->invname])
+            ->andFilterWhere(['ilike', 'invnum', $this->invnum])
+            ->andFilterWhere(['ilike', 'location', $this->location])
+            ->andFilterWhere(['ilike', 'comment', $this->comment])
+            ->andFilterWhere(['ilike', 'inventory_moo.name', $this->id_moo])
+            ->andFilterWhere(['ilike', 'inventory_status.name', $this->id_status])
+            ->andFilterWhere(['ilike', 'inventory_typetech.name', $this->id_typetech]);
 
         if(!in_array("AdminInventory", Yii::$app->user->identity->groups)) {
             $query->andFilterWhere(['!=', 'inventory_status.id', 9]);
