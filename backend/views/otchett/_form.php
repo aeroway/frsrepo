@@ -31,6 +31,7 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet44' or 
             $arr["table"] == 'otchet29' or 
             $arr["table"] == 'otchet35' or 
+            $arr["table"] == 'otchet46' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
         } else {
@@ -60,7 +61,7 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
         } else {
-            if ($arr["table"] != 'otchet39')
+            if ($arr["table"] != 'otchet39' && $arr["table"] != 'otchet46')
                 echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
         }
     ?>
@@ -76,7 +77,7 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'flag')->hiddenInput(['value' => '0'])->label(false) ?>
 
     <?php
-        if($arr["table"] == 'otchet39') {
+        if($arr["table"] == 'otchet39' || $arr["table"] == 'otchet46') {
             echo $form->field($model, 'protocol')->widget(Select2::classname(), [
                 'data' => ["Данные не найдены" => "Данные не найдены", "Найдено более одного СНИЛС" => "Найдено более одного СНИЛС"],
                 'language' => 'ru',

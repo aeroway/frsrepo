@@ -53,9 +53,7 @@ function button($gitem)
 
 <div class="site-index">
     <div class="jumbotron">
-        <!--<h1>Сервисы</h1>-->
         <p class="lead"><?= !Yii::$app->user->isGuest ?  'Вы вошли как: ' . Yii::$app->user->identity->fio : 'Выберите доступный сервис из списка ниже после авторизации.'; ?></p>
-        <!--<a type="button" class="btn btn-success" href="/backend/index.php?r=otchett/index&table=otchet42">Экстер ФГИС ЕГРН</a>-->
     </div>
     <div class="body-content">
         <div class="row">
@@ -71,6 +69,8 @@ function button($gitem)
             <a target="_blank" href="http://10.23.113.44/sudotdel/" style="margin: 5px;" class="btn btn-primary btn-sm">Судебная практика</a>
             <a target="_blank" href="http://10.23.112.15/arest" style="margin: 5px;" class="btn btn-primary btn-sm">Проверка арестов</a>
             <a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-primary btn-sm">Портал отчётов [113.55]</a>
+            <a target="_blank" href="http://10.128.21.4/app/" style="margin: 5px;" class="btn btn-primary btn-sm">Техпортал ЕСРОО</a>
+            <!--<a target="_blank" href="http://10.23.112.4/index.php?option=com_oktest" style="margin: 5px;" class="btn btn-primary btn-sm">Классный чин</a>-->
         </div>
         <div class="row">
             <div class="col-lg-4">

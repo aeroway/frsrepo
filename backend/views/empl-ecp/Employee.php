@@ -75,10 +75,6 @@ use Yii;
  */
 class Employee extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return \Yii::$app->db5;  
-    }
     /**
      * @inheritdoc
      */
@@ -179,15 +175,6 @@ class Employee extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getFullName()
-    {
-        if(!empty($this->fam) and !empty($this->name) and !empty($this->otch)) {
-            return $this->fam . ' ' . $this->name . ' ' . $this->otch;
-        } else{
-            return 'Неполные данные по ФИО';
-        }
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -212,6 +199,14 @@ class Employee extends \yii\db\ActiveRecord
         return $this->hasMany(KadRezerv::className(), ['idm_empl' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhoneSprs()
+    {
+        return $this->hasMany(PhoneSpr::className(), ['idm_empl' => 'id']);
+    }
+
     public function getDolnjName()
     {
         return $this->hasOne(Doljn::className(), ['id' => 'idm_doljn']);
@@ -220,13 +215,5 @@ class Employee extends \yii\db\ActiveRecord
     public function getOtdelText()
     {
         return $this->hasOne(Otdel::className(), ['id' => 'idm_otdel']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPhoneSprs()
-    {
-        return $this->hasMany(PhoneSpr::className(), ['idm_empl' => 'id']);
     }
 }

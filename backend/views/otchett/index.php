@@ -103,7 +103,7 @@ if(Otchett::$name == 'otchet29')
             [
                 'attribute' => 'comment',
                 'value' => function($data) {
-                    if (Otchett::$name == 'otchet39') {
+                    if (Otchett::$name == 'otchet39' || Otchett::$name == 'otchet46') {
                         $dateComment = new DateTime($data->comment);
                         return $dateComment->format('d.m.Y');
                     } else {
