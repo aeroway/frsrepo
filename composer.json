@@ -13,56 +13,46 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "adldap/adLDAP",
-                "version": "4.0.4",
-                "source": {
-                    "url": "https://github.com/adldap/adLDAP",
-                    "type": "git",
-                    "reference": "v4.0.4"
-                }
-            }
-        },
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": "~2.0.6",
+        "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "yiisoft/yii2-jui": "~2.0.0",
-        "symfony/dom-crawler": "2.8",
-        "symfony/css-selector": "2.8",
-        "wbraganca/yii2-dynamicform": "2.0.2",
-        "adldap/adldap": "4.0.4 as 4.0-stable",
-        "edvlerblog/yii2-adldap-module": "v1.0.0",
-        "phpoffice/phpword": "^0.13.0",
-        "insolita/yii2-migration-generator": "~2.3",
-        "kartik-v/yii2-krajee-base": "dev-master",
-        "kartik-v/yii2-dialog": "@dev",
-        "kartik-v/yii2-grid": "@dev",
-        "kartik-v/yii2-widget-select2": "@dev",
-        "kartik-v/yii2-mpdf": "dev-master",
-        "kartik-v/yii2-export": "@dev"
+        "yiisoft/yii2-jui": "v2.0.*",
+        "kartik-v/yii2-widget-datepicker": "v1.4.*",
+        "symfony/dom-crawler": "v4.3.*",
+        "symfony/css-selector": "v4.3.*",
+        "wbraganca/yii2-dynamicform": "*",
+        "edvlerblog/yii2-adldap-module": "^6.0.0",
+        "phpoffice/phpword": "v0.16.*",
+        "insolita/yii2-migration-generator": "~3.1",
+        "kartik-v/yii2-krajee-base": "v2.0.*",
+        "kartik-v/yii2-dialog": "v1.0.*",
+        "kartik-v/yii2-grid": "v3.3.*",
+        "kartik-v/yii2-widget-select2": "v2.1.*",
+        "kartik-v/yii2-mpdf": "v1.0.*",
+        "kartik-v/yii2-export": "v1.4.*"
     },
     "require-dev": {
-        "codeception/codeception": "*",
-        "yiisoft/yii2-debug": "~2.0.0",
-        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
-        "codeception/base": "^2.2.3",
-        "codeception/verify": "~0.3.1"
+        "codeception/base": "^2.4.0",
+        "phpunit/phpunit": "^7",
+        "codeception/verify": "~1.0.0",
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "codeception/codeception": "v3.0.*"
     },
     "config": {
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }

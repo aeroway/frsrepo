@@ -68,7 +68,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         // временный редирект
-        //return $this->redirect('http://10.23.112.112');
+        //return $this->redirect('/');
 
         return $this->render('index');
     }
@@ -83,10 +83,9 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
-            return $this->redirect('http://10.23.112.112/backend/index.php');
-            // return $this->render('login', [
-            //     'model' => $model,
-            // ]);
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
     }
 

@@ -6,7 +6,6 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-use Edvlerblog\Ldap;
 
 /**
  * User model
@@ -65,114 +64,61 @@ class User extends ActiveRecord implements IdentityInterface
     public $fio;
     public $groups;
 
-    /*
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-        '102' => [
-            'id' => '102',
-            'username' => 'user',
-            'password' => 'user',
-            'authKey' => 'test102key',
-            'accessToken' => '102-token',
-        ],
-    ];
-    */
-
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+
+    public static function findIdentity($username)
     {
-        $out = static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        // $out = static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
 
-        if ($out === NULL) {
+        // if ($out === NULL) {
 
-            $result = \Yii::$app->Ldap->user()->info($id);
-            $resultKadastr = \Yii::$app->LdapKadastr->user()->info($id);
+        $userRosreestr = \Yii::$app->LdapRosreestr->search()->findBy('sAMAccountname', $username);
+        $userKadastr = \Yii::$app->LdapKadastr->search()->findBy('sAMAccountname', $username);
 
-            if ($result) {
+        if ($userRosreestr) {
 
-                return new static (['id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($id)]);
+            $groups = \Yii::$app->LdapRosreestr->search()->users()->find($username)->getGroupNames(true);
+            sort($groups);
 
-            } elseif ($resultKadastr) {
+            $out = [
+                        'id' => $username,
+                        'username' => $username,
+                        'fio' => $userRosreestr->getDisplayName(),
+                        'groups' => $groups
+                    ];
 
-                $out = array('id' => $id, 'username' => $id, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->LdapKadastr->user()->groups($id));
+            return new static($out);
 
-                return new static ($out);
-
-            } else {
-
-                $out = new static (null);
-
-            }
         }
-        
+
+        if ($userKadastr) {
+
+            $groups = sort(\Yii::$app->LdapKadastr->search()->users()->find($username)->getGroupNames(true));
+            sort($groups);
+
+            $out = [
+                        'id' => $username,
+                        'username' => $username,
+                        'fio' => \Yii::$app->LdapKadastr->search()->users()->find($username)->getDisplayName(),
+                        'groups' => $groups
+                    ];
+
+            return new static ($out);
+
+        }
+
+        $out = new static (null);
+
+        // }
+
         return $out;
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-        /*
-        foreach (self::$users as $user)
-        {
-            if ($user['accessToken'] === $token) 
-            {
-                return new static($user);
-            }
-        }
-        */
-        //return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        $out = static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-
-        if ($out === NULL) {
-
-            $result = \Yii::$app->Ldap->user()->info($username);
-            $resultKadastr = \Yii::$app->LdapKadastr->user()->info($username);
-
-            if ($result) {
-
-                $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->Ldap->user()->groups($username));
-
-                return new static($out);
-
-            } elseif ($resultKadastr) {
-
-                $out = array('id' => $username, 'username' => $username, 'fio' => $result[0]['displayname'][0], 'groups' => \Yii::$app->LdapKadastr->user()->groups($username));
-
-                return new static ($out);
-
-            } else {
-
-                $out = new static (null);
-
-            }
-        }
-
-        return $out;
     }
 
     /**
@@ -207,6 +153,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+
         return $timestamp + $expire >= time();
     }
 
@@ -217,12 +164,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->getPrimaryKey();
     }
-/*
-    public function getId()
-    {
-        return $this->id;
-    }
-*/
 
     /**
      * {@inheritdoc}
@@ -239,17 +180,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
-/*
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-*/
 
     /**
      * Validates password
@@ -262,12 +192,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
-/*
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
-    }
-*/
 
     /**
      * Generates password hash from password and sets it to the model
@@ -303,9 +227,8 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public function checkGroup($username,$group)
-    {
-        return \Yii::$app->Ldap->user()->inGroup($username, $group) ? true : false;
-    }
-
+    // public function checkGroup($username,$group)
+    // {
+    //     return \Yii::$app->Ldap->user()->inGroup($username, $group) ? true : false;
+    // }
 }

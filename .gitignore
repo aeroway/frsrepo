@@ -1,5 +1,7 @@
-# yii console command
+# yii console commands
 /yii
+/yii_test
+/yii_test.bat
 
 # phpstorm project files
 .idea
@@ -30,6 +32,17 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# vagrant runtime
+/.vagrant
+
+# ignore generated files
+/frontend/web/index.php
+/frontend/web/index-test.php
+/frontend/web/robots.txt
+/backend/web/index.php
+/backend/web/index-test.php
+/backend/web/robots.txt
+
 # yii runtime dir
 /backend/runtime
 /backend/web/runtime
@@ -44,4 +57,25 @@ phpunit.phar
 /environments
 /backend/web/docs
 /.bowerrc
-
+/vagrant
+/backend/tests
+/frontend/tests
+/common/tests
+Vagrantfile
+/backend/Dockerfile
+/backend/codeception.yml
+/backend/config/test.php
+codeception.yml
+/common/codeception.yml
+/common/config/test.php
+/common/fixtures
+/common/widgets
+/console/config/test.php
+/console/migrations
+docker-compose.yml
+/frontend/Dockerfile
+/frontend/codeception.yml
+/frontend/config/test.php
+/frontend/models/ResendVerificationEmailForm.php
+/frontend/models/VerifyEmailForm.php
+/frontend/views/site/resendVerificationEmail.php

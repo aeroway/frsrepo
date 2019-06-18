@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\EmplEcpStatus;
 use backend\models\EmplEcpOrg;
 use backend\models\Employee;
-use yii\jui\DatePicker;
+use kartik\date\DatePicker;
 use backend\models\Otdel;
 
 /* @var $this yii\web\View */
@@ -70,52 +70,35 @@ use backend\models\Otdel;
 				['prompt'=>'Выберите УЦ']
 		);
 
-		echo $form->field($model, 'ecp_start')->widget(DatePicker::classname(), [
-			'language' => 'ru',
-			'dateFormat' => 'yyyy-MM-dd',
-			'options' => [
-				'class' => 'form-control',
-			],
-            'clientOptions' => [
-                'dateFormat' => 'dd-mm-yyyy',
-                'showAnim' => 'fold',
-                'changeMonth' => true,
-                'changeYear' => true,
-                'autoSize' => true,
-                //'showOn' => "button",
-                //'buttonImage' => "images/calendar.gif",
-                'htmlOptions' => [
-                    'style' => 'width: 80px;',
-                    'font-weight' => 'x-small',
-                ]
+        echo $form->field($model, 'ecp_start')->widget(DatePicker::classname(), [
+            'language' => 'ru',
+            'options' => [
+                'placeholder' => 'Выберите дату ...',
+                'value' => empty($model->ecp_start) ? '' : date('Y-m-d', strtotime($model->ecp_start)),
             ],
-		]);
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd',
+            ]
+        ]);
 
-		echo $form->field($model, 'ecp_stop')->widget(DatePicker::classname(), [
-			'language' => 'ru',
-			'dateFormat' => 'yyyy-MM-dd',
-			'options' => [
-				'class' => 'form-control'
-			],
-			'clientOptions' => [
-                'dateFormat' => 'dd-mm-yyyy',
-                'showAnim' => 'fold',
-                'changeMonth' => true,
-                'changeYear' => true,
-                'autoSize' => true,
-	            //'showOn' => "button",
-			    //'buttonImage' => "images/calendar.gif",
-                'htmlOptions' => [
-                	'style' => 'width: 80px;',
-	            	'font-weight' => 'x-small',
-	        	]
-        	],
-		]);
+        echo $form->field($model, 'ecp_stop')->widget(DatePicker::classname(), [
+            'language' => 'ru',
+            'options' => [
+                'placeholder' => 'Выберите дату ...',
+                'value' => empty($model->ecp_stop) ? '' : date('Y-m-d', strtotime($model->ecp_stop)),
+            ],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd',
+            ]
+        ]);
 
 		echo $form->field($model, 'invent_num')->textInput();
 	}
 
 	echo $form->field($model, 'nositel_num')->textInput();
+
 	echo $form->field($model, 'status')->dropDownList(
 			ArrayHelper::map(EmplEcpStatus::find()->all(),'id','text'),
 			['prompt'=>'Выберите статус']

@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        value="<?= date("Y-m-d", strtotime("+1 day")) ?>"
                        min="2018-09-01" max="2020-12-31">
             </div>
-            <?php if($tblname === 'otchet41' || $tblname === 'otchet42' || $tblname === 'otchet44') : ?>
+            <?php if($tblname === 'otchet41' || $tblname === 'otchet42' || $tblname === 'otchet44' || $tblname === 'otchet47') : ?>
                 <?= '
                 <div>
                     <input type="text" id="username" name="username" placeholder="Пользователь" size="17">

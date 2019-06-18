@@ -60,6 +60,7 @@ $tblview = array(
     'otchet41' => 'stat_41',
     'otchet42' => 'stat_42',
     'otchet44' => 'stat_44',
+    'otchet47' => 'stat_47',
     'otchetur' => 'stat_ur',
     'otchetfiz' => 'stat_fiz',
     'otchet39' => 'stat_39',
@@ -104,6 +105,7 @@ if(
     or $tblname == 'otchet41'
     or $tblname == 'otchet42'
     or $tblname == 'otchet44'
+    or $tblname == 'otchet47'
     or $tblname == 'otchetur'
     or $tblname == 'otchetfiz'
     or $tblname == 'otchet39'
@@ -120,7 +122,7 @@ if(
         $localVarOut .= '<table cellpadding="7" border="2">';
         /*if ($tblname == 'otchet39') {
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td><td><b>Исправлено</b></td><td><b>В работе</b></td><td><b>Невозможно исправить</b></td><td><b>Не назначено</b></td><td><b>Повторные</b></td><td><b>Назначено</b></td><td><b>Не исправлено</b></td><td><b>%</b></td></tr></head>';
-        } else*/if($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44') {
+        } else*/if($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44' || $tblname == 'otchet47') {
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></td><td><b>Возврат по причине приостановки</b></td><td><b>Возврат по причине приостановки (повторно)</b></td><td><b>Забрали обратно</b></td><td><b>Зарегистрировано</b></td><td><b>Ненадлежащее рег. действие</b></td><td><b>Ошибка миграции</b></td><td><b>Отказать в выполнении УРД</b></td><td><b>В работе</b></td></tr></head>';
         } else {
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td><td><b>Исправлено</b></td><td><b>В работе</b></td><td><b>Невозможно исправить</b></td><td><b>Не назначено</b></td><td><b>Повторные</b></td><td><b>Назначено</b></td></tr></head>';
@@ -156,7 +158,7 @@ if(
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['and', "flag = 1", "date_load >= '2017-11-01 00:00:00.000'"])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['and', "status = 'назначено'", "date_load >= '2017-11-01 00:00:00.000'"])->count() . '</td>
             </tr>';
-    elseif($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44')
+    elseif($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44' || $tblname == 'otchet47')
         $localVarOut .= 
             '<tr>
                 <td> </td>
@@ -197,7 +199,7 @@ if(
     exit(1);
 }
 
-$arr_tab = array('otchet3', 'otchetn', 'otchet41', 'otchet42', 'otchet44', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20', 'otchet39', 'otchet46');
+$arr_tab = array('otchet3', 'otchetn', 'otchet41', 'otchet47', 'otchet42', 'otchet44', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20', 'otchet39', 'otchet46');
 
 if(in_array($tblname, $arr_tab))
 {

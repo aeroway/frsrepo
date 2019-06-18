@@ -54,6 +54,7 @@ class EmplEcp extends \yii\db\ActiveRecord
             [['nositel_num', 'user_in', 'comment_ecp'], 'string'],
             [['email'], 'email'],
 			[['ecp_start'], 'default', 'value' => null],
+            [['ecp_stop', 'email', 'send'], 'default', 'value' => 0],
         ];
     }
 
@@ -113,12 +114,39 @@ class EmplEcp extends \yii\db\ActiveRecord
 
     public function sendEmail()
     {
-        return Yii::$app->mailer
-            ->compose(['html' => 'ecpRemind-html', 'text' => 'ecpRemind-text'])
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo('s.zakharov@frskuban.ru') // $this->email
-            ->setSubject('Заканчивается срок ЭЦП') // . Yii::$app->name
-            ->send();
+        $modelEmplEcp = EmplEcp::find()
+            ->innerJoinWith(['employeesEmployee'], true)
+            ->where(['and', 
+            [ '>=', 'ecp_stop', date('Y-m-d', strtotime("now"))],
+            [ '<=', 'ecp_stop', date('Y-m-d', strtotime("+60 days"))],
+            ['<>', 'ecp_stop', NULL],
+            ['<>', 'email', NULL],
+            ['=', 'send', 0]
+        ])
+        ->all();
+
+        foreach ($modelEmplEcp as $value) {
+            $send = Yii::$app->mailer->compose()
+                ->setTo($value->email)
+                ->setCc('s.zakharov@frskuban.ru')
+                ->setSubject('ЭЦП сотруднику ' . $value->employeesEmployee->fam . '_' . $value->employeesEmployee->name . '_' . $value->employeesEmployee->otch)
+                ->setHtmlBody('Заканчивается срок ЭЦП у специалиста '
+                     . $value->employeesEmployee->fam . ' '
+                     . $value->employeesEmployee->name . ' '
+                     . $value->employeesEmployee->otch . ' '
+                     . date('d.m.Y', strtotime($value->ecp_stop)) . '. '
+                     . Yii::$app->params['ecpSend']
+                 )
+                ->send();
+
+            if ($send) {
+                $post = EmplEcp::findOne($value->id);
+                $post->send = 1;
+                $post->save();
+            }
+        }
+
+        return 1;
     }
 
     /**
@@ -163,9 +191,6 @@ class EmplEcp extends \yii\db\ActiveRecord
         $localVarOut .= '<tbody>';
 
         $i = 1;
-
-        //print_r($rows);
-        //die;
 
         foreach($rows as $key => $val)
         {

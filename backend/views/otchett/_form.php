@@ -28,6 +28,7 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet38' or 
             $arr["table"] == 'otchet39' or 
             $arr["table"] == 'otchet41' or 
+            $arr["table"] == 'otchet47' or 
             $arr["table"] == 'otchet44' or 
             $arr["table"] == 'otchet29' or 
             $arr["table"] == 'otchet35' or 
@@ -39,7 +40,7 @@ use kartik\select2\Select2;
         }
     ?>
 
-    <?php if($arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') : ?>
+    <?php if($arr["table"] == 'otchet41' or $arr["table"] == 'otchet47' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') : ?>
         <?= $form->field($model, 'status')->hiddenInput(['readonly' => true, 'value' => 'Исправлен'])->label(false); ?>
     <?php else : ?>
         <?= $form->field($model, 'status')->dropDownList(
@@ -51,7 +52,7 @@ use kartik\select2\Select2;
     <?php
         $arr = Yii::$app->request->get();
 
-        if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16' or $arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') {
+        if($arr["table"] == 'otchet15' or $arr["table"] == 'otchet16' or $arr["table"] == 'otchet41' or $arr["table"] == 'otchet47' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true, 'placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);
         } elseif($arr["table"] == 'otchet22' or 
             $arr["table"] == 'otchet36' or 
@@ -68,7 +69,7 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'date')->textInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
 
-    <?php if ($arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') : ?>
+    <?php if ($arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet47' or $arr["table"] == 'otchet44') : ?>
         <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->username]) ?>
     <?php else : ?>
         <?= $form->field($model, 'username')->textInput(['readonly' => true, 'value' => '23UPR\\' . Yii::$app->user->identity->username]) ?>
@@ -87,7 +88,7 @@ use kartik\select2\Select2;
                     'tags' => true
                 ],
             ]);
-        } elseif($arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') {
+        } elseif($arr["table"] == 'otchet41' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet47' or $arr["table"] == 'otchet44') {
             echo $form->field($model, 'protocol')->widget(Select2::classname(), [
                 'data' => ["Возврат по причине приостановки" => "Возврат по причине приостановки", "Зарегистрировано" => "Зарегистрировано", 
                     "Ненадлежащее рег. действие" => "Ненадлежащее рег. действие", "Ошибка миграции" => "Ошибка миграции", "Возврат по причине приостановки (повторно)" => "Возврат по причине приостановки (повторно)", "Забрали обратно" => "Забрали обратно", "Отказать в выполнении УРД" => "Отказать в выполнении УРД"],

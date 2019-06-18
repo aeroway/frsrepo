@@ -1,9 +1,9 @@
 <?php
 $params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+    require __DIR__ . '/../../common/config/params.php',
+    require __DIR__ . '/../../common/config/params-local.php',
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
 );
 
 return [
@@ -18,11 +18,22 @@ return [
         'gridview' => [
             'class' => '\kartik\grid\Module',
         ],
+        'datecontrol' => [
+            'class' => '\kartik\datecontrol\Module',
+        ],
     ],
     'components' => [
+        'request' => [
+            'csrfParam' => '_csrf-backend',
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
+        'session' => [
+            // this is the name of the session cookie used for login on the backend
+            'name' => 'advanced-backend',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -40,15 +51,20 @@ return [
             'class' => 'yii\i18n\Formatter',
             'defaultTimeZone' => 'Europe/Moscow',
             'nullDisplay' => '',
-            'dateFormat' => 'dd.MM.yyyy',
+            'dateFormat' => 'yyyy-MM-dd',
             'datetimeFormat' => 'd-M-Y H:i:s',
             'decimalSeparator' => '.',
             'thousandSeparator' => '',
             'currencyCode' => 'RUR',
         ],
+        /*
         'urlManager' => [
-            // here is your backend URL rules
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
         ],
+        */
         'urlManagerFrontEnd' => [
             'class' => 'yii\web\urlManager',
             'baseUrl' => '/',
@@ -57,6 +73,4 @@ return [
         ],
     ],
     'params' => $params,
-    'language'=>'ru-RU',
-
 ];

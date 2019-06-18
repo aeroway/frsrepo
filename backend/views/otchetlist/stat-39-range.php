@@ -28,6 +28,7 @@ $tblview = array(
     'otchet41' => 'stat41Range',
     'otchet42' => 'stat42Range',
     'otchet44' => 'stat44Range',
+    'otchet47' => 'stat47Range',
 );
 
 if($tblname == 'otchet39') {
@@ -82,7 +83,7 @@ if($tblname == 'otchet39') {
     exit(1);
 }
 
-if($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44') {
+if($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44' || $tblname == 'otchet47') {
     $rows = Yii::$app->db->createCommand("SELECT * FROM $tblview[$tblname]('" . Yii::$app->request->post('fromDate') . "', '" . Yii::$app->request->post('tillDate') . "', '" . Yii::$app->request->post('username') . "')")->queryAll();
 
     $localVarOut = '<h1>' . $otchett->otchetList($tblname) . '</h1>';

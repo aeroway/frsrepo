@@ -226,10 +226,6 @@ class EmplEcpController extends Controller
     public function actionSendEmail()
     {
         $model = new EmplEcp();
-        if ($model->sendEmail()) {
-            die('ok');
-        }
-        die('false');
+        $model->sendEmail();
     }
-
 }

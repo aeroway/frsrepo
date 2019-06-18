@@ -3,7 +3,6 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
-use Edvlerblog\Ldap;
 
 /**
  * Login form
@@ -13,11 +12,8 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = true;
-    //public $fio;
-    //public $groups;
 
     private $_user;
-
 
     /**
      * {@inheritdoc}
@@ -45,13 +41,14 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
 
-            $user = $this->getUser();
+            // $user = $this->getUser();
 
-            if ($user->password_hash && !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
-            }
+            // if ($user->password_hash && !$user->validatePassword($this->password)) {
+            //     $this->addError($attribute, 'Incorrect username or password.');
+            // }
 
-            if (!$user->password_hash && !\Yii::$app->Ldap->authenticate($this->username, $this->password) && !\Yii::$app->LdapKadastr->authenticate($this->username, $this->password)) {
+            if (!\Yii::$app->LdapRosreestr->auth()->attempt($this->username, $this->password)
+                && !\Yii::$app->LdapKadastr->auth()->attempt($this->username, $this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
@@ -64,7 +61,9 @@ class LoginForm extends Model
      */
     public function login()
     {
+
         if ($this->validate()) {
+
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
 
@@ -79,8 +78,8 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
-            //$this->fio = $this->_user->fio;
+
+            $this->_user = User::findIdentity($this->username);
         }
 
         return $this->_user;
