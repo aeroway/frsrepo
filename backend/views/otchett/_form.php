@@ -22,17 +22,26 @@ use kartik\select2\Select2;
             echo $form->field($model, 'kn')->textInput(['readonly' => true]);
         }
 
-        if($arr["table"] == 'otchet22' or 
-            $arr["table"] == 'otchet36' or 
-            $arr["table"] == 'otchet37' or 
-            $arr["table"] == 'otchet38' or 
-            $arr["table"] == 'otchet39' or 
-            $arr["table"] == 'otchet41' or 
-            $arr["table"] == 'otchet47' or 
-            $arr["table"] == 'otchet44' or 
-            $arr["table"] == 'otchet29' or 
-            $arr["table"] == 'otchet35' or 
-            $arr["table"] == 'otchet46' or 
+        if($arr["table"] == 'otchet22' or
+            $arr["table"] == 'otchet36' or
+            $arr["table"] == 'otchet37' or
+            $arr["table"] == 'otchet38' or
+            $arr["table"] == 'otchet39' or
+            $arr["table"] == 'otchet41' or
+            $arr["table"] == 'otchet47' or
+            $arr["table"] == 'otchet44' or
+            $arr["table"] == 'otchet29' or
+            $arr["table"] == 'otchet35' or
+            $arr["table"] == 'otchet46' or
+            $arr["table"] == 'otchet48' or
+            $arr["table"] == 'otchet49' or
+            $arr["table"] == 'otchet50' or
+            $arr["table"] == 'otchet51' or
+            $arr["table"] == 'otchet52' or
+            $arr["table"] == 'otchet53' or
+            $arr["table"] == 'otchet54' or
+            $arr["table"] == 'otchet55' or
+            $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
         } else {
@@ -57,8 +66,16 @@ use kartik\select2\Select2;
         } elseif($arr["table"] == 'otchet22' or 
             $arr["table"] == 'otchet36' or 
             $arr["table"] == 'otchet37' or 
+            $arr["table"] == 'otchet48' or 
+            $arr["table"] == 'otchet49' or 
+            $arr["table"] == 'otchet50' or 
+            $arr["table"] == 'otchet51' or 
+            $arr["table"] == 'otchet52' or
+            $arr["table"] == 'otchet53' or
+            $arr["table"] == 'otchet54' or
             $arr["table"] == 'otchet29' or 
             $arr["table"] == 'otchet35' or 
+            $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
         } else {

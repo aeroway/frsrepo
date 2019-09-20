@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Otchetlist;
 use backend\models\OtchetlistSearch;
+use backend\models\DbConnectEgrp;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,7 +31,9 @@ class OtchetlistController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'create', 'stat-39-range', 'stat-index'],
+                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view',
+                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -84,6 +87,19 @@ class OtchetlistController extends Controller
         return $this->render('stat-39-range', [
             'tblname' => $tblname,
         ]);
+    }
+
+    public function actionStatIndexOra()
+    {
+        $model = new DbConnectEgrp();
+        if (Yii::$app->request->post('fromDate') && Yii::$app->formatter->asDate(Yii::$app->request->post('tillDate'))) {
+            $model->getInstance();
+            $result = $model->getStat();
+
+            return $this->render('stat-index-ora', ['result' => $result]);
+        } else {
+            return $this->render('stat-index-ora');
+        }
     }
 
     /**

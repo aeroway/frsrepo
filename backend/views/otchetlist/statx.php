@@ -66,6 +66,14 @@ $tblview = array(
     'otchet39' => 'stat_39',
     'otchet46' => 'stat_46',
     'otchet45' => 'stat_45',
+    'otchet48' => 'stat_48',
+    'otchet49' => 'stat_49',
+    'otchet50' => 'stat_50',
+    'otchet51' => 'stat_51',
+    'otchet52' => 'stat_52',
+    'otchet53' => 'stat_53',
+    'otchet54' => 'stat_54',
+    'otchet55' => 'stat_55',
 );
 
 if(
@@ -111,6 +119,14 @@ if(
     or $tblname == 'otchet39'
     or $tblname == 'otchet46'
     or $tblname == 'otchet45'
+    or $tblname == 'otchet48'
+    or $tblname == 'otchet49'
+    or $tblname == 'otchet50'
+    or $tblname == 'otchet51'
+    or $tblname == 'otchet52'
+    or $tblname == 'otchet53'
+    or $tblname == 'otchet54'
+    or $tblname == 'otchet55'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')
@@ -199,7 +215,7 @@ if(
     exit(1);
 }
 
-$arr_tab = array('otchet3', 'otchetn', 'otchet41', 'otchet47', 'otchet42', 'otchet44', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20', 'otchet39', 'otchet46');
+$arr_tab = array('otchet3', 'otchetn', 'otchet41', 'otchet47', 'otchet42', 'otchet44', 'otchet9', 'otchet7', 'otchet14', 'otchet17', 'otchet19', 'otchet20', 'otchet39', 'otchet46', 'otchet50', 'otchet51', 'otchet52', 'otchet53', 'otchet54');
 
 if(in_array($tblname, $arr_tab))
 {

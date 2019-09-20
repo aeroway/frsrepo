@@ -146,6 +146,18 @@ class EmplEcp extends \yii\db\ActiveRecord
             }
         }
 
+        $emplEcpId = EmplEcp::find()
+            ->select(['empl_ecp.id'])
+            ->innerJoinWith(['employeesEmployee'], false)
+            ->where(['and', 
+            [ '<=', 'ecp_stop', date('Y-m-d', strtotime("-60 days"))],
+            ['<>', 'ecp_stop', NULL],
+            ['<>', 'email', NULL],
+            ['=', 'send', 1]
+        ]);
+
+        EmplEcp::updateAll(['send' => 0], ['IN', 'id', $emplEcpId]);
+
         return 1;
     }
 
@@ -170,6 +182,7 @@ class EmplEcp extends \yii\db\ActiveRecord
             'user_in' => 'User In',
             'comment_ecp' => 'Комментарий',
 			'invent_num' => 'Инвент. номер',
+            'email' => 'e-mail',
         ];
     }
 

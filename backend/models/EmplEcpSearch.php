@@ -22,7 +22,7 @@ class EmplEcpSearch extends EmplEcp
     {
         return [
             [['id', 'idm_empl', 'status', 'nositel_type'], 'integer'],
-            [[ 'ecp_org_id', /*'ecp_start', 'ecp_stop',*/ 'nositel_num', 'date_in', 'req_date', 'ecpmodify_date', 'user_in', 'comment_ecp', 'fullName', 'invent_num', 'Statustxt', 'otdels'], 'safe'],
+            [[ 'ecp_org_id', /*'ecp_start', 'ecp_stop',*/ 'nositel_num', 'date_in', 'req_date', 'ecpmodify_date', 'user_in', 'comment_ecp', 'fullName', 'invent_num', 'Statustxt', 'otdels', 'email'], 'safe'],
         ];
     }
 
@@ -91,6 +91,12 @@ class EmplEcpSearch extends EmplEcp
 					'label' => 'Окончание',
 					'default' => SORT_ASC
 				],
+                'email' => [
+                    'asc' => ['email' => SORT_ASC],
+                    'desc' => ['email' => SORT_DESC],
+                    'label' => 'e-mail',
+                    'default' => SORT_ASC
+                ],
 			]
 		]);
 
@@ -137,6 +143,7 @@ class EmplEcpSearch extends EmplEcp
 			->andFilterWhere(['and', ['like', 'fam', $fam], ['like', 'name', $name], ['like', 'otch', $otch]])
 			->andFilterWhere(['like', 'empl_ecp_status.text', $this->Statustxt])
 			->andFilterWhere(['like', 'ecp_org.text', $this->ecp_org_id])
+            ->andFilterWhere(['like', 'email', $this->email])
 			->andFilterWhere(['like', 'otdel.text', $this->otdels]);
 
         return $dataProvider;

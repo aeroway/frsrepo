@@ -7,7 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
-use app\models\Egrp;
+use backend\models\Egrp;
 use yii\web\ForbiddenHttpException;
 
 use backend\models\VedomostCheckForm;

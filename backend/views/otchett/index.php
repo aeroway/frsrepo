@@ -7,6 +7,7 @@ use kartik\export\ExportMenu;
 use backend\models\Otchett;
 use yii\helpers\ArrayHelper;
 use backend\models\Employee;
+use backend\models\AreaOtchet;
 use yii\bootstrap\Alert;
 
 /* @var $this yii\web\View */
@@ -45,9 +46,16 @@ if(Otchett::$name == 'otchet29')
             ->orderBy(['fam' => SORT_ASC])
             ->all(), 'fullName', 'fullName');
 
-        $arrayUsers["1"] = "Выберите пользователя";
+        $arrayArea = ArrayHelper::map(AreaOtchet::find()
+            ->orderBy(['name' => SORT_ASC])
+            ->where(['<>', 'name_2', NULL])
+            ->all(), 'name_2', 'name_2');
 
-        echo Html::dropDownList('action', '1', $arrayUsers, [
+        $arrayMergeList = ArrayHelper::merge($arrayUsers, $arrayArea);
+
+        $arrayMergeList["1"] = "Выберите пользователя";
+
+        echo Html::dropDownList('action', '1', $arrayMergeList, [
             'class' => 'form-control', 
             'style' => 'width: 90%; margin-bottom: 10px; margin-right: 10px; float: left'
         ]);
@@ -104,8 +112,9 @@ if(Otchett::$name == 'otchet29')
                 'attribute' => 'comment',
                 'value' => function($data) {
                     if (Otchett::$name == 'otchet39' || Otchett::$name == 'otchet46') {
-                        $dateComment = new DateTime($data->comment);
-                        return $dateComment->format('d.m.Y');
+                        // $dateComment = new DateTime($data->comment);
+                        // return $dateComment->format('d.m.Y');
+                        return date('d.m.Y', strtotime($data->comment));
                     } else {
                         return $data->comment;
                     }

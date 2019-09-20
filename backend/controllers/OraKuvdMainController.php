@@ -10,13 +10,14 @@ use backend\models\ViewByFioSearch;
 use backend\models\ViewByFio;
 use backend\models\ViewByOtdelSearch;
 use backend\models\ViewByOtdel;
-
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use backend\models\AreaOtchet;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 /**
  * OraKuvdMainController implements the CRUD actions for OraKuvdMain model.
@@ -29,6 +30,16 @@ class OraKuvdMainController extends Controller
     public function behaviors()
     {
         return [
+            'access'=>[
+                'class'=>AccessControl::classname(),
+                'only'=>['view', 'index', 'list', 'otdels', 'details', 'details-otdel'],
+                'rules'=>[
+                    [
+                        'allow' => false,
+                        'roles' => ['@']
+                    ],
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -107,74 +118,99 @@ class OraKuvdMainController extends Controller
         ]);
     }
 
-    public function actionDetails($t=null,$fio=null,$fl=null)
-    {  
-        if ($t != null ){
-            if ($fl != NULL){
-                $otdel_name = AreaOtchet::find()->where(['fl'=>$fl])->one()->name;
+    public function actionDetails($t = null, $fio = null, $fl = null)
+    {
+        if ($t != null) {
+            if ($fl != NULL) {
+                $otdel_name = AreaOtchet::find()->where(['fl' => $fl])->one()->name;
             } else {
-                $otdel_name=$fio;
+                $otdel_name = $fio;
             }
 
-            if ($t==1){
+            if ($t == 1) {
+                $query = ViewByFio::getDopDocAll($fio);
                 $title = 'Не рассмотрены дополнительные документы';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getDopDocAll($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==2){
+
+            if ($t == 2) {
+                $query = ViewByFio::getDoublePriost($fio);
                 $title = 'Приостановка после рассмотрения доп. документов';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getDoublePriost($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==3){
+
+            if ($t == 3) {
+                $query = ViewByFio::getProsrochkaUp2($fio);
                 $title = 'Будет просрочено через 2 дня';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getProsrochkaUp2($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==4){
+
+            if ($t == 4) {
+                $query = ViewByFio::getNoUvedoml($fio);
                 $title = 'Не сформированы уведомления';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getNoUvedoml($fio,$fl),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==5){
+
+            if ($t == 5) {
+                $query = ViewByFio::getProsrochenoRows($fio);
                 $title = 'Просрочено';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getProsrochenoRows($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==6){
+
+            if ($t == 6) {
+                $query = ViewByFio::getAllPr($fio);
                 $title = 'Приостановки';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getAllPr($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
-            if ($t==7){
+
+            if ($t == 7) {
+                $query = ViewByFio::getAllOtkaz($fio);
                 $title = 'Отказы';
+
                 $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getAllOtkaz($fio),
-                    ]);    
+                    'query' => $query,
+                    'pagination' => false,
+                ]);
             }
 
-/*
-            if ($t==5){
-                $dataProvider = new ActiveDataProvider([
-                    'query' =>  ViewByFio::getOtkazByOtdel($fl),
-                    ]);    
-            }
-*/
+            // if ($t == 5) {
+            //     $dataProvider = new ActiveDataProvider([
+            //         'query' =>  ViewByFio::getOtkazByOtdel($fl),
+            //     ]);
+            // }
 
-        return $this->render('_details', [
-            //'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'fio'   =>  $fio,
-            'title' => $title,
-            'otdel_name'   =>  $otdel_name,
-            'fl'    =>  $fl,
-        ]);    
+            return $this->render('_details', [
+                //'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'fio' => $fio,
+                'title' => $title,
+                'otdel_name' => $otdel_name,
+                'fl' => $fl,
+            ]);    
         }
     }
 

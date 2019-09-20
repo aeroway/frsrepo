@@ -77,11 +77,11 @@ else
 				'value' => 'fullName',
 				//'contentOptions' => ['style'=>'width: 150px;'],
 			],
-			[
-				'attribute' => 'doljnost',
-				'label' => 'Должность',
-				'value' => 'doljnost',
-			],
+			// [
+			// 	'attribute' => 'doljnost',
+			// 	'label' => 'Должность',
+			// 	'value' => 'doljnost',
+			// ],
 			[
 				'attribute' => 'otdels',
 				'label' => 'Отдел',
@@ -95,12 +95,12 @@ else
 				'contentOptions' => ['style'=>'width: 80px; text-align: center;'],
 				'filter' => ArrayHelper::map(EmplEcpOrg::find()->asArray()->all(), 'text', 'text'),
 			],
-			[
-				'attribute' => 'ecp_start',
-				'format' =>  ['date', 'php:d.m.Y'],
-				'label' => 'Выдано',
-				'contentOptions' => ['style'=>'width: 90px; text-align: center;'],
-			],
+			// [
+			// 	'attribute' => 'ecp_start',
+			// 	'format' =>  ['date', 'php:d.m.Y'],
+			// 	'label' => 'Выдано',
+			// 	'contentOptions' => ['style'=>'width: 90px; text-align: center;'],
+			// ],
 			[
 				'attribute' => 'ecp_stop',
 				'format' =>  ['date', 'php:d.m.Y'],
@@ -137,6 +137,7 @@ else
             //'date_in',
             //'req_date',
             //'user_in',
+            'email',
 
             $buttons,
         ],

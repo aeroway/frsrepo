@@ -58,7 +58,7 @@ function button($gitem)
     <div class="body-content">
         <div class="row">
             <a target="_blank" href="/backend/index.php?r=otchett/index&table=otchet42" style="margin: 5px;" class="btn btn-success btn-sm">Экстер ФГИС ЕГРН</a>
-            <a target="_blank" href="/backend/index.php?r=otchett/index&table=otchet44" style="margin: 5px;" class="btn btn-success btn-sm">Экстер аресты</a>
+            <a target="_blank" href="/backend/index.php?r=inventory-repair" style="margin: 5px;" class="btn btn-success btn-sm">Техника на ремонт</a>
             <a target="_blank" href="https://www.rosreestr.ru/site/" style="margin: 5px;" class="btn btn-primary btn-sm">Управление Росреестра [rosreestr]</a>
             <a target="_blank" href="http://www.frskuban.ru/" style="margin: 5px;" class="btn btn-primary btn-sm">Управление Росреестра [frskuban]</a>
             <a target="_blank" href="http://intranet.rosreestr.ru/" style="margin: 5px;" class="btn btn-primary btn-sm">Внутренний портал Росреестра [intranet]</a>
@@ -67,7 +67,7 @@ function button($gitem)
             <a target="_blank" href="http://10.23.112.38/topos/Boxes.aspx" style="margin: 5px;" class="btn btn-primary btn-sm">Топография архива</a>
             <a target="_blank" href="http://10.23.113.44/cert_rayon/" style="margin: 5px;" class="btn btn-primary btn-sm">Экстерриториальная регистрация</a>
             <a target="_blank" href="http://10.23.113.44/sudotdel/" style="margin: 5px;" class="btn btn-primary btn-sm">Судебная практика</a>
-            <a target="_blank" href="http://10.23.112.15/arest" style="margin: 5px;" class="btn btn-primary btn-sm">Проверка арестов</a>
+            <a target="_blank" href="http://10.23.112.38/MWS" style="margin: 5px;" class="btn btn-primary btn-sm">Проверка арестов</a>
             <a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-primary btn-sm">Портал отчётов [113.55]</a>
             <a target="_blank" href="http://10.128.21.4/app/" style="margin: 5px;" class="btn btn-primary btn-sm">Техпортал ЕСРОО</a>
             <!--<a target="_blank" href="http://10.23.112.4/index.php?option=com_oktest" style="margin: 5px;" class="btn btn-primary btn-sm">Классный чин</a>-->

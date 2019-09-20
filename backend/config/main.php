@@ -73,4 +73,5 @@ return [
         ],
     ],
     'params' => $params,
+    'language' => 'ru-RU',
 ];
