@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="otchetlist-form-ora">
 
-        <?php $form = ActiveForm::begin(['action' => "/backend/index.php?r=otchetlist/stat-index-ora", 'id' => 'stat-ora-range', 'method' => 'post',]); ?>
+        <?php $form = ActiveForm::begin(['action' => "/index.php?r=otchetlist/stat-index-ora", 'id' => 'stat-ora-range', 'method' => 'post',]); ?>
 
             <div>
                 <label for="from">От</label>

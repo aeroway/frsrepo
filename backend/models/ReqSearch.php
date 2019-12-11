@@ -20,7 +20,8 @@ class ReqSearch extends Req
     {
         return [
             [['id', 'obj_id', 'kuvd_id', 'status', 'type', 'otdel', 'cel', 'fast', 'vedomost_num', 'vedomost_unform', 'area_id'], 'integer'],
-            [['obj_addr', 'zayavitel_num', 'zayavitel_fio', 'kuvd', 'user_text',   'user_to', 'kn', 'coment', 'cur_user', 'date_end', 'phone', 'user_last', 'srok', 'user_print', 'print_date', 'code_mesto', 'date_v', 'org', 'inn', 'findOrg', 'fullAddress', 'iconStatus', 'date_in'], 'safe'],
+            [['obj_addr', 'zayavitel_num', 'zayavitel_fio', 'kuvd', 'user_text',   'user_to', 'kn', 'coment', 'cur_user', 'date_end', 'phone', 'user_last',
+                'srok', 'user_print', 'print_date', 'code_mesto', 'date_v', 'org', 'inn', 'findOrg', 'fullAddress', 'iconStatus', 'date_in'], 'safe'],
         ];
     }
 
@@ -42,19 +43,28 @@ class ReqSearch extends Req
      */
     public function search($params)
     {
-        if(in_array("alvl1", Yii::$app->user->identity->groups))
-        {
-            $query = Req::find()->where(['or', ['user_text'=>Yii::$app->user->identity->username], ['user_text'=> '23UPR\\' . Yii::$app->user->identity->username], ['user_text'=> '23UPRS\\' . Yii::$app->user->identity->username]]);
+        if(in_array("alvl1", Yii::$app->user->identity->groups)) {
+            $query = Req::find()
+                ->where(['or',
+                    ['user_text' => Yii::$app->user->identity->username],
+                    ['user_text' => '23UPR\\' . Yii::$app->user->identity->username],
+                    ['user_text' => '23UPRS\\' . Yii::$app->user->identity->username]
+                ]);
 
-            if(in_array("alvl3", Yii::$app->user->identity->groups))
-                $query = Req::find();
-        }
-        else
+            if(in_array("alvl3", Yii::$app->user->identity->groups)) {
+                if ($this->isFkpUser()) {
+                    $query = Req::find()->where(['like', 'user_text', 'user']);
+                } else {
+                    $query = Req::find();
+                }
+            }
+        } else {
             $query = Req::find();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
+            'sort'=> ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -65,8 +75,9 @@ class ReqSearch extends Req
             return $dataProvider;
         }
 
-        if(!isset($this->status))
+        if(!isset($this->status)) {
             $this->status = 1;
+        }
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -87,8 +98,7 @@ class ReqSearch extends Req
             'area_id' => $this->area_id,
         ]);
 
-        if(isset($this->date_in) and !empty($this->date_in))
-        {
+        if(isset($this->date_in) and !empty($this->date_in)) {
             $this->data1 = date('Y-m-d', strtotime($this->date_in));
             $this->data2 = date('Y-m-d', strtotime('+1 day', strtotime($this->date_in)));
         }
@@ -109,9 +119,20 @@ class ReqSearch extends Req
             ->andFilterWhere(['like', 'org', $this->org])
             ->andFilterWhere(['like', 'inn', $this->inn])
             ->andFilterWhere(['and', ['>=', 'date_in', $this->data1], ['<=', 'date_in', $this->data2]])
-            ->andFilterWhere(['or',    ['like', 'zayavitel_fio', $this->findOrg], ['like', 'org', $this->findOrg]])
+            ->andFilterWhere(['or', ['like', 'zayavitel_fio', $this->findOrg], ['like', 'org', $this->findOrg]])
             ->andFilterWhere(['like', 'obj_addr', $this->fullAddress]);
 
         return $dataProvider;
+    }
+
+    private function isFkpUser()
+    {
+        $searchString = 'user';
+
+        if(preg_match("/{$searchString}/i", Yii::$app->user->identity->username)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

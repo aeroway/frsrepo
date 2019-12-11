@@ -156,17 +156,17 @@ class OtchetList extends \yii\db\ActiveRecord
 
         if($otchetNull != 0)
         {
-            $lcl_echo .= "<b><a style='color: orange' href='/backend/index.php?" . $cont . "Search[status]=не+назначено&r=$controller/index&table=$table'>не назначено</a></b>: $otchetNull<br>";
+            $lcl_echo .= "<b><a style='color: orange' href='/index.php?" . $cont . "Search[status]=не+назначено&r=$controller/index&table=$table'>не назначено</a></b>: $otchetNull<br>";
         }
 
         if($otchetNazn != 0)
         {
-            $lcl_echo .= "<b><a style='color: green' href='/backend/index.php?" . $cont . "Search[status]=назначено&r=$controller/index&table=$table'>назначено</a></b>: $otchetNazn<br>";
+            $lcl_echo .= "<b><a style='color: green' href='/index.php?" . $cont . "Search[status]=назначено&r=$controller/index&table=$table'>назначено</a></b>: $otchetNazn<br>";
         }
 
         if($otchetRepeat != 0)
         {
-            $lcl_echo .= "<b><a style='color: red' href='/backend/index.php?" . $cont . "Search[flag]=1&r=$controller/index&table=$table'>повторные ошибки</a></b>: $otchetRepeat<br>";
+            $lcl_echo .= "<b><a style='color: red' href='/index.php?" . $cont . "Search[flag]=1&r=$controller/index&table=$table'>повторные ошибки</a></b>: $otchetRepeat<br>";
         }
 
         if($otchetWork != 0)

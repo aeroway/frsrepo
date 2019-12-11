@@ -58,8 +58,9 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return Yii::$app->getResponse()->redirect(Yii::$app->urlManagerFrontEnd->createUrl(""));
-        //return $this->render('index');
+        // return Yii::$app->getResponse()->redirect(Yii::$app->urlManagerFrontEnd->createUrl(""));
+
+        return $this->render('index');
     }
 
     public function actionLogin()

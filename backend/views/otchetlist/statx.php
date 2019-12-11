@@ -74,6 +74,9 @@ $tblview = array(
     'otchet53' => 'stat_53',
     'otchet54' => 'stat_54',
     'otchet55' => 'stat_55',
+    'otchet56' => 'stat_56',
+    'otchet57' => 'stat_57',
+    'otchet58' => 'stat_58',
 );
 
 if(
@@ -127,6 +130,9 @@ if(
     or $tblname == 'otchet53'
     or $tblname == 'otchet54'
     or $tblname == 'otchet55'
+    or $tblname == 'otchet56'
+    or $tblname == 'otchet57'
+    or $tblname == 'otchet58'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')

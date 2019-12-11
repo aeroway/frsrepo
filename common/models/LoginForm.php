@@ -31,6 +31,17 @@ class LoginForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Логин',
+            'password' => 'Пароль',
+        ];
+    }
+
+    /**
      * Validates the password.
      * This method serves as the inline validation for password.
      *
@@ -48,6 +59,7 @@ class LoginForm extends Model
             // }
 
             if (!\Yii::$app->LdapRosreestr->auth()->attempt($this->username, $this->password)
+                && !\Yii::$app->LdapRosreestrSorm->auth()->attempt($this->username, $this->password)
                 && !\Yii::$app->LdapKadastr->auth()->attempt($this->username, $this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }

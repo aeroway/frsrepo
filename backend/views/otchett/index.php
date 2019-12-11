@@ -74,6 +74,8 @@ if(Otchett::$name == 'otchet29')
         $gridColumns = [
             'kn',
             'description',
+            'comment',
+            'protocol',
         ];
 
         echo ExportMenu::widget([

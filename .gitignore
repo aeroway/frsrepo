@@ -79,3 +79,4 @@ docker-compose.yml
 /frontend/models/ResendVerificationEmailForm.php
 /frontend/models/VerifyEmailForm.php
 /frontend/views/site/resendVerificationEmail.php
+/backend/models/DbConnectEgrp.php

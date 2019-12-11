@@ -25,9 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name_list',
                 'value' => function($data) {
                     if($data->table_list == 'otchetn')
-                        return "<a href='/backend/index.php?r=otchetn/index'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchetn/index'>$data->name_list</a>";
                     else
-                        return "<a href='/backend/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
 
                     return '';
                 },

@@ -20,10 +20,13 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/qhighlight.css',
+        'css/metro/metro.css',
+        'css/metro/metro-icons.min.css',
     ];
     public $js = [
         'js/main.js',
         'js/qhighlight.js',
+        'js/metro/metro.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

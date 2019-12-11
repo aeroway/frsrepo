@@ -35,7 +35,7 @@ class OraKuvdMainController extends Controller
                 'only'=>['view', 'index', 'list', 'otdels', 'details', 'details-otdel'],
                 'rules'=>[
                     [
-                        'allow' => false,
+                        'allow' => true,
                         'roles' => ['@']
                     ],
                 ]

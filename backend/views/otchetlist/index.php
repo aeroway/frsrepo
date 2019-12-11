@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a('Создать отчёт', ['create'], ['class' => 'btn btn-success']);
         }
         ?>
-        <?= Html::a('Инструкции', '/backend/docs/instructions.zip', ['class' => 'btn btn-success']); ?>
+        <?= Html::a('Инструкции', '/docs/instructions.zip', ['class' => 'btn btn-success']); ?>
     </p>
 
     <?php
@@ -55,15 +55,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name_list',
                 'value' => function($data) {
                     if($data->table_list == 'otchetn')
-                        return "<a href='/backend/index.php?r=otchetn/index'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchetn/index'>$data->name_list</a>";
                     elseif($data->table_list == 'otchet_pay')
-                        return "<a href='/backend/index.php?r=otchet-pay/index'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchet-pay/index'>$data->name_list</a>";
                     elseif($data->table_list == 'otchetur' || $data->table_list == 'otchet999')
-                        return "<a href='/backend/index.php?r=otchetur/index&table=$data->table_list'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchetur/index&table=$data->table_list'>$data->name_list</a>";
                     elseif($data->table_list == 'otchetfiz')
-                        return "<a href='/backend/index.php?r=otchetfiz/index'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchetfiz/index'>$data->name_list</a>";
                     else
-                        return "<a href='/backend/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
+                        return "<a href='/index.php?r=otchett/index&table=$data->table_list'>$data->name_list</a>";
 
                     return '';
                 },

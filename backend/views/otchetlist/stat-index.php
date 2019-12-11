@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="otchetlist-form">
 
-        <?php $form = ActiveForm::begin(['action' => "/backend/index.php?r=otchetlist/stat-39-range&tblname=$tblname", 'id' => 'stat-39-range', 'method' => 'post',]); ?>
+        <?php $form = ActiveForm::begin(['action' => "/index.php?r=otchetlist/stat-39-range&tblname=$tblname", 'id' => 'stat-39-range', 'method' => 'post',]); ?>
 
             <div>
                 <label for="from">От</label>

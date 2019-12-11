@@ -74,10 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         // if ($out === NULL) {
 
-        $userRosreestr = \Yii::$app->LdapRosreestr->search()->findBy('sAMAccountname', $username);
-        $userKadastr = \Yii::$app->LdapKadastr->search()->findBy('sAMAccountname', $username);
-
-        if ($userRosreestr) {
+        if (!empty($userRosreestr = \Yii::$app->LdapRosreestr->search()->findBy('sAMAccountname', $username))) {
 
             $groups = \Yii::$app->LdapRosreestr->search()->users()->find($username)->getGroupNames(true);
             sort($groups);
@@ -91,22 +88,30 @@ class User extends ActiveRecord implements IdentityInterface
 
             return new static($out);
 
-        }
-
-        if ($userKadastr) {
-
-            $groups = sort(\Yii::$app->LdapKadastr->search()->users()->find($username)->getGroupNames(true));
+        } elseif(!empty($userRosreestrSorm = \Yii::$app->LdapRosreestrSorm->search()->findBy('sAMAccountname', $username))) {
+            $groups = \Yii::$app->LdapRosreestrSorm->search()->users()->find($username)->getGroupNames(true);
             sort($groups);
 
             $out = [
                         'id' => $username,
                         'username' => $username,
-                        'fio' => \Yii::$app->LdapKadastr->search()->users()->find($username)->getDisplayName(),
+                        'fio' => $userRosreestrSorm->getDisplayName(),
+                        'groups' => $groups
+                    ];
+
+            return new static($out);
+        } elseif(!empty($userKadastr = \Yii::$app->LdapKadastr->search()->findBy('sAMAccountname', $username))) {
+            $groups = \Yii::$app->LdapKadastr->search()->users()->find($username)->getGroupNames(true);
+            sort($groups);
+
+            $out = [
+                        'id' => $username,
+                        'username' => $username,
+                        'fio' => $userKadastr->getDisplayName(),
                         'groups' => $groups
                     ];
 
             return new static ($out);
-
         }
 
         $out = new static (null);
