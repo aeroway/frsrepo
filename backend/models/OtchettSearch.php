@@ -69,12 +69,12 @@ class OtchettSearch extends Otchett
             'date' => $this->date,
             'date_update' => $this->date_update,
             'date_load' => $this->date_load,
+            'status' => $this->status,
         ]);
 
         //$query->andFilterWhere(['like', 'kn', str_replace ( "\\\\\\\\", "\\", $this->kn )])
         $query->andFilterWhere(['like', 'kn', $this->kn])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'area', $this->area])
             ->andFilterWhere(['like', 'flag', $this->flag])

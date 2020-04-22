@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Req;
+use yii\web\ForbiddenHttpException;
 
 /**
  * ReqSearch represents the model behind the search form about `backend\models\Req`.
@@ -43,7 +44,9 @@ class ReqSearch extends Req
      */
     public function search($params)
     {
-        if(in_array("alvl1", Yii::$app->user->identity->groups)) {
+        $query = Req::find();
+
+        if (in_array("alvl1", Yii::$app->user->identity->groups)) {
             $query = Req::find()
                 ->where(['or',
                     ['user_text' => Yii::$app->user->identity->username],
@@ -51,15 +54,18 @@ class ReqSearch extends Req
                     ['user_text' => '23UPRS\\' . Yii::$app->user->identity->username]
                 ]);
 
-            if(in_array("alvl3", Yii::$app->user->identity->groups)) {
-                if ($this->isFkpUser()) {
-                    $query = Req::find()->where(['like', 'user_text', 'user']);
-                } else {
-                    $query = Req::find();
-                }
+            if ($this->isFkpUser()) {
+                $query = Req::find()->where(['or', ['like', 'user_text', 'user'], ['=', 'user_text', 'Сайт']]);
             }
-        } else {
-            $query = Req::find();
+
+        }
+
+        if (in_array("alvl2", Yii::$app->user->identity->groups) || in_array("alvl3", Yii::$app->user->identity->groups) || in_array("alvl4", Yii::$app->user->identity->groups)) {
+            if ($this->isFkpUser()) {
+                $query = Req::find()->where(['or', ['like', 'user_text', 'user'], ['=', 'user_text', 'Сайт']]);
+            } else {
+                $query = Req::find();
+            }
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -125,7 +131,7 @@ class ReqSearch extends Req
         return $dataProvider;
     }
 
-    private function isFkpUser()
+    public function isFkpUser()
     {
         $searchString = 'user';
 

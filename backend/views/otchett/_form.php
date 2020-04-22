@@ -44,6 +44,12 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet56' or
             $arr["table"] == 'otchet57' or
             $arr["table"] == 'otchet58' or
+            $arr["table"] == 'otchet59' or
+            $arr["table"] == 'otchet60' or
+            $arr["table"] == 'otchet62' or
+            $arr["table"] == 'otchet64' or
+            $arr["table"] == 'otchet65' or
+            $arr["table"] == 'otchet66' or
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
@@ -79,6 +85,12 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet56' or
             // $arr["table"] == 'otchet57' or
             $arr["table"] == 'otchet58' or
+            $arr["table"] == 'otchet59' or
+            $arr["table"] == 'otchet60' or
+            $arr["table"] == 'otchet62' or
+            $arr["table"] == 'otchet64' or
+            $arr["table"] == 'otchet65' or
+            $arr["table"] == 'otchet66' or
             $arr["table"] == 'otchet29' or 
             $arr["table"] == 'otchet35' or 
             $arr["table"] == 'otchet9' or 

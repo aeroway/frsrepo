@@ -75,7 +75,7 @@ class OtchetList extends \yii\db\ActiveRecord
         $rows = (new \yii\db\Query())
             ->select('COUNT(*)')
             ->from("$table")
-            ->where(['status' => 'Исправлен'])
+            ->where(['and', ['status' => 'Исправлен'], ['<>', 'flag', 1]])
             ->all();
 
         foreach($rows[0] as $otchetStatus0) {}
@@ -180,6 +180,10 @@ class OtchetList extends \yii\db\ActiveRecord
 
         if($table == 'otchet39' || $table == 'otchet41' || $table == 'otchet42' || $table == 'otchet44' || $table == 'otchet47')
             $lcl_echo .= "<p>" . Html::a('Статистика за период', ['otchetlist/stat-index', 'tblname' => $table], ['target'=>'_blank']) . "</p>";
+
+        if ($table == 'otchet63') {
+            return "<p><b>Всего:</b> $otchetSum</p>" . Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
+        }
 
         return $lcl_echo;
     }
@@ -414,5 +418,87 @@ class OtchetList extends \yii\db\ActiveRecord
         $localVarOut .= '</table>';
 
         return $localVarOut;
+    }
+
+    public function getStatTp($phone, $fromDate, $tillDate)
+    {
+        $resultOutput = "<h3>Таблица звонков с общего номера ТП 3962 на номер $phone</h3>";
+
+        $rowTp = Cdr::find()
+            ->select(["DATE_FORMAT(calldate, '%d.%m.%Y') AS cdate", "src", "count(*) AS ct", "sum(duration) AS sm"])
+            ->from("cdr")
+            ->where(['and', ['like', 'dstchannel', $phone], ['=', 'dst', '3962'], ['=', 'disposition', 'ANSWERED'], ['>=', 'calldate', $fromDate], ['<=', 'calldate', $tillDate]])
+            ->groupBy(["cdate", "src"])
+            ->orderBy(["calldate" => SORT_DESC])
+            ->asArray()
+            ->all();
+
+        $resultOutput .= '<table class="table table-bordered table-striped">';
+        $resultOutput .= '<head><tr><td><b>Дата</b></td><td><b>Номер</b></td><td><b>Кол-во</b></td><td><b>Длительность</b></td></tr></head>';
+        $resultOutput .= '<body>';
+
+        for ($i = 0; $i < count($rowTp); $i++) {
+            $resultOutput .= '<tr>';
+            $resultOutput .= '<td>' . $rowTp[$i]["cdate"] . '</td><td>' . $rowTp[$i]['src'] . '</td><td>' . $rowTp[$i]['ct'] . '</td><td>' . Yii::$app->formatter->asDuration($rowTp[$i]['sm']) . '</td>';
+            $resultOutput .= '</tr>';
+        }
+    
+        $resultOutput .= '</body>';
+        $resultOutput .= '</table>';
+    
+        return $resultOutput;
+    }
+
+    public function getStatPhone($phone, $fromDate, $tillDate)
+    {
+        $resultOutput = "<h3>Таблица прямых звонков на номер $phone (кроме 5* на 5* и 1* на 5*)</h3>";
+
+        $rowPhone = Cdr::find()
+            ->select(["DATE_FORMAT(calldate, '%d.%m.%Y %H:%i:%s') AS cdate", "src", "disposition", "duration"])
+            ->from("cdr")
+            ->where(['and'
+                , ['=', 'dst', $phone]
+                , ['>=', 'calldate', $fromDate]
+                , ['<=', 'calldate', $tillDate]
+                , ['=', 'lastapp', 'Dial']
+                , ['<>', 'disposition', 'FAILED']
+                , ['NOT LIKE', 'channel', 'queue']
+            ])
+            ->orderBy(["calldate" => SORT_DESC])
+            ->asArray()
+            ->all();
+
+        $resultOutput .= '<table class="table table-bordered table-striped">';
+        $resultOutput .= '<head><tr><td><b>Дата</b></td><td><b>Номер</b></td><td><b>Статус</b></td><td><b>Длительность</b></td></tr></head>';
+        $resultOutput .= '<body>';
+
+        for ($i = 0; $i < count($rowPhone); $i++) {
+
+            switch ($rowPhone[$i]['disposition']) {
+                case 'ANSWERED':
+                    $rowPhone[$i]['disposition'] = '<span class="glyphicon glyphicon-ok" title="Отвеченный"> Отвеченный</span>';
+                    break;
+                case 'NO ANSWER':
+                    $rowPhone[$i]['disposition'] = '<span class="glyphicon glyphicon-remove" title="Неотвеченный"> Неотвеченный</span>';
+                    break;
+                case 'BUSY':
+                    $rowPhone[$i]['disposition'] = '<span class="glyphicon glyphicon-time" title="Занято"> Занято</span>';
+                    break;
+            }
+
+            $resultOutput .= '<tr>';
+            $resultOutput .= '
+                <td>' . $rowPhone[$i]["cdate"] . '</td>
+                <td>' . $rowPhone[$i]['src'] . '</td>
+                <td>' . $rowPhone[$i]['disposition'] . '</td>
+                <td>' . Yii::$app->formatter->asDuration($rowPhone[$i]['duration']) . '</td>
+            ';
+            $resultOutput .= '</tr>';
+        }
+ 
+        $resultOutput .= '</body>';
+        $resultOutput .= '</table>';
+    
+        return $resultOutput;
     }
 }

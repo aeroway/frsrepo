@@ -97,7 +97,7 @@ class EmplEcp extends \yii\db\ActiveRecord
 
 		$employee = Employee::find()
 			->select(['employee.id', 'employee.fam', 'employee.name', 'employee.otch'])
-			->where(['status' => 1, 'idm_otdel' => $id])
+			->where(['and', ['<>', 'status', 2], ['idm_otdel' => $id]])
 			->orderBy(['fam' => SORT_ASC])
 			->all();
 
@@ -169,7 +169,8 @@ class EmplEcp extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'idm_empl' => 'ФИО',
-			'fullName' => Yii::t('app', 'Full Name'),
+            'fullName' => 'ФИО',
+			// 'fullName' => Yii::t('app', 'Full Name'),
             'ecp_start' => 'Дата выдачи',
             'ecp_stop' => 'Дата окончания',
             'ecp_org_id' => 'УЦ',
@@ -183,6 +184,8 @@ class EmplEcp extends \yii\db\ActiveRecord
             'comment_ecp' => 'Комментарий',
 			'invent_num' => 'Инвент. номер',
             'email' => 'e-mail',
+            'Statustxt' => 'Статус',
+            'otdels' => 'Отдел',
         ];
     }
 
@@ -193,7 +196,7 @@ class EmplEcp extends \yii\db\ActiveRecord
         $rows = EmplEcp::find()
             ->select('text, COUNT(*) AS ct')
             ->innerJoinWith('otdelsOtdel', 'otdel.id = empl_ecp.idm_otdel')
-            ->where(['and', ['<=', 'empl_ecp.ecp_stop', date('Y-m-d', strtotime("+60 days"))], ['IS NOT', 'empl_ecp.ecp_stop', null]])
+            ->where(['and', ['<=', 'empl_ecp.ecp_stop', date('Y-m-d', strtotime("+60 days"))], ['IS NOT', 'empl_ecp.ecp_stop', null], ['<>', 'empl_ecp.status', '5']])
             ->groupBy('otdel.text')
             ->orderBy('otdel.text ASC')
             ->createCommand()->queryAll();

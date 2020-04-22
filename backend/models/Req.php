@@ -97,6 +97,9 @@ class Req extends \yii\db\ActiveRecord
             case 9:
                 return '<span class="glyphicon glyphicon-repeat" title="Расписка возвращена"> </span>';
                 break;
+            case 10:
+                return '<span class="glyphicon glyphicon-search" title="Поиск"> </span>';
+                break;
             case 11:
                 return '<span class="glyphicon glyphicon-print" title="Подготовлен к печати - Районы">-Р</span>';
                 break;

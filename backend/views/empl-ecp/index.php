@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use kartik\export\ExportMenu;
 use yii\helpers\ArrayHelper;
 use backend\models\EmplEcpStatus;
 use backend\models\EmplEcpOrg;
@@ -55,6 +55,33 @@ else
 		?>
         <?= Html::a('Статистика', ['stat'], ['class' => 'btn btn-info']) ?>
     </p>
+
+    <p> </p>
+    <?php
+        $gridColumns = [
+            'fullName',
+			'otdels',
+            'ecp_stop',
+            //'EcpOrgName',
+            'Statustxt',
+            'email'
+        ];
+
+        echo ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            // 'target' => ExportMenu::TARGET_SELF,
+            // 'showConfirmAlert' => false,
+            // 'showColumnSelector' => false,
+            'exportConfig' => [
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_PDF => false,
+            ],
+            'filename' => 'exported-data_' . date('Y-m-d_H-i-s'),
+        ]);
+    ?>
+    <p> </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

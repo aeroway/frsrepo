@@ -60,10 +60,10 @@ class OtchetnSearch extends Otchetn
             'id' => $this->id,
             'date_update' => $this->date_update,
             'date_load' => $this->date_load,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'area', $this->area])
-            ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'reason1', $this->reason1])
             ->andFilterWhere(['like', 'reason2', $this->reason2])
             ->andFilterWhere(['like', 'offer', $this->offer])

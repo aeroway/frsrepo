@@ -29,7 +29,7 @@ use backend\models\Otdel;
 		foreach (
             ArrayHelper::map(Otdel::find()
                 ->innerJoin('employee', 'otdel.id = employee.idm_otdel')
-                ->where(['employee.status' => 1])
+                ->where(['<>', 'employee.status', 2])
                 ->orderBy(['text' => SORT_ASC])
                 ->all(), 'id', 'text') as $key => $value
         ) {

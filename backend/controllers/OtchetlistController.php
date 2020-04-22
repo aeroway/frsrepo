@@ -32,7 +32,8 @@ class OtchetlistController extends Controller
                     ],
                     [
                         'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view',
-                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora'
+                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp',
+                            'status-reception', 'status-registration', 'number-applications', 'status-regkuvd'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -89,6 +90,86 @@ class OtchetlistController extends Controller
         ]);
     }
 
+    public function actionStatusRegistration()
+    {
+        $model = new DbConnectEgrp();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($fromDate && $tillDate) {
+            $model->getInstance();
+            $result = $model->getStatusRegistration($fromDate, $tillDate);
+
+            return $this->render('status-registration-index', [
+                'result' => $result,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('status-registration-index');
+        }
+    }
+
+    public function actionStatusRegkuvd()
+    {
+        $model = new DbConnectEgrp();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($fromDate && $tillDate) {
+            $model->getInstance();
+            $result = $model->getStatusRegkuvd($fromDate, $tillDate);
+
+            return $this->render('status-regkuvd-index', [
+                'result' => $result,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('status-regkuvd-index');
+        }
+    }
+
+    public function actionStatusReception()
+    {
+        $model = new DbConnectEgrp();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($fromDate && $tillDate) {
+            $model->getInstance();
+            $result = $model->getStatusReception($fromDate, $tillDate);
+
+            return $this->render('status-reception-index', [
+                'result' => $result,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('status-reception-index');
+        }
+    }
+
+    public function actionNumberApplications()
+    {
+        $model = new DbConnectEgrp();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($fromDate && $tillDate) {
+            $model->getInstance();
+            $result = $model->getNumberApplications($fromDate, $tillDate);
+
+            return $this->render('number-applications-index', [
+                'result' => $result,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('number-applications-index');
+        }
+    }
+
     public function actionStatIndexOra()
     {
         $model = new DbConnectEgrp();
@@ -99,6 +180,29 @@ class OtchetlistController extends Controller
             return $this->render('stat-index-ora', ['result' => $result]);
         } else {
             return $this->render('stat-index-ora');
+        }
+    }
+
+    public function actionStatIndexTp()
+    {
+        if(!in_array("ИТО", Yii::$app->user->identity->groups) && Yii::$app->user->identity->username != 'Осипов СЛ') {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $model = new Otchetlist();
+        $phone = Yii::$app->request->post('phone');
+        $fromDate = Yii::$app->formatter->asDate(Yii::$app->request->post('fromDate'));
+        $tillDate = Yii::$app->formatter->asDate(Yii::$app->request->post('tillDate'));
+
+        if ($phone && $fromDate && $tillDate && $phone != '3017' && $phone != '3015') {
+            return $this->render('stat-index-tp', [
+                'result' => $model->getStatTp($phone, $fromDate, $tillDate) . $model->getStatPhone($phone, $fromDate, $tillDate),
+                'phone' => $phone,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('stat-index-tp');
         }
     }
 

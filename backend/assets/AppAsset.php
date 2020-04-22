@@ -26,7 +26,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/main.js',
         'js/qhighlight.js',
-        'js/metro/metro.js',
+        // 'js/metro/metro.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

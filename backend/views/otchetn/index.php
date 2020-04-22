@@ -5,6 +5,7 @@ use yii\grid\GridView;
 
 use yii\helpers\ArrayHelper;
 use backend\models\Employee;
+use backend\models\Otchetn;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\OtchetnSearch */
@@ -51,7 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'area',
             'condnum',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => 'status',
+                'filter' => ArrayHelper::map(Otchetn::find()->asArray()->all(), 'status', 'status'),
+            ],
             'reason1',
             [
                 'attribute' => 'reason2',

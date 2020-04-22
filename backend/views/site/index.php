@@ -71,6 +71,11 @@ function button($gitem)
             <a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-default">Портал отчётов [113.55]</a>
             <a target="_blank" href="http://10.128.21.4/app/" style="margin: 5px;" class="btn btn-default">Техпортал ЕСРОО</a>
             <!--<a target="_blank" href="http://10.23.112.4/index.php?option=com_oktest" style="margin: 5px;" class="btn btn-primary btn-sm">Классный чин</a>-->
+            <?php
+            if(in_array("ИТО", Yii::$app->user->identity->groups) && Yii::$app->user->identity->username != 'Осипов СЛ') {
+                echo yii\helpers\Html::a('Отчёт по звонкам в ТП', ['otchetlist/stat-index-tp'], ['class' => 'btn btn-default']);
+            }
+            ?>
         </div>
         <div class="row">
             <div class="col-lg-4">
