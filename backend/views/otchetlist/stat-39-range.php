@@ -29,6 +29,7 @@ $tblview = array(
     'otchet42' => 'stat42Range',
     'otchet44' => 'stat44Range',
     'otchet47' => 'stat47Range',
+    'otchet67' => 'stat67Range',
 );
 
 if($tblname == 'otchet39') {
@@ -160,6 +161,51 @@ if($tblname == 'otchet41' || $tblname == 'otchet42' || $tblname == 'otchet44' ||
                     ['like', 'username', Yii::$app->request->post('username')],
                     ['protocol' => 'Отказать в выполнении УРД']])->count() . '</td>
 
+        </tr>';
+
+    $localVarOut .= '</tr>';
+    $localVarOut .= '</body>';
+    $localVarOut .= '</table>';
+
+    echo $localVarOut;
+
+    exit(1);
+}
+
+if ($tblname == 'otchet67') {
+    $rows = Yii::$app->db->createCommand("SELECT * FROM $tblview[$tblname]('" . Yii::$app->request->post('fromDate') . "', '" . Yii::$app->request->post('tillDate') . "', '" . Yii::$app->request->post('username') . "')")->queryAll();
+
+    $localVarOut = '<h1>' . $otchett->otchetList($tblname) . '</h1>';
+    $localVarOut .= '<table cellpadding="7" border="2">';
+    $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td></tr></head>';
+
+    $localVarOut .= '<body>';
+
+    $i = 1;
+
+    foreach($rows as $val)
+    {
+        $localVarOut .= '<tr>';
+        $localVarOut .= '<td>' . $i++ . '</td>';
+
+        foreach($val as $val2)
+        {
+            $localVarOut .= '<td>' . $val2 . '</td>';
+        }
+
+        $localVarOut .= '</tr>';
+    }
+
+    $localVarOut .= 
+        '<tr>
+            <td></td>
+            <td></td>
+            <td>' . (new \yii\db\Query())->from($tblname)
+            ->where(['and', 
+                ['>=', 'date', Yii::$app->request->post('fromDate')], 
+                ['<=', 'date', Yii::$app->request->post('tillDate')]
+            ])
+            ->count() . '</td>
         </tr>';
 
     $localVarOut .= '</tr>';

@@ -89,7 +89,8 @@ else
 		'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'rowOptions' => function($model)
         {
-            if(date('Y-m-d', strtotime($model->ecp_stop)) <= date('Y-m-d', strtotime("+60 days")) && !empty($model->ecp_stop)) return ['class' => 'danger'];
+			if(date('Y-m-d', strtotime($model->ecp_stop)) <= date('Y-m-d', strtotime("+60 days")) && !empty($model->ecp_stop)) return ['class' => 'danger'];
+			if ($model->employeesEmployee->status == 2) return ['class' => 'warning'];
         },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],

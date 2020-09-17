@@ -14,6 +14,7 @@ use Yii;
  * @property string $inventory_moo
  * @property string $inventory_status
  * @property string $note
+ * @property string $date_edit
  */
 class InventoryRepair extends \yii\db\ActiveRecord
 {
@@ -39,9 +40,12 @@ class InventoryRepair extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['email'], 'required'],
             [['area', 'name', 'inventory_moo', 'inventory_status'], 'string', 'max' => 150],
+            [['email'], 'string', 'max' => 100],
             [['invnum'], 'string', 'max' => 50],
             [['note'], 'string', 'max' => 2048],
+            [['date_edit'], 'safe'],
         ];
     }
 
@@ -58,6 +62,22 @@ class InventoryRepair extends \yii\db\ActiveRecord
             'inventory_moo' => 'МО',
             'inventory_status' => 'Статус',
             'note' => 'Комментарий',
+            'email' => 'E-mail',
+            'date_edit' => 'Редакт.',
         ];
+    }
+
+    public function sendEmailMo()
+    {
+        $send = Yii::$app->mailer->compose()
+        ->setTo($this->email)
+        ->setSubject('Техника на ремонт сотруднику ' . $this->inventory_moo)
+        ->setHtmlBody(
+            'Статус техники "' . $this->name . '"<br><br>' .
+            'Инв. номер: ' . $this->invnum . '<br>' .
+            'Статус: ' . $this->inventory_status . '<br>' .
+            'Комментарии: ' . $this->note
+            )
+        ->send();
     }
 }

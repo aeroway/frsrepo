@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="form-group">
                 <label for="till">До:&nbsp;&nbsp;&nbsp;</label>
-                <input type="date" id="tillDate" name="tillDate" value="<?= empty($tillDate) ? date("Y-m-d", strtotime("+1 day")) : $tillDate ?>">
+                <input type="date" id="tillDate" name="tillDate" value="<?= empty($tillDate) ? date("Y-m-d") : $tillDate ?>">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Найти</button>

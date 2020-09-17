@@ -40,8 +40,13 @@ class Otchett extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        (self::$name === 'otchet41' || self::$name === 'otchet42' || self::$name === 'otchet44')
-            ? $required = [['status', 'date', 'username', 'protocol'], 'required'] : $required = [['status', 'date', 'username'], 'required'];
+        if (self::$name === 'otchet41' || self::$name === 'otchet42' || self::$name === 'otchet44') {
+            $required = [['status', 'date', 'username', 'protocol'], 'required'];
+        } elseif (self::$name === 'otchet67') {
+            $required = [['kn', 'description', 'area'], 'required'];
+        } else {
+            $required = [['status', 'date', 'username'], 'required'];
+        }
 
         return [
             $required,
@@ -56,10 +61,18 @@ class Otchett extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        if (self::$name === 'otchet67') {
+            $kn = 'Номер обращения';
+            $description = 'Тип обращения';
+        } else {
+            $kn = 'КН/УН';
+            $description = 'Описание';
+        };
+
         return [
             'id' => 'ID',
-            'kn' => 'КН/УН',
-            'description' => 'Описание',
+            'kn' => $kn,
+            'description' => $description,
             'status' => 'Состояние',
             'comment' => 'Наимен. ошибки',
             'date' => 'Дата',

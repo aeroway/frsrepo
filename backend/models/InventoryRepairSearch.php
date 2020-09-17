@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\InventoryRepair;
@@ -40,13 +41,17 @@ class InventoryRepairSearch extends InventoryRepair
      */
     public function search($params)
     {
-        $query = InventoryRepair::find();
+        if(!in_array("ИТО", Yii::$app->user->identity->groups)) {
+            $query = InventoryRepair::find()->where(['and', ['<>', 'inventory_status', 'Отремонтирован'], ['>=', 'date_edit', '2020-01-01']]);
+        } else {
+            $query = InventoryRepair::find();
+        }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            'sort' => ['defaultOrder' => ['date_edit' => SORT_DESC]],
         ]);
 
         $this->load($params);

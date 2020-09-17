@@ -24,7 +24,7 @@ class InventoryRepairController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'update', 'view', 'delete', 'index'],
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'send-email-mo'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -126,6 +126,16 @@ class InventoryRepairController extends Controller
         $this->checkAccess();
 
         $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionSendEmailMo($id)
+    {
+        $this->checkAccess();
+
+        $model = $this->findModel($id);
+        $model->sendEmailMo();
 
         return $this->redirect(['index']);
     }

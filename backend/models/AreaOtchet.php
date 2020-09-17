@@ -29,7 +29,7 @@ class AreaOtchet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kn', 'name', 'id_dpt', 'fl'], 'string'],
+            [['kn', 'name', 'id_dpt', 'fl', 'name_2'], 'string'],
         ];
     }
 
@@ -44,6 +44,7 @@ class AreaOtchet extends \yii\db\ActiveRecord
             'name' => 'Отдел',
             'id_dpt' => 'Id Dpt',
             'fl' => 'Fl',
+            'name_2' => 'name_2',
         ];
     }
 }

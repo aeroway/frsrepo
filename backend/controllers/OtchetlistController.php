@@ -33,7 +33,7 @@ class OtchetlistController extends Controller
                     [
                         'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view',
                             'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp',
-                            'status-reception', 'status-registration', 'number-applications', 'status-regkuvd'
+                            'status-reception', 'status-registration', 'number-applications', 'status-regkuvd-999', 'status-regkuvd'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -130,6 +130,26 @@ class OtchetlistController extends Controller
         }
     }
 
+    public function actionStatusRegkuvd999()
+    {
+        $model = new DbConnectEgrp();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($fromDate && $tillDate) {
+            $model->getInstance();
+            $result = $model->getStatusRegkuvd999($fromDate, $tillDate);
+
+            return $this->render('status-regkuvd-999-index', [
+                'result' => $result,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('status-regkuvd-999-index');
+        }
+    }
+
     public function actionStatusReception()
     {
         $model = new DbConnectEgrp();
@@ -191,8 +211,8 @@ class OtchetlistController extends Controller
 
         $model = new Otchetlist();
         $phone = Yii::$app->request->post('phone');
-        $fromDate = Yii::$app->formatter->asDate(Yii::$app->request->post('fromDate'));
-        $tillDate = Yii::$app->formatter->asDate(Yii::$app->request->post('tillDate'));
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
 
         if ($phone && $fromDate && $tillDate && $phone != '3017' && $phone != '3015') {
             return $this->render('stat-index-tp', [

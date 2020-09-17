@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
+use backend\models\AreaOtchet;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Otchet */
@@ -18,6 +20,8 @@ use kartik\select2\Select2;
 
         if($arr["table"] == 'otchet21') {
             echo $form->field($model, 'kn')->textInput();
+        } elseif ($arr["table"] == 'otchet67') {
+            echo $form->field($model, 'kn')->textInput(['placeholder' => 'Номер обращения'])->label(false);
         } else {
             echo $form->field($model, 'kn')->textInput(['readonly' => true]);
         }
@@ -53,13 +57,59 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
+        } elseif ($arr["table"] == 'otchet67') {
+            echo $form->field($model, 'description')->widget(Select2::classname(), [
+                'data' => [
+                    "Постановка на ГКУ и ГРП в связи с созданием (образованием) ОН" => "Постановка на ГКУ и ГРП в связи с созданием (образованием) ОН",
+                    "Постановка на ГКУ ОН без одновременной ГРП" => "Постановка на ГКУ ОН без одновременной ГРП",
+                    "Снятие с ГКУ ОН, права на который зарегистрированы в ЕГРН" => "Снятие с ГКУ ОН, права на который зарегистрированы в ЕГРН",
+                    "Снятие с ГКУ ОН, права на который не зарегистрированы в ЕГРН" => "Снятие с ГКУ ОН, права на который не зарегистрированы в ЕГРН",
+                    "Изменение основных характеристик ОН без одновременной ГРП" => "Изменение основных характеристик ОН без одновременной ГРП",
+                    "Внесение сведений о ранее учтенном ОН" => "Внесение сведений о ранее учтенном ОН",
+                    "Изменение вида ОН в рамках учета изменений основных характеристик ОН" => "Изменение вида ОН в рамках учета изменений основных характеристик ОН",
+                    "ГРП без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)" => "ГРП без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)",
+                    "ГР прекращения права на ОН без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)" => "ГР прекращения права на ОН без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)",
+                    "Регистрация перехода права на ОН без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)" => "Регистрация перехода права на ОН без одновременного ГКУ (при наличии в ЕГРН сведений об ОНИ)",
+                    "Регистрация и погашение сделки об ограничении (обремениении) права" => "Регистрация и погашение сделки об ограничении (обремениении) права",
+                    "Регистрация ограничений прав на ОН и обременений ОН" => "Регистрация ограничений прав на ОН и обременений ОН",
+                    "Прекращение ограничений прав на ОН и обременений ОН" => "Прекращение ограничений прав на ОН и обременений ОН",
+                    "Исправление технических ошибок в запиях ЕГРН" => "Исправление технических ошибок в запиях ЕГРН",
+                    "Погашение ипотеки" => "Погашение ипотеки",
+                    "Учет бесхозяйных недвижимых вещей" => "Учет бесхозяйных недвижимых вещей",
+                    "Прием судебных актов или актов уполномоченного органа" => "Прием судебных актов или актов уполномоченного органа"
+                ],
+                'language' => 'ru',
+                'options' => ['placeholder' => 'Выберите тип обращения'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    //'tags' => true,
+                    'initialize' => true,
+                ],
+            ])->label(false);
         } else {
             echo $form->field($model, 'description')->textInput();
+        }
+
+        if ($arr["table"] == 'otchet67') {
+            // echo $form->field($model, 'area')->textInput(['placeholder' => 'Район'])->label(false);
+
+            echo $form->field($model, 'area')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map(AreaOtchet::find()->select('name_2')->where(['<>', 'name_2', 'Сочинский'])->orderBy(['name_2' => SORT_ASC])->all(), 'name_2', 'name_2'),
+                'language' => 'ru',
+                'options' => ['placeholder' => 'Выберите район'],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    // 'tags' => true
+                ],
+            ])->label(false);
+
         }
     ?>
 
     <?php if($arr["table"] == 'otchet41' or $arr["table"] == 'otchet47' or $arr["table"] == 'otchet42' or $arr["table"] == 'otchet44') : ?>
         <?= $form->field($model, 'status')->hiddenInput(['readonly' => true, 'value' => 'Исправлен'])->label(false); ?>
+    <?php elseif($arr["table"] == 'otchet67') : ?>
+        <?= $form->field($model, 'status')->hiddenInput(['value' => 'Исправлен'])->label(false); ?>
     <?php else : ?>
         <?= $form->field($model, 'status')->dropDownList(
                 ['Исправлен' => 'Исправлен', 'Невозможно исправить' => 'Невозможно исправить', 'В работе' => 'В работе'],
@@ -96,6 +146,8 @@ use kartik\select2\Select2;
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
+        } elseif ($arr["table"] == 'otchet67') {
+            echo $form->field($model, 'comment')->hiddenInput(['value' => ''])->label(false);
         } else {
             if ($arr["table"] != 'otchet39' && $arr["table"] != 'otchet46')
                 echo $form->field($model, 'comment')->textArea(['placeholder' => 'Текст уведомления о внесённых изменениях для уведомления правообладателя.']);

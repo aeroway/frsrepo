@@ -34,7 +34,9 @@ if(Otchett::$name == 'otchet29')
     <?php Yii::$app->session->setFlash('table', Otchett::$name); ?>
 
     <p>
-        <?php /* echo Html::a('Create Otchet', ['create'], ['class' => 'btn btn-success']) */ ?>
+        <?php if (Otchett::$name == 'otchet67'): ?>
+            <?php echo Html::a('Добавить запись', ['create', 'table' => Otchett::$name], ['class' => 'btn btn-success']); ?>
+        <?php endif; ?>
     </p>
 
     <?=Html::beginForm(['otchett/bulk'],'post');?>
@@ -67,12 +69,19 @@ if(Otchett::$name == 'otchet29')
     <?php if (Otchett::$name === 'otchet56') : ?>
         <?php $labelDescription = ['label' => 'Площадь №1', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Площадь №2'; ?>
+        <?php $labelKn = 'КН/УН'; ?>
     <?php elseif (Otchett::$name === 'otchet63') : ?>
         <?php $labelDescription = ['label' => 'Дата постановки на учёт', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Дата снятия'; ?>
+        <?php $labelKn = 'КН/УН'; ?>
+    <?php elseif (Otchett::$name === 'otchet67') : ?>
+        <?php $labelDescription = ['label' => 'Тип обращения', 'attribute' => 'description',]; ?>
+        <?php $labelComment = 'Доп. информация'; ?>
+        <?php $labelKn = 'Номер обращения'; ?>
     <?php else: ?>
         <?php $labelDescription = ['label' => 'Описание', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Наимен. ошибки'; ?>
+        <?php $labelKn = 'КН/УН'; ?>
     <?php endif; ?>
 
     <?php if (Otchett::$name === 'otchet41' || Otchett::$name === 'otchet42'|| Otchett::$name === 'otchet44') : ?>
@@ -81,6 +90,33 @@ if(Otchett::$name == 'otchet29')
         <?php $labelProtocol = ['label' => 'Основание снятия в ГКН', 'attribute' => 'protocol',]; ?>
     <?php else: ?>
         <?php $labelProtocol = ['label' => 'Протокол', 'attribute' => 'protocol',]; ?>
+    <?php endif; ?>
+
+    <?php if (Otchett::$name === 'otchet67') : ?>
+        <?php $status = []; ?>
+        <?php $comment = []; ?>
+    <?php else: ?>
+        <?php $status =
+            [
+                'attribute' => 'status',
+                'value' => 'status',
+                'filter' => ArrayHelper::map(Otchett::find()->asArray()->all(), 'status', 'status'),
+            ];
+        ?>
+        <?php $comment =
+            [
+                'label' => $labelComment,
+                'attribute' => 'comment',
+                'value' => function($data) {
+                    if (Otchett::$name == 'otchet39' || Otchett::$name == 'otchet46') {
+                        return date('d.m.Y', strtotime($data->comment));
+                    } else {
+                        return $data->comment;
+                    }
+                },
+                'format' => 'raw',
+            ];
+        ?>
     <?php endif; ?>
 
     <p> </p>
@@ -126,27 +162,13 @@ if(Otchett::$name == 'otchet29')
 
             //'id',
             [
+                'label' => $labelKn,
                 'attribute' => 'kn',
                 'contentOptions' => ['style'=>'width: 160px;'],
             ],
             $labelDescription,
-            [
-                'attribute' => 'status',
-                'value' => 'status',
-                'filter' => ArrayHelper::map(Otchett::find()->asArray()->all(), 'status', 'status'),
-            ],
-            [
-                'label' => $labelComment,
-                'attribute' => 'comment',
-                'value' => function($data) {
-                    if (Otchett::$name == 'otchet39' || Otchett::$name == 'otchet46') {
-                        return date('d.m.Y', strtotime($data->comment));
-                    } else {
-                        return $data->comment;
-                    }
-                },
-                'format' => 'raw',
-            ],
+            $status,
+            $comment,
             [
                 'attribute' => 'date',
                 'format' =>  ['date', 'php:d M Y'],

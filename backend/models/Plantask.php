@@ -80,9 +80,12 @@ class Plantask extends \yii\db\ActiveRecord
     public function getEmployeeDepartment($username)
     {
         $usernameClear = substr_replace($username, '', 0, 6);
-        $usernameInfo = Yii::$app->Ldap->user()->info($usernameClear);
+        // $usernameInfo = Yii::$app->Ldap->user()->info($usernameClear);
+        $findUser = Yii::$app->LdapRosreestr->search()->users()->find($usernameClear);
+        $usernameInfo = empty($findUser) ? '' : Yii::$app->LdapRosreestr->search()->users()->find($usernameClear)->getDisplayName();
 
-        $fio = explode(' ', $usernameInfo[0]['displayname'][0]);
+        // $fio = explode(' ', $usernameInfo[0]['displayname'][0]);
+        $fio = explode(' ', $usernameInfo);
 
         if(!empty($fio[2])) {
 

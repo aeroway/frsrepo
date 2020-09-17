@@ -49,6 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'invnum',
             'inventory_moo',
             'inventory_status',
+            [
+                'attribute' => 'date_edit',
+                'format' =>  ['date', 'php:d M Y'],
+            ],
             'note',
 
             $button,

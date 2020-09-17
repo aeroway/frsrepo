@@ -133,12 +133,18 @@ class OtchettController extends Controller
      */
     public function actionCreate()
     {
-        throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        $arr = Yii::$app->request->get();
+        Otchett::$name = $arr["table"];
+
+        if (Otchett::$name <> 'otchet67') {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
 
         $model = new Otchett();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            // return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'table' => Otchett::$name]);
         }
 
         return $this->render('create', [
@@ -178,8 +184,8 @@ class OtchettController extends Controller
 
             $model->save();
 
-            return $this->redirect(['view', 'id' => $model->id, 'table' => Otchett::$name]);
-            //return $this->redirect(['index', 'table' => Otchett::$name]);
+            // return $this->redirect(['view', 'id' => $model->id, 'table' => Otchett::$name]);
+            return $this->redirect(['index', 'table' => Otchett::$name]);
         } else {
             return $this->render('update', [
                 'model' => $model,

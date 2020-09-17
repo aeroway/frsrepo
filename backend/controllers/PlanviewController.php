@@ -27,7 +27,7 @@ class PlanviewController extends Controller
                 'only' => ['create', 'update', 'view', 'delete', 'index'],
                 'rules' => [
                     [
-                        'allow' => true,
+                        'allow' => false,
                         'roles' => ['@']
                     ],
                 ]

@@ -84,6 +84,7 @@ $tblview = array(
     'otchet64' => 'stat_64',
     'otchet65' => 'stat_65',
     'otchet66' => 'stat_66',
+    'otchet67' => 'stat_67',
 );
 
 if(
@@ -147,6 +148,7 @@ if(
     or $tblname == 'otchet64'
     or $tblname == 'otchet65'
     or $tblname == 'otchet66'
+    or $tblname == 'otchet67'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')
@@ -162,6 +164,8 @@ if(
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></td><td><b>Возврат по причине приостановки</b></td><td><b>Возврат по причине приостановки (повторно)</b></td><td><b>Забрали обратно</b></td><td><b>Зарегистрировано</b></td><td><b>Ненадлежащее рег. действие</b></td><td><b>Ошибка миграции</b></td><td><b>Отказать в выполнении УРД</b></td><td><b>В работе</b></td></tr></head>';
         } elseif($tblname == 'otchet63') {
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Пользователь</b></td><td><b>Всего</b></tr></head>';
+        } elseif($tblname == 'otchet67') {
+            $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></tr></head>';
         } else {
             $localVarOut .= '<head><tr><td>п/п</td><td><b>Отдел</b></td><td><b>Всего</b></td><td><b>Исправлено</b></td><td><b>В работе</b></td><td><b>Невозможно исправить</b></td><td><b>Не назначено</b></td><td><b>Повторные</b></td><td><b>Назначено</b></td></tr></head>';
         }
@@ -212,6 +216,13 @@ if(
                 <td>' . ((new \yii\db\Query())->from($tblname)->where(['IS', 'protocol', NULL])->count()) . '</td>
             </tr>';
     elseif($tblname == 'otchet63')
+        $localVarOut .= 
+        '<tr>
+            <td> </td>
+            <td> </td>
+            <td>' . (new \yii\db\Query())->from($tblname)->count() . '</td>
+        </tr>';
+    elseif($tblname == 'otchet67')
         $localVarOut .= 
         '<tr>
             <td> </td>
