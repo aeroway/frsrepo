@@ -22,6 +22,12 @@ class VedomostCheckForm extends \yii\db\ActiveRecord
     {
         return \Yii::$app->db2;  
     }
+
+    public static function getDb11()
+    {
+        return Yii::$app->db11;
+    }
+
     /**
      * @inheritdoc
      */
@@ -38,9 +44,11 @@ class VedomostCheckForm extends \yii\db\ActiveRecord
         return [
             [['date_in', 'vedomost_date'], 'safe'],
             [['user_in', 'module'], 'string'],
-            [['vedomost_num', 'vedomost_res', 'check_type','sektors_ip'], 'integer']
+            [['vedomost_num', 'vedomost_res', 'check_type','sektors_ip'], 'integer'],
+            [['vedomost_num'], 'required']
         ];
     }
+
     public function getIconStatus()
     {
         switch ($this->vedomost_res) {
@@ -53,6 +61,16 @@ class VedomostCheckForm extends \yii\db\ActiveRecord
             default:
                 return $this->vedomost_res;
         }
+    }
+
+    public function getVedComment()
+    {
+        return \Yii::$app->db11->createCommand("SELECT comment FROM ved WHERE id=$this->vedomost_num")->queryOne()["comment"];
+    }
+
+    public function getAffairsCount()
+    {
+        return \Yii::$app->db11->createCommand("SELECT count(*) FROM affairs WHERE ved_id=$this->vedomost_num")->queryOne()["count"];
     }
 
     /**

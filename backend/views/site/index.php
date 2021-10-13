@@ -57,6 +57,7 @@ function button($gitem)
     </div>
     <div class="body-content">
         <div class="row">
+            <a target="_blank" href="/index.php?r=otchett/index&table=otchet78" style="margin: 5px;" class="btn btn-success">Земли с/х назначения</a>
             <!--<a target="_blank" href="/index.php?r=otchett/index&table=otchet42" style="margin: 5px;" class="btn btn-success btn-sm">Экстер ФГИС ЕГРН</a>-->
             <a target="_blank" href="/index.php?r=inventory-repair" style="margin: 5px;" class="btn btn-success">Ремонт принтеров</a>
             <a target="_blank" href="/index.php?r=rst-enf-proc" style="margin: 5px;" class="btn btn-default">Реестр исполнительных производств</a>

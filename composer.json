@@ -31,7 +31,8 @@
         "kartik-v/yii2-grid": "v3.3.*",
         "kartik-v/yii2-widget-select2": "v2.1.*",
         "kartik-v/yii2-mpdf": "v1.0.*",
-        "kartik-v/yii2-export": "v1.4.*"
+        "kartik-v/yii2-export": "v1.4.*",
+        "yii2tech/spreadsheet": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

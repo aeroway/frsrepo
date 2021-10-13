@@ -27,7 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
     if(in_array("ИТО", Yii::$app->user->identity->groups)) {
         $button = [
             'class' => 'yii\grid\ActionColumn',
-            'template'=>'{view} {update} {delete}',
+            'buttons'=>
+            [
+                'log'=>function ($url, $model)
+                {
+                    $options = [
+                        'title' => Yii::t('yii', 'История'),
+                        'aria-label' => Yii::t('yii', 'История'),
+                    ];
+                    $customurl = Yii::$app->getUrlManager()->createUrl(['inventory-repair/log', 'id' => $model['id']]);
+
+                    return Html::a('<span class="glyphicon glyphicon-calendar"></span>', $customurl, $options);
+                },
+            ],    
+            'template'=>'{view} {update} {delete} {log}',
         ];
     } else {
         $button = [

@@ -54,6 +54,29 @@ use backend\models\AreaOtchet;
             $arr["table"] == 'otchet64' or
             $arr["table"] == 'otchet65' or
             $arr["table"] == 'otchet66' or
+            $arr["table"] == 'otchet68' or
+            $arr["table"] == 'otchet72' or
+            $arr["table"] == 'otchet73' or
+            $arr["table"] == 'otchet74' or
+            $arr["table"] == 'otchet75' or
+            $arr["table"] == 'otchet76' or
+            $arr["table"] == 'otchet77' or
+            $arr["table"] == 'otchet78' or
+            $arr["table"] == 'otchet82' or
+            $arr["table"] == 'otchet83' or
+            $arr["table"] == 'otchet84' or
+            $arr["table"] == 'otchet85' or
+            $arr["table"] == 'otchet86' or
+            $arr["table"] == 'otchet92' or
+            $arr["table"] == 'otchet93' or
+            $arr["table"] == 'otchet94' or
+            $arr["table"] == 'otchet95' or
+            $arr["table"] == 'otchet96' or
+            $arr["table"] == 'otchet97' or
+            $arr["table"] == 'otchet98' or
+            $arr["table"] == 'otchet99' or
+            $arr["table"] == 'otchet100' or
+            $arr["table"] == 'otchet101' or
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
@@ -110,6 +133,8 @@ use backend\models\AreaOtchet;
         <?= $form->field($model, 'status')->hiddenInput(['readonly' => true, 'value' => 'Исправлен'])->label(false); ?>
     <?php elseif($arr["table"] == 'otchet67') : ?>
         <?= $form->field($model, 'status')->hiddenInput(['value' => 'Исправлен'])->label(false); ?>
+    <?php elseif($arr["table"] == 'otchet78') : ?>
+        <?= $form->field($model, 'status')->hiddenInput(['value' => 'не назначено'])->label(false); ?>
     <?php else : ?>
         <?= $form->field($model, 'status')->dropDownList(
                 ['Исправлен' => 'Исправлен', 'Невозможно исправить' => 'Невозможно исправить', 'В работе' => 'В работе'],
@@ -133,7 +158,7 @@ use backend\models\AreaOtchet;
             $arr["table"] == 'otchet53' or
             $arr["table"] == 'otchet54' or
             $arr["table"] == 'otchet56' or
-            // $arr["table"] == 'otchet57' or
+            $arr["table"] == 'otchet68' or
             $arr["table"] == 'otchet58' or
             $arr["table"] == 'otchet59' or
             $arr["table"] == 'otchet60' or
@@ -143,6 +168,28 @@ use backend\models\AreaOtchet;
             $arr["table"] == 'otchet66' or
             $arr["table"] == 'otchet29' or 
             $arr["table"] == 'otchet35' or 
+            $arr["table"] == 'otchet72' or
+            $arr["table"] == 'otchet73' or
+            $arr["table"] == 'otchet74' or
+            $arr["table"] == 'otchet75' or
+            $arr["table"] == 'otchet76' or
+            $arr["table"] == 'otchet77' or
+            $arr["table"] == 'otchet78' or
+            $arr["table"] == 'otchet82' or
+            $arr["table"] == 'otchet83' or
+            $arr["table"] == 'otchet84' or
+            $arr["table"] == 'otchet85' or
+            $arr["table"] == 'otchet86' or
+            $arr["table"] == 'otchet92' or
+            $arr["table"] == 'otchet93' or
+            $arr["table"] == 'otchet94' or
+            $arr["table"] == 'otchet95' or
+            $arr["table"] == 'otchet96' or
+            $arr["table"] == 'otchet97' or
+            $arr["table"] == 'otchet98' or
+            $arr["table"] == 'otchet99' or
+            $arr["table"] == 'otchet100' or
+            $arr["table"] == 'otchet101' or
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);
@@ -187,6 +234,8 @@ use backend\models\AreaOtchet;
                     'initialize' => true,
                 ],
             ])->label('Результат');
+        } elseif($arr["table"] == 'otchet78') {
+            echo $form->field($model, 'protocol')->textArea(['maxlength' => 3000])->label('Примечание');
         } else {
             echo $form->field($model, 'protocol')->textInput(['maxlength' => 100]);
         }

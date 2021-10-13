@@ -32,7 +32,7 @@ class OtchetlistController extends Controller
                     ],
                     [
                         'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view',
-                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp',
+                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp', 'stat-index-otchet',
                             'status-reception', 'status-registration', 'number-applications', 'status-regkuvd-999', 'status-regkuvd'
                         ],
                         'allow' => true,
@@ -223,6 +223,31 @@ class OtchetlistController extends Controller
             ]);
         } else {
             return $this->render('stat-index-tp');
+        }
+    }
+
+    public function actionStatIndexOtchet($tblname)
+    {
+        if(!in_array("ИТО", Yii::$app->user->identity->groups) && Yii::$app->user->identity->username != 'Осипов СЛ') {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $model = new Otchetlist();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($tblname && $fromDate && $tillDate) {
+            $model->getOtchetExcel($tblname, $fromDate, $tillDate);
+
+            return $this->render('stat-index-otchet', [
+                'tblname' => $tblname,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('stat-index-otchet', [
+                'tblname' => $tblname,
+            ]);
         }
     }
 

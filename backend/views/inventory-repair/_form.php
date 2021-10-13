@@ -12,6 +12,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <div class="form-group">
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+    </div>
+
     <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -26,11 +30,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'date_edit')->hiddenInput(['readonly' => true, 'value' => date("Y-m-d H:i:s") ]) ?>
+    <?= $form->field($model, 'username')->hiddenInput(['readonly' => true, 'value' => Yii::$app->user->identity->username])->label(false) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
-    </div>
+    <?= $form->field($model, 'date_edit')->hiddenInput(['readonly' => true, 'value' => date("Y-m-d H:i:s")])->label(false) ?>
 
     <?php ActiveForm::end(); ?>
 

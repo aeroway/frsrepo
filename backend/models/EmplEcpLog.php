@@ -52,7 +52,7 @@ class EmplEcpLog extends \yii\db\ActiveRecord
         return [
             [['idm_empl', 'ecp_org_id', 'status', 'nositel_type', 'empl_ecp_id'], 'integer'],
             [['ecp_start', 'ecp_stop', 'date_in', 'req_date', 'ecpmodify_date'], 'safe'],
-            [['nositel_num', 'user_in', 'invent_num', 'comment_ecp'], 'string']
+            [['nositel_num', 'user_in', 'invent_num', 'comment_ecp', 'username'], 'string']
         ];
     }
 
@@ -132,6 +132,7 @@ class EmplEcpLog extends \yii\db\ActiveRecord
             'comment_ecp' => 'Комментарий',
             'ecpmodify_date' => 'Модификация',
             'empl_ecp_id' => 'Empl Ecp ID',
+            'username' => 'Редактировал',
         ];
     }
 

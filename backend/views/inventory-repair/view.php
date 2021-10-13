@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'inventory_moo',
             'inventory_status',
             'note',
+            'username',
         ],
     ]) ?>
 

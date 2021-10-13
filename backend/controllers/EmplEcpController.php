@@ -102,7 +102,10 @@ class EmplEcpController extends Controller
 
         $model = new EmplEcp();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->username = Yii::$app->user->identity->username;
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -123,7 +126,9 @@ class EmplEcpController extends Controller
 
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->username = Yii::$app->user->identity->username;
+            $model->save();
 
             $modellog = new EmplEcpLog();
             $modellog->idm_empl = $model->idm_empl;
@@ -140,6 +145,7 @@ class EmplEcpController extends Controller
             $modellog->comment_ecp = $model->comment_ecp;
             $modellog->ecpmodify_date = $model->ecpmodify_date;
             $modellog->empl_ecp_id = $model->id;
+            $modellog->username = Yii::$app->user->identity->username;
             $modellog->save();
 
             return $this->redirect(['view', 'id' => $model->id]);

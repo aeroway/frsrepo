@@ -21,7 +21,7 @@ class EmplEcpLogSearch extends EmplEcpLog
     {
         return [
             [['id', 'idm_empl', 'status', 'nositel_type'], 'integer'],
-            [[ 'ecp_org_id', 'nositel_num', 'date_in', 'req_date', 'ecpmodify_date', 'user_in', 'comment_ecp', 'fullName', 'invent_num', 'Statustxt', 'otdels', 'empl_ecp_id'], 'safe'],
+            [[ 'ecp_org_id', 'nositel_num', 'date_in', 'req_date', 'ecpmodify_date', 'user_in', 'comment_ecp', 'fullName', 'invent_num', 'Statustxt', 'otdels', 'empl_ecp_id', 'username'], 'safe'],
         ];
     }
 
@@ -48,38 +48,8 @@ class EmplEcpLogSearch extends EmplEcpLog
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-			'sort' => ['defaultOrder' => ['id' => SORT_ASC]]
+			'sort' => ['defaultOrder' => ['ecpmodify_date' => SORT_DESC]],
         ]);
-
-		$dataProvider->setSort([
-			'attributes' => [
-				'id',
-				'fullName' => [
-					'asc' => ['fam' => SORT_ASC, 'name' => SORT_ASC, 'otch' => SORT_ASC],
-					'desc' => ['fam' => SORT_DESC, 'name' => SORT_DESC, 'otch' => SORT_DESC],
-					'label' => 'Full Name',
-					'default' => SORT_ASC
-				],
-				'otdels' => [
-					'asc' => ['idm_otdel' => SORT_ASC],
-					'desc' => ['idm_otdel' => SORT_DESC],
-					'label' => 'Отдел',
-					'default' => SORT_ASC
-				],
-				'ecpmodify_date' => [
-					'asc' => ['ecpmodify_date' => SORT_ASC],
-					'desc' => ['ecpmodify_date' => SORT_DESC],
-					'label' => 'Модификация',
-					'default' => SORT_ASC
-				],
-				'invent_num' => [
-					'asc' => ['invent_num' => SORT_ASC],
-					'desc' => ['invent_num' => SORT_DESC],
-					'label' => 'Инвент. номер',
-					'default' => SORT_ASC
-				],
-			]
-		]);
 
         $this->load($params);
 
@@ -117,6 +87,7 @@ class EmplEcpLogSearch extends EmplEcpLog
 			->andFilterWhere(['and', ['like', 'fam', $fam], ['like', 'name', $name], ['like', 'otch', $otch]])
 			->andFilterWhere(['like', 'empl_ecp_status.text', $this->Statustxt])
 			->andFilterWhere(['like', 'ecp_org.text', $this->ecp_org_id])
+			->andFilterWhere(['like', 'username', $this->username])
 			->andFilterWhere(['like', 'otdel.text', $this->otdels]);
 
         return $dataProvider;

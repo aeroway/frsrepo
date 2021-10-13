@@ -31,7 +31,10 @@ class Otdel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text'], 'string']
+            [['text'], 'required'],
+            [['text'], 'unique'],
+            [['text'], 'string'],
+            [['date_start', 'date_stop'], 'safe'],
         ];
     }
 
@@ -42,7 +45,9 @@ class Otdel extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'text' => 'Text',
+            'text' => 'Отдел',
+            'date_start' => 'Начало',
+            'date_stop' => 'Окончание',
         ];
     }
 }

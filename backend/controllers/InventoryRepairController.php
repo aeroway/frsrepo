@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use backend\models\InventoryRepair;
 use backend\models\InventoryRepairSearch;
+use backend\models\InventoryRepairLog;
+use backend\models\InventoryRepairLogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,7 +26,7 @@ class InventoryRepairController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'update', 'view', 'delete', 'index', 'send-email-mo'],
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'send-email-mo', 'log'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -70,6 +72,17 @@ class InventoryRepairController extends Controller
         ]);
     }
 
+    public function actionLog($id)
+    {
+        $searchModel = new InventoryRepairLogSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('log', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Creates a new InventoryRepair model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -80,9 +93,20 @@ class InventoryRepairController extends Controller
         $this->checkAccess();
 
         $model = new InventoryRepair();
+        $modelLog = new InventoryRepairLog();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->id]);
+            $modelLog->area = $model->area;
+            $modelLog->name = $model->name;
+            $modelLog->invnum = $model->invnum;
+            $modelLog->inventory_moo = $model->inventory_moo;
+            $modelLog->inventory_status = $model->inventory_status;
+            $modelLog->note = $model->note;
+            $modelLog->email = $model->email;
+            $modelLog->username = $model->username;
+            $modelLog->inventory_repair_id = $model->id;
+            $modelLog->save();
+
             return $this->redirect(['index']);
         }
 
@@ -103,10 +127,22 @@ class InventoryRepairController extends Controller
         $this->checkAccess();
 
         $model = $this->findModel($id);
+        $modelLog = new InventoryRepairLog();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->id]);
-            return $this->redirect(['index']);
+            $modelLog->area = $model->area;
+            $modelLog->name = $model->name;
+            $modelLog->invnum = $model->invnum;
+            $modelLog->inventory_moo = $model->inventory_moo;
+            $modelLog->inventory_status = $model->inventory_status;
+            $modelLog->note = $model->note;
+            $modelLog->email = $model->email;
+            $modelLog->date_edit = $model->date_edit;
+            $modelLog->username = $model->username;
+            $modelLog->inventory_repair_id = $model->id;
+            $modelLog->save();
+
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [

@@ -85,6 +85,46 @@ $tblview = array(
     'otchet65' => 'stat_65',
     'otchet66' => 'stat_66',
     'otchet67' => 'stat_67',
+    'otchet68' => 'stat_68',
+    'otchet69' => 'stat_69',
+    'otchet70' => 'stat_70',
+    'otchet71' => 'stat_71',
+    'otchet72' => 'stat_72',
+    'otchet73' => 'stat_73',
+    'otchet74' => 'stat_74',
+    'otchet75' => 'stat_75',
+    'otchet76' => 'stat_76',
+    'otchet77' => 'stat_77',
+    'otchet78' => 'stat_78',
+    'otchet79' => 'stat_79',
+    'otchet80' => 'stat_80',
+    'otchet81' => 'stat_81',
+    'otchet82' => 'stat_82',
+    'otchet83' => 'stat_83',
+    'otchet84' => 'stat_84',
+    'otchet85' => 'stat_85',
+    'otchet86' => 'stat_86',
+    'otchet87' => 'stat_87',
+    'otchet88' => 'stat_88',
+    'otchet89' => 'stat_89',
+    'otchet92' => 'stat_92',
+    'otchet93' => 'stat_93',
+    'otchet94' => 'stat_94',
+    'otchet95' => 'stat_95',
+    'otchet96' => 'stat_96',
+    'otchet97' => 'stat_97',
+    'otchet98' => 'stat_98',
+    'otchet99' => 'stat_99',
+    'otchet100' => 'stat_100',
+    'otchet101' => 'stat_101',
+    'otchet102' => 'stat_102',
+    'otchet103' => 'stat_103',
+    'otchet104' => 'stat_104',
+    'otchet105' => 'stat_105',
+    'otchet106' => 'stat_106',
+    'otchet107' => 'stat_107',
+    'otchet108' => 'stat_108',
+    'otchet109' => 'stat_109',
 );
 
 if(
@@ -149,6 +189,46 @@ if(
     or $tblname == 'otchet65'
     or $tblname == 'otchet66'
     or $tblname == 'otchet67'
+    or $tblname == 'otchet68'
+    or $tblname == 'otchet69'
+    or $tblname == 'otchet70'
+    or $tblname == 'otchet71'
+    or $tblname == 'otchet72'
+    or $tblname == 'otchet73'
+    or $tblname == 'otchet74'
+    or $tblname == 'otchet75'
+    or $tblname == 'otchet76'
+    or $tblname == 'otchet77'
+    or $tblname == 'otchet78'
+    or $tblname == 'otchet79'
+    or $tblname == 'otchet80'
+    or $tblname == 'otchet81'
+    or $tblname == 'otchet82'
+    or $tblname == 'otchet83'
+    or $tblname == 'otchet84'
+    or $tblname == 'otchet85'
+    or $tblname == 'otchet86'
+    or $tblname == 'otchet87'
+    or $tblname == 'otchet88'
+    or $tblname == 'otchet89'
+    or $tblname == 'otchet92'
+    or $tblname == 'otchet93'
+    or $tblname == 'otchet94'
+    or $tblname == 'otchet95'
+    or $tblname == 'otchet96'
+    or $tblname == 'otchet97'
+    or $tblname == 'otchet98'
+    or $tblname == 'otchet99'
+    or $tblname == 'otchet100'
+    or $tblname == 'otchet101'
+    or $tblname == 'otchet102'
+    or $tblname == 'otchet103'
+    or $tblname == 'otchet104'
+    or $tblname == 'otchet105'
+    or $tblname == 'otchet106'
+    or $tblname == 'otchet107'
+    or $tblname == 'otchet108'
+    or $tblname == 'otchet109'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')

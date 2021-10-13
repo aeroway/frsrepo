@@ -144,15 +144,16 @@ else
 			],
             //'ecp_org_id',
             //'status',
-			[
-				'attribute' => 'nositel_num',
-				'label' => '№ носителя',
-				'contentOptions' => ['style'=>'width: 10%; text-align: center;'],
-			],
-			[
-				'attribute' => 'invent_num',
-				'contentOptions' => ['style'=>'width: 10%;'],
-			],
+			// [
+			// 	'attribute' => 'nositel_num',
+			// 	'label' => '№ носителя',
+			// 	'contentOptions' => ['style'=>'width: 10%; text-align: center;'],
+			// ],
+			// [
+			// 	'attribute' => 'invent_num',
+			// 	'contentOptions' => ['style'=>'width: 10%;'],
+			// ],
+			'username',
 			[
 				'attribute' => 'Statustxt',
 				'label' => 'Статус',

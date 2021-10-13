@@ -63,6 +63,7 @@ tbody tr:nth-child(1) {
 				'attribute' => 'ecpmodify_date',
 				'format' =>  ['date', 'php:d.m.Y'],
 			],
+			'username',
             //'nositel_type',
             //'date_in',
             //'req_date',

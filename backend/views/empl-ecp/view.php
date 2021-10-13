@@ -71,6 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'req_date',
             //'user_in',
             'email',
+			'username',
         ],
     ]) ?>
 

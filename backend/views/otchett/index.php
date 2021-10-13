@@ -66,6 +66,25 @@ if(Otchett::$name == 'otchet29')
     }
     ?>
 
+    <?php
+    $username = [
+        'attribute' => 'username',
+        'contentOptions' => ['style'=>'width: 150px;'],
+    ];
+    $date_load = [
+        'attribute' => 'date_load',
+        'format' =>  ['date', 'php:d M Y'],
+        'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+    ];
+    $flag = 'flag';
+    $area = 'area';
+    $date = [
+        'attribute' => 'date',
+        'format' =>  ['date', 'php:d M Y'],
+        'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
+    ];
+    ?>
+
     <?php if (Otchett::$name === 'otchet56') : ?>
         <?php $labelDescription = ['label' => 'Площадь №1', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Площадь №2'; ?>
@@ -78,6 +97,15 @@ if(Otchett::$name == 'otchet29')
         <?php $labelDescription = ['label' => 'Тип обращения', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Доп. информация'; ?>
         <?php $labelKn = 'Номер обращения'; ?>
+    <?php elseif (Otchett::$name === 'otchet84') : ?>
+        <?php $labelComment = 'ДОЛЖНО БЫТЬ'; ?>
+        <?php $labelDescription = ['label' => 'ФИО и ДР', 'attribute' => 'description',]; ?>
+        <?php $labelKn = 'КН/УН'; ?>
+    <?php elseif (Otchett::$name === 'otchet78') : ?>
+        <?php $labelDescription = ['label' => 'КН ед. зем.польз.', 'attribute' => 'description',]; ?>
+        <?php $labelComment = 'Документ основания'; ?>
+        <?php $labelKn = 'КН'; ?>
+        <?php $labelArea = 'Документ в СЭД'; ?>
     <?php else: ?>
         <?php $labelDescription = ['label' => 'Описание', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Наимен. ошибки'; ?>
@@ -88,6 +116,8 @@ if(Otchett::$name == 'otchet29')
         <?php $labelProtocol = ['label' => 'Результат', 'attribute' => 'protocol',]; ?>
     <?php elseif (Otchett::$name === 'otchet63') : ?>
         <?php $labelProtocol = ['label' => 'Основание снятия в ГКН', 'attribute' => 'protocol',]; ?>
+    <?php elseif (Otchett::$name === 'otchet78') : ?>
+        <?php $labelProtocol = ['label' => 'Примечание', 'attribute' => 'protocol',]; ?>
     <?php else: ?>
         <?php $labelProtocol = ['label' => 'Протокол', 'attribute' => 'protocol',]; ?>
     <?php endif; ?>
@@ -95,6 +125,30 @@ if(Otchett::$name == 'otchet29')
     <?php if (Otchett::$name === 'otchet67') : ?>
         <?php $status = []; ?>
         <?php $comment = []; ?>
+
+
+
+    <?php elseif (Otchett::$name === 'otchet78') : ?>
+        <?php $username = []; ?>
+        <?php $status = []; ?>
+
+        <?php 
+            $comment = [
+                'label' => $labelComment,
+                'attribute' => 'comment',
+            ];
+        ?>
+        <?php $date = []; ?>
+        <?php $area = [
+                'label' => $labelArea,
+                'attribute' => 'area',
+                // 'format' => 'html',
+                // 'contentOptions' => [
+                //     'style' => 'min-width: 180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                // ],
+        ]; ?>
+        <?php // $flag = []; ?>
+        <?php $date_load = []; ?>
     <?php else: ?>
         <?php $status =
             [
@@ -127,8 +181,12 @@ if(Otchett::$name == 'otchet29')
             'comment',
             'username',
             'protocol',
-            'id_dpt',
-            'id_egrp'
+            'date',
+            'area',
+            'flag',
+            'date_load'
+            // 'id_dpt',
+            // 'id_egrp'
         ];
 
         echo ExportMenu::widget([
@@ -169,16 +227,9 @@ if(Otchett::$name == 'otchet29')
             $labelDescription,
             $status,
             $comment,
-            [
-                'attribute' => 'date',
-                'format' =>  ['date', 'php:d M Y'],
-                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-            ],
-            [
-                'attribute' => 'username',
-                'contentOptions' => ['style'=>'width: 150px;'],
-            ],
-            'flag',
+            $date,
+            $username,
+            $flag,
             //'id_dpt',
             //'id_egrp',
             /*
@@ -189,12 +240,8 @@ if(Otchett::$name == 'otchet29')
             ],
             */
             //'filename',
-            [
-                'attribute' => 'date_load',
-                'format' =>  ['date', 'php:d M Y'],
-                'contentOptions' => ['style'=>'width: 120px; text-align: center;'],
-            ],
-            'area',
+            $date_load,
+            $area,
             $labelProtocol,
 
             //['class' => 'yii\grid\ActionColumn'],

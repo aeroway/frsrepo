@@ -25,7 +25,8 @@ use Yii;
  * @property string $comment_ecp
  * @property string $ecpmodify_date
  * @property string $email
- * @property string $send
+ * @property integer $send
+ * @property string $username
  */
 class EmplEcp extends \yii\db\ActiveRecord
 {
@@ -51,7 +52,7 @@ class EmplEcp extends \yii\db\ActiveRecord
 			[['status', 'ecp_org_id', 'idm_empl', 'ecp_stop', 'email'], 'required'],
             [['idm_empl', 'ecp_org_id', 'status', 'nositel_type', 'send'], 'integer'],
             [['ecp_start', 'ecp_stop', 'date_in', 'req_date', 'ecpmodify_date', 'invent_num'], 'safe'],
-            [['nositel_num', 'user_in', 'comment_ecp'], 'string'],
+            [['nositel_num', 'user_in', 'comment_ecp', 'username'], 'string'],
             [['email'], 'email'],
 			[['ecp_start'], 'default', 'value' => null],
             [['ecp_stop', 'email', 'send'], 'default', 'value' => 0],
@@ -186,6 +187,7 @@ class EmplEcp extends \yii\db\ActiveRecord
             'email' => 'e-mail',
             'Statustxt' => 'Статус',
             'otdels' => 'Отдел',
+            'username' => 'Редактировал',
         ];
     }
 

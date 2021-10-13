@@ -22,15 +22,15 @@ class InventoryController extends Controller
     public function behaviors()
     {
         return [
-            'access'=>[
-                'class'=>AccessControl::classname(),
-                'only'=>['create','update','view','delete','index','log'],
-                'rules'=>[
+            'access' => [
+                'class' => AccessControl::classname(),
+                'only' => ['create', 'update', 'view', 'delete', 'index', 'log'],
+                'rules' => [
                     [
-                        'allow'=>true,
-                        'roles'=>['@']
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
-                ]
+                ],
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

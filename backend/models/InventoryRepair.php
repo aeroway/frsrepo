@@ -41,7 +41,7 @@ class InventoryRepair extends \yii\db\ActiveRecord
     {
         return [
             [['email'], 'required'],
-            [['area', 'name', 'inventory_moo', 'inventory_status'], 'string', 'max' => 150],
+            [['area', 'name', 'inventory_moo', 'inventory_status', 'username'], 'string', 'max' => 150],
             [['email'], 'string', 'max' => 100],
             [['invnum'], 'string', 'max' => 50],
             [['note'], 'string', 'max' => 2048],
@@ -76,8 +76,9 @@ class InventoryRepair extends \yii\db\ActiveRecord
             'Статус техники "' . $this->name . '"<br><br>' .
             'Инв. номер: ' . $this->invnum . '<br>' .
             'Статус: ' . $this->inventory_status . '<br>' .
-            'Комментарии: ' . $this->note
-            )
+            'Комментарии: ' . $this->note . '<br>' .
+            'Накладная: http://10.23.112.112/docs/obrazec_nakladnoi_vnut_perem.xls'
+        )
         ->send();
     }
 }

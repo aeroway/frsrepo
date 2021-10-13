@@ -5,6 +5,10 @@ namespace backend\models;
 use Yii;
 
 use yii\helpers\Html;
+use yii\db\Query;
+use yii2tech\spreadsheet\Spreadsheet;
+use yii\data\ActiveDataProvider;
+use yii\web\Controller;
 
 /**
  * This is the model class for table "otchet_list".
@@ -97,7 +101,8 @@ class OtchetList extends \yii\db\ActiveRecord
         $rows = (new \yii\db\Query())
             ->select('COUNT(*)')
             ->from("$table")
-            ->where(['or', 'status=null', 'status=\'не назначено\''])
+            // ->where(['or', 'status=null', 'status=\'не назначено\''])
+            ->where(['or', ['=', 'status', NULL], ['=', 'status', 'не назначено']])
             ->all();
 
         foreach($rows[0] as $otchetNull) {}
@@ -175,8 +180,10 @@ class OtchetList extends \yii\db\ActiveRecord
         }
         $lcl_echo .= "<br><p><b>Всего:</b> $otchetSum</p>";
 
-        if($table <> 'otchet_pay' && $table <> 'otchet999')
+        if($table <> 'otchet_pay' && $table <> 'otchet999') {
             $lcl_echo .= Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
+            $lcl_echo .= Html::a('<p>Статистика в Excel за период</p>', ['otchetlist/stat-index-otchet', 'tblname' => $table], ['target'=>'_blank']);
+        }
 
         if($table == 'otchet39' || $table == 'otchet41' || $table == 'otchet42' || $table == 'otchet44' || $table == 'otchet47' || $table == 'otchet67')
             $lcl_echo .= "<p>" . Html::a('Статистика за период', ['otchetlist/stat-index', 'tblname' => $table], ['target'=>'_blank']) . "</p>";
@@ -427,7 +434,7 @@ class OtchetList extends \yii\db\ActiveRecord
         $rowTp = Cdr::find()
             ->select(["DATE_FORMAT(calldate, '%d.%m.%Y') AS cdate", "src", "count(*) AS ct", "sum(duration) AS sm"])
             ->from("cdr")
-            ->where(['and', ['like', 'dstchannel', $phone], ['=', 'dst', '3962'], ['=', 'disposition', 'ANSWERED'], ['>=', 'calldate', $fromDate], ['<=', 'calldate', $tillDate]])
+            ->where(['and', ['like', 'dstchannel', $phone], ['=', 'dst', '3968'], ['=', 'disposition', 'ANSWERED'], ['>=', 'calldate', $fromDate], ['<=', 'calldate', $tillDate]])
             ->groupBy(["cdate", "src"])
             ->orderBy(["calldate" => SORT_DESC])
             ->asArray()
@@ -498,7 +505,34 @@ class OtchetList extends \yii\db\ActiveRecord
  
         $resultOutput .= '</body>';
         $resultOutput .= '</table>';
-    
+
         return $resultOutput;
+    }
+
+    public function getOtchetExcel($tblname, $fromDate, $tillDate) {
+        Otchett::$name = $tblname;
+        $exporter = new Spreadsheet([
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Otchett::find()
+                    ->where(['and', 
+                        ['<>', 'status', 'не назначено'],
+                        ['>=', 'date', $fromDate . ' 00:00:00.000'],
+                        ['<=', 'date', $tillDate . ' 23:59:59.999']
+                    ]),
+            ]),
+            'columns' => [
+                ['attribute' => 'kn'],
+                ['attribute' => 'description'],
+                ['attribute' => 'status'],
+                ['attribute' => 'comment'],
+                ['attribute' => 'date'],
+                ['attribute' => 'username'],
+                ['attribute' => 'date_update'],
+                ['attribute' => 'date_load'],
+                ['attribute' => 'protocol'],
+            ],
+        ]);
+
+        return $exporter->send('items.xls');
     }
 }
