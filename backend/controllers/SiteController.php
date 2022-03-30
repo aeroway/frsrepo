@@ -6,9 +6,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
-
 use yii\helpers\Url;
-
+use backend\models\XmlAnalysis;
 
 /**
  * Site controller
@@ -29,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat'],
+                        'actions' => ['logout', 'index', 'stat', 'bthday'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -83,5 +82,10 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+    public function actionBthday()
+    {
+        return $this->render('bthday');
     }
 }

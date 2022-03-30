@@ -117,9 +117,9 @@ class Employee extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fam' => 'Fam',
-            'name' => 'Name',
-            'otch' => 'Otch',
+            'fam' => 'Фамилия',
+            'name' => 'Имя',
+            'otch' => 'Отчество',
             'pasp_s' => 'Pasp S',
             'pasp_n' => 'Pasp N',
             'pasp_date_v' => 'Pasp Date V',
@@ -186,6 +186,60 @@ class Employee extends \yii\db\ActiveRecord
         } else{
             return 'Неполные данные по ФИО';
         }
+    }
+
+    public function getBthday()
+    {
+        $localVarOut = '';
+
+        $rows = Bthday::find()
+            ->select('fio, dl, otd, dr')
+            ->orderBy('dr ASC')
+            ->createCommand()->queryAll();
+
+        $localVarOut .= '<table class="table table-bordered table-striped" style="width: 100%">';
+        $localVarOut .= '
+            <thead>
+                <tr>
+                    <td>п/п</td>
+                    <td><b>ФИО</b></td>
+                    <td><b>Должность</b></td>
+                    <td><b>Отдел</b></td>
+                    <td><b>ДР</b></td>
+                </tr>
+            </thead>';
+
+        $localVarOut .= '<tbody>';
+
+        $i = 1;
+
+        foreach($rows as $key => $val)
+        {
+            $localVarOut .= '<tr>';
+            $localVarOut .= '<td>' . $i++ . '</td>';
+            $localVarOut .= '<td>' . $val["fio"] . '</td>';
+            $localVarOut .= '<td>' . $val["dl"] . '</td>';
+            $localVarOut .= '<td>' . $val["otd"] . '</td>';
+            $localVarOut .= '<td>' . $val["dr"] . '</td>';
+            $localVarOut .= '</tr>';
+        }
+
+        $localVarOut .= '</tbody>';
+        $localVarOut .= '</table>';
+
+        return $localVarOut;
+    }
+
+    public function employeePositionDepartment($id)
+    {
+        return Employee::find()
+            ->select(['emp.*', 'dl.name dolj', 'ot.text otdel'])
+            ->alias('emp')
+            ->where(['emp.id' => $id])
+            ->innerJoin('doljn dl', 'dl.id = emp.idm_doljn')
+            ->innerJoin('otdel ot', 'ot.id = emp.idm_otdel')
+            ->asArray()
+            ->one();
     }
 
     /**

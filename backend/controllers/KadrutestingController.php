@@ -75,9 +75,7 @@ class KadrutestingController extends Controller
                     Yii::$app->session->setFlash('success', "Количество правильных ответов: " . (empty($modelRes->testingResult()->pr) ? 0 : $modelRes->testingResult()->pr));
                 }
             }
-        }
-
-        if (($model->load(Yii::$app->request->post()) || !empty($model->otdel_id))) {
+        } elseif (($model->load(Yii::$app->request->post()) || !empty($model->otdel_id))) {
             if ($modelRes->checkHourLimit() === false) {
                 Yii::$app->session->setFlash('success', "Количество правильных ответов: " . (empty($modelRes->testingResult()->pr) ? 0 : $modelRes->testingResult()->pr));
             } else {

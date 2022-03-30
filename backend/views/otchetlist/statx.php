@@ -125,6 +125,31 @@ $tblview = array(
     'otchet107' => 'stat_107',
     'otchet108' => 'stat_108',
     'otchet109' => 'stat_109',
+    'otchet113' => 'stat_113',
+    'otchet114' => 'stat_114',
+    'otchet115' => 'stat_115',
+    'otchet116' => 'stat_116',
+    'otchet117' => 'stat_117',
+    'otchet118' => 'stat_118',
+    'otchet119' => 'stat_119',
+    'otchet120' => 'stat_120',
+    'otchet121' => 'stat_121',
+    'otchet122' => 'stat_122',
+    'otchet123' => 'stat_123',
+    'otchet124' => 'stat_124',
+    'otchet125' => 'stat_125',
+    'otchet126' => 'stat_126',
+    'otchet127' => 'stat_127',
+    'otchet128' => 'stat_128',
+    'otchet129' => 'stat_129',
+    'otchet130' => 'stat_130',
+    'otchet131' => 'stat_131',
+    'otchet132' => 'stat_132',
+    'otchet133' => 'stat_133',
+    'otchet134' => 'stat_134',
+    'otchet135' => 'stat_135',
+    'otchet136' => 'stat_136',
+    'otchet137' => 'stat_137',
 );
 
 if(
@@ -229,6 +254,31 @@ if(
     or $tblname == 'otchet107'
     or $tblname == 'otchet108'
     or $tblname == 'otchet109'
+    or $tblname == 'otchet113'
+    or $tblname == 'otchet114'
+    or $tblname == 'otchet115'
+    or $tblname == 'otchet116'
+    or $tblname == 'otchet117'
+    or $tblname == 'otchet118'
+    or $tblname == 'otchet119'
+    or $tblname == 'otchet120'
+    or $tblname == 'otchet121'
+    or $tblname == 'otchet122'
+    or $tblname == 'otchet123'
+    or $tblname == 'otchet124'
+    or $tblname == 'otchet125'
+    or $tblname == 'otchet126'
+    or $tblname == 'otchet127'
+    or $tblname == 'otchet128'
+    or $tblname == 'otchet129'
+    or $tblname == 'otchet130'
+    or $tblname == 'otchet131'
+    or $tblname == 'otchet132'
+    or $tblname == 'otchet133'
+    or $tblname == 'otchet134'
+    or $tblname == 'otchet135'
+    or $tblname == 'otchet136'
+    or $tblname == 'otchet137'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')
@@ -315,7 +365,7 @@ if(
                 <td> </td>
                 <td> </td>
                 <td>' . (new \yii\db\Query())->from($tblname)->count() . '</td>
-                <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'Исправлен'])->count() . '</td>
+                <td>' . (new \yii\db\Query())->from($tblname)->where(['and', ['status' => 'Исправлен'], ['<>', 'flag', 1]])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'В работе'])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'Невозможно исправить'])->count() . '</td>
                 <td>' . (new \yii\db\Query())->from($tblname)->where(['status' => 'Не назначено'])->count() . '</td>

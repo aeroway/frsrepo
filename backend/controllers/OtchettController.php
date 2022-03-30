@@ -166,25 +166,18 @@ class OtchettController extends Controller
 
         $model = $this->findModel($id);
 
+        if ('23UPR\\' . strtoupper(Yii::$app->user->identity->username) !== strtoupper($model->username) 
+            && ($model->status == 'Исправлен' || $model->status == 'В работе'  || $model->status == 'Невозможно исправить')) {
+            throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
+        }
+
         if ($model->load(Yii::$app->request->post())) {
 
             foreach(Yii::$app->request->post() as $fkey) { }
             foreach($fkey as $skey => $svalue) { $attrarr[$skey] = $svalue; }
 
-            if (
-                (($model->getOldAttribute('status') == 'Исправлен') && 
-                (('23UPR\\' . strtoupper(Yii::$app->user->identity->username) != strtoupper($model->getOldAttribute('username'))))) &&
-                (($model->getOldAttribute('status') == 'Исправлен') && 
-                ((strtoupper(Yii::$app->user->identity->username) != strtoupper($model->getOldAttribute('username')))))
-            )
-            {
-                //this->findModel($id)->username
-                throw new ForbiddenHttpException('Запрещено редактировать чужие записи.');
-            }
-
             $model->save();
 
-            // return $this->redirect(['view', 'id' => $model->id, 'table' => Otchett::$name]);
             return $this->redirect(['index', 'table' => Otchett::$name]);
         } else {
             return $this->render('update', [

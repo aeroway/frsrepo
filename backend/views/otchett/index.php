@@ -101,6 +101,10 @@ if(Otchett::$name == 'otchet29')
         <?php $labelComment = 'ДОЛЖНО БЫТЬ'; ?>
         <?php $labelDescription = ['label' => 'ФИО и ДР', 'attribute' => 'description',]; ?>
         <?php $labelKn = 'КН/УН'; ?>
+    <?php elseif (Otchett::$name === 'otchet110') : ?>
+        <?php $labelComment = NULL; ?>
+        <?php $labelDescription = ['label' => 'Адрес', 'attribute' => 'description',]; ?>
+        <?php $labelKn = 'КН/УН'; ?>
     <?php elseif (Otchett::$name === 'otchet78') : ?>
         <?php $labelDescription = ['label' => 'КН ед. зем.польз.', 'attribute' => 'description',]; ?>
         <?php $labelComment = 'Документ основания'; ?>
@@ -127,11 +131,36 @@ if(Otchett::$name == 'otchet29')
         <?php $comment = []; ?>
 
 
+    <?php elseif (Otchett::$name === 'otchet110') : ?>
+        <?php 
+            $status = [
+                //'label' => $labelComment,
+                'attribute' => 'status',
+            ];
+            $comment = [
+                //'label' => $labelComment,
+                //'attribute' => 'comment',
+            ];
+            $area = [];
+        ?>
+        <?php $status =
+            [
+                'label' => 'Статус',
+                'attribute' => 'status',
+                'value' => 'status',
+                'filter' => ArrayHelper::map(Otchett::find()->asArray()->all(), 'status', 'status'),
+            ];
+        ?>
+        <?php
+            $labelProtocol = [
+                'label' => 'Примечание',
+                'attribute' => 'protocol',
+            ];
+        ?>
 
     <?php elseif (Otchett::$name === 'otchet78') : ?>
         <?php $username = []; ?>
         <?php $status = []; ?>
-
         <?php 
             $comment = [
                 'label' => $labelComment,
@@ -184,6 +213,7 @@ if(Otchett::$name == 'otchet29')
             'date',
             'area',
             'flag',
+            'status',
             'date_load'
             // 'id_dpt',
             // 'id_egrp'

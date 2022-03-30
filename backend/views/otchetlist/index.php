@@ -68,17 +68,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     return '';
                 },
                 'format' => 'html',
+                'contentOptions' => ['style'=>'width: 18%;'],
             ],
             //'table_list',
             //'status_list',
-            'description_list:html',
+            [
+                'attribute' => 'description_list',
+                'format' => 'html',
+                'contentOptions' => ['style'=>'width: 60%;'],
+            ],
             [
                 'attribute' => 'statistic_list',
                 'value' => function($data) {
                     return $data->getStatusOtchetlist($data->table_list);
                 },
                 'format' => 'html',
-                'contentOptions' => ['style'=>'width: 250px;'],
+                'contentOptions' => ['style'=>'width: 17%;'],
             ],
 
             //['class' => 'yii\grid\ActionColumn'],

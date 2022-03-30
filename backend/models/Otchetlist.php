@@ -183,6 +183,7 @@ class OtchetList extends \yii\db\ActiveRecord
         if($table <> 'otchet_pay' && $table <> 'otchet999') {
             $lcl_echo .= Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
             $lcl_echo .= Html::a('<p>Статистика в Excel за период</p>', ['otchetlist/stat-index-otchet', 'tblname' => $table], ['target'=>'_blank']);
+            $lcl_echo .= Html::a('<p>Доска почёта</p>', ['otchetlist/stat-employee', 'tblname' => $table], ['target'=>'_blank']);
         }
 
         if($table == 'otchet39' || $table == 'otchet41' || $table == 'otchet42' || $table == 'otchet44' || $table == 'otchet47' || $table == 'otchet67')

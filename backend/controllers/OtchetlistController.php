@@ -31,7 +31,7 @@ class OtchetlistController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view',
+                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'stat-employee',
                             'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp', 'stat-index-otchet',
                             'status-reception', 'status-registration', 'number-applications', 'status-regkuvd-999', 'status-regkuvd'
                         ],
@@ -267,6 +267,23 @@ class OtchetlistController extends Controller
     {
         return $this->render('statx', [
             'tblname' => $tblname,
+        ]);
+    }
+
+    public function actionStatEmployee($tblname)
+    {
+        $employee =
+        (new \yii\db\Query())
+            ->select([new \yii\db\Expression("SUBSTRING(username, CHARINDEX('\', username)+1, 10000) AS username, count(*) ct")])
+            ->from($tblname)
+            ->where(["and", ["=", "status", "Исправлен"], ["=", "flag", 0]])
+            ->groupBy("username")
+            ->orderBy(["ct" => SORT_DESC])
+            ->all();
+
+        return $this->render('stat-employee', [
+            'tblname' => $tblname,
+            'employee' => $employee
         ]);
     }
 
