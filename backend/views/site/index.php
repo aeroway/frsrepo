@@ -57,9 +57,12 @@ function button($gitem)
     </div>
     <div class="body-content">
         <div class="row">
-            <a target="_blank" href="/index.php?r=otchett/index&table=otchet78" style="margin: 5px;" class="btn btn-success">Земли с/х назначения</a>
+            <a target="_blank" href="/index.php?r=otchetfns" style="margin: 5px;" class="btn btn-success">518-ФЗ</a>
+            <a target="_blank" href="/index.php?r=otchetpriost/index" style="margin: 5px;" class="btn btn-success">Приостановки</a>
+            <?= yii\helpers\Html::a('КС «АРМ ГС»', 'https://dl.armgs.team', ['class' => 'btn btn-info']); ?>
+            <a target="_blank" href="/index.php?r=otchett/index&table=otchet78" style="margin: 5px;" class="btn btn-default">Земли с/х назначения</a>
             <!--<a target="_blank" href="/index.php?r=otchett/index&table=otchet42" style="margin: 5px;" class="btn btn-success btn-sm">Экстер ФГИС ЕГРН</a>-->
-            <a target="_blank" href="/index.php?r=inventory-repair" style="margin: 5px;" class="btn btn-success">Ремонт принтеров</a>
+            <a target="_blank" href="/index.php?r=inventory-repair" style="margin: 5px;" class="btn btn-default">Ремонт принтеров</a>
             <a target="_blank" href="/index.php?r=rst-enf-proc" style="margin: 5px;" class="btn btn-default">Реестр исполнительных производств</a>
             <a target="_blank" href="https://www.rosreestr.ru/site/" style="margin: 5px;" class="btn btn-default">Управление Росреестра [rosreestr]</a>
             <a target="_blank" href="http://intranet.rosreestr.ru/" style="margin: 5px;" class="btn btn-default">Внутренний портал Росреестра [intranet]</a>
@@ -72,12 +75,15 @@ function button($gitem)
             <a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-default">Портал отчётов [113.55]</a>
             <a target="_blank" href="http://10.128.21.4/app/" style="margin: 5px;" class="btn btn-default">Техпортал ЕСРОО</a>
             <a target="_blank" href="http://10.23.112.112/index.php?r=site/bthday" style="margin: 5px;" class="btn btn-default">Дни рождения</a>
+            <?= yii\helpers\Html::a('ГИС ЖКХ', ['xml-analysis/index'], ['class' => 'btn btn-default']); ?>
+            <?= yii\helpers\Html::a('ФНС', ['xml-analysis-fns/index'], ['class' => 'btn btn-default']); ?>
             <?php if (in_array("ИТО", Yii::$app->user->identity->groups) && Yii::$app->user->identity->username != 'Осипов СЛ') : ?>
                 <?php echo yii\helpers\Html::a('Отчёт по звонкам в ТП', ['otchetlist/stat-index-tp'], ['class' => 'btn btn-default']); ?>
             <?php endif; ?>
             <?php if (in_array("KadruAllowAccess", Yii::$app->user->identity->groups)) : ?>
                 <?= '<a target="_blank" href="http://10.23.112.112/index.php?r=employee" style="margin: 5px;" class="btn btn-default">Кадры</a>' ?>
             <?php endif; ?>
+            <?= yii\helpers\Html::a('Совет регистраторов', ['sgr-meeting/index'], ['class' => 'btn btn-default']); ?>
         </div>
         <div class="row">
             <div class="col-lg-4">

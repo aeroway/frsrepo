@@ -105,7 +105,7 @@ class EmployeeSearch extends Employee
         $query->andFilterWhere(['like', 'fam', $this->fam])
             ->andFilterWhere(['like', 'pos.name', $this->idm_doljn])
             ->andFilterWhere(['like', 'otd.text', $this->idm_otdel])
-            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'employee.name', $this->name])
             ->andFilterWhere(['like', 'otch', $this->otch])
             ->andFilterWhere(['like', 'pasp_s', $this->pasp_s])
             ->andFilterWhere(['like', 'pasp_n', $this->pasp_n])

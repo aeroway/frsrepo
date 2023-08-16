@@ -110,6 +110,55 @@ use backend\models\AreaOtchet;
             $arr["table"] == 'otchet135' or
             $arr["table"] == 'otchet136' or
             $arr["table"] == 'otchet137' or
+            $arr["table"] == 'otchet138' or
+            $arr["table"] == 'otchet139' or
+            $arr["table"] == 'otchet140' or
+            $arr["table"] == 'otchet141' or
+            $arr["table"] == 'otchet142' or
+            $arr["table"] == 'otchet143' or
+            $arr["table"] == 'otchet144' or
+            $arr["table"] == 'otchet145' or
+            $arr["table"] == 'otchet146' or
+            $arr["table"] == 'otchet149' or
+            $arr["table"] == 'otchet150' or
+            $arr["table"] == 'otchet151' or
+            $arr["table"] == 'otchet152' or
+            $arr["table"] == 'otchet153' or
+            $arr["table"] == 'otchet154' or
+            $arr["table"] == 'otchet155' or
+            $arr["table"] == 'otchet156' or
+            $arr["table"] == 'otchet157' or
+            $arr["table"] == 'otchet158' or
+            $arr["table"] == 'otchet159' or
+            $arr["table"] == 'otchet160' or
+            $arr["table"] == 'otchet161' or
+            $arr["table"] == 'otchet162' or
+            $arr["table"] == 'otchet163' or
+            $arr["table"] == 'otchet164' or
+            $arr["table"] == 'otchet165' or
+            $arr["table"] == 'otchet166' or
+            $arr["table"] == 'otchet167' or
+            $arr["table"] == 'otchet168' or
+            $arr["table"] == 'otchet169' or
+            $arr["table"] == 'otchet170' or
+            $arr["table"] == 'otchet171' or
+            $arr["table"] == 'otchet172' or
+            $arr["table"] == 'otchet173' or
+            $arr["table"] == 'otchet174' or
+            $arr["table"] == 'otchet175' or
+            $arr["table"] == 'otchet176' or
+            $arr["table"] == 'otchet177' or
+            $arr["table"] == 'otchet178' or
+            $arr["table"] == 'otchet179' or
+            $arr["table"] == 'otchet180' or
+            $arr["table"] == 'otchet181' or
+            $arr["table"] == 'otchet182' or
+            $arr["table"] == 'otchet183' or
+            $arr["table"] == 'otchet184' or
+            $arr["table"] == 'otchet185' or
+            $arr["table"] == 'otchet186' or
+            $arr["table"] == 'otchet187' or
+            $arr["table"] == 'otchet188' or
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet42') {
             echo $form->field($model, 'description')->textInput(['readonly' => true]);
@@ -256,6 +305,55 @@ use backend\models\AreaOtchet;
             $arr["table"] == 'otchet135' or
             $arr["table"] == 'otchet136' or
             $arr["table"] == 'otchet137' or
+            $arr["table"] == 'otchet138' or
+            $arr["table"] == 'otchet139' or
+            $arr["table"] == 'otchet140' or
+            $arr["table"] == 'otchet141' or
+            $arr["table"] == 'otchet142' or
+            $arr["table"] == 'otchet143' or
+            $arr["table"] == 'otchet144' or
+            $arr["table"] == 'otchet145' or
+            $arr["table"] == 'otchet146' or
+            $arr["table"] == 'otchet149' or
+            $arr["table"] == 'otchet150' or
+            $arr["table"] == 'otchet151' or
+            $arr["table"] == 'otchet152' or
+            $arr["table"] == 'otchet153' or
+            $arr["table"] == 'otchet154' or
+            $arr["table"] == 'otchet155' or
+            $arr["table"] == 'otchet156' or
+            $arr["table"] == 'otchet157' or
+            $arr["table"] == 'otchet158' or
+            $arr["table"] == 'otchet159' or
+            $arr["table"] == 'otchet160' or
+            $arr["table"] == 'otchet161' or
+            $arr["table"] == 'otchet162' or
+            $arr["table"] == 'otchet163' or
+            $arr["table"] == 'otchet164' or
+            $arr["table"] == 'otchet165' or
+            $arr["table"] == 'otchet166' or
+            $arr["table"] == 'otchet167' or
+            $arr["table"] == 'otchet168' or
+            $arr["table"] == 'otchet169' or
+            $arr["table"] == 'otchet170' or
+            $arr["table"] == 'otchet171' or
+            $arr["table"] == 'otchet172' or
+            $arr["table"] == 'otchet173' or
+            $arr["table"] == 'otchet174' or
+            $arr["table"] == 'otchet175' or
+            $arr["table"] == 'otchet176' or
+            $arr["table"] == 'otchet177' or
+            $arr["table"] == 'otchet178' or
+            $arr["table"] == 'otchet179' or
+            $arr["table"] == 'otchet180' or
+            $arr["table"] == 'otchet181' or
+            $arr["table"] == 'otchet182' or
+            $arr["table"] == 'otchet183' or
+            $arr["table"] == 'otchet184' or
+            $arr["table"] == 'otchet185' or
+            $arr["table"] == 'otchet186' or
+            $arr["table"] == 'otchet187' or
+            $arr["table"] == 'otchet188' or
             $arr["table"] == 'otchet9' or 
             $arr["table"] == 'otchet38') {
             echo $form->field($model, 'comment')->textArea(['readonly' => true]);

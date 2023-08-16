@@ -4,6 +4,12 @@ namespace backend\models;
 
 use Yii;
 
+use backend\models\Stazh;
+use backend\models\Inmove;
+use backend\models\Education;
+use backend\models\LnkChin;
+use backend\models\KvalifUp;
+
 /**
  * This is the model class for table "employee".
  *
@@ -240,6 +246,495 @@ class Employee extends \yii\db\ActiveRecord
             ->innerJoin('otdel ot', 'ot.id = emp.idm_otdel')
             ->asArray()
             ->one();
+    }
+
+    private function sumDateIntervals(\DateInterval $a, \DateInterval $b)
+    {
+      $base = new \DateTimeImmutable();
+
+      return $base->add($a)->add($b)->diff($base);
+    }
+
+    private function modifyDateIntervals(\DateInterval $a, \DateInterval $b)
+    {
+      $base = new \DateTimeImmutable();
+
+      return $base->add($b); //$base->modify($inmoveDiffDate->days); //->modify('+'.$b->days.' days')
+    }
+
+    public function stazh($id)
+    {
+        $inmoveDateStart = NULL;
+        $inmoveDateEnd = NULL;
+        $inmoveCountElements = NULL;
+        $inmoveDiffDate =  0;
+        $modelStazh = new Stazh();
+        $modelInmove = new Inmove();
+
+        $stazhGs = NULL;
+        $stazhFull = NULL;
+        $stazhGsDiffDate1;
+        $stazhGsDiffDate2;
+        $stazhGsDiffDateResult = NULL;
+        $stazhDiffDate1;
+        $stazhDiffDate2;
+        $stazhDiffDateResult;
+        $stazh = [];
+
+        foreach ($modelStazh->stazhGs($id) as $stazh) {
+            $stazhGsDiffDate1 = $this->diffDate($stazh["date_start"], $stazh["date_end"]);
+
+            if (!empty($stazhGsDiffDate2)) {
+                $stazhGsDiffDateResult = $this->sumDateIntervals($stazhGsDiffDate1, $stazhGsDiffDate2);
+                $stazhGsDiffDateResult->invert = 0;
+            }
+
+            $stazhGsDiffDate2 = $stazhGsDiffDate1;
+        }
+
+        foreach ($modelStazh->stazh($id) as $stazh) {
+            $stazhDiffDate1 = $this->diffDate($stazh["date_start"], $stazh["date_end"]);
+
+            if (!empty($stazhDiffDate2)) {
+                $stazhDiffDateResult = $this->sumDateIntervals($stazhDiffDate1, $stazhDiffDate2);
+                $stazhDiffDateResult->invert = 0;
+                $stazhDiffDate2 = $stazhDiffDateResult;
+
+            } else {
+                $stazhDiffDate2 = $stazhDiffDate1;
+            }
+        }
+
+        $inmove = $modelInmove->inmoveEmployee($id);
+        $inmoveCountElements = count($inmove);
+
+        foreach ($inmove as $key => $inmv) {
+
+            if ($key === 0) {
+                $inmoveDateStart = $inmv["date_start"];
+            }
+
+            if ($key === $inmoveCountElements-1) {
+                $inmoveDateEnd = date('Y-m-d', strtotime("+1 days"));
+                $inmoveDiffDate = $this->diffDate($inmoveDateStart, $inmoveDateEnd);
+            }
+        }
+
+        if (empty($stazhGsDiffDateResult)) {
+            $stazhGs = $inmoveDiffDate;
+        } else {
+            $stazhGs = $this->sumDateIntervals($stazhGsDiffDateResult, $inmoveDiffDate);
+        }
+
+        if (empty($stazhDiffDateResult)) {
+            if (empty($stazhDiffDate1)) {
+                $stazhFull = $inmoveDiffDate;
+            } else {
+                $stazhFull = $this->sumDateIntervals($stazhDiffDate1, $inmoveDiffDate);
+            }
+        } else {
+            $stazhFull = $this->sumDateIntervals($stazhDiffDateResult, $inmoveDiffDate);
+        }
+
+        $stazh["gs"] = $stazhGs;
+        $stazh["full"] = $stazhFull;
+
+        return $stazh;
+    }
+
+    public function attestatList($id)
+    {
+        $modelEducation = new Education();
+        $modelLnkChin = new LnkChin();
+
+        $staff = $this->employeePositionDepartment($id);
+        $edu = $modelEducation->educationInfo($id);
+        $rank = $modelLnkChin->lnkChin($id);
+        $nameFile = $staff["fam"] . '_' . $staff["name"] . '_' . $staff["otch"];
+
+        if ($staff["status"] === 2 || empty($staff)) {
+            return '<h1>Нет документов на печать.</h1>';
+        }
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        $phpWord->setDefaultFontName('Times New Roman');
+        $phpWord->setDefaultFontSize(12);
+
+        $properties = $phpWord->getDocInfo();
+        $properties->setCreator('Stepan Zakharov');
+        $properties->setCompany('FRSKuban');
+        $properties->setTitle('Get request');
+        $properties->setDescription('The service of request from kadru');
+        $properties->setCategory('kadru');
+        $properties->setLastModifiedBy('PHPWord');
+        $properties->setCreated(time());
+        $properties->setModified(time());
+        $properties->setSubject('Print to file');
+        $properties->setKeywords('kadru, Экзаменационный лист');
+
+        $sectionStyle = array(
+            'orientation' => 'portrait',
+            'marginTop' => \PhpOffice\PhpWord\Shared\Converter::pixelToTwip(75.5),
+            'marginLeft' => 1700,
+            'marginRight' => 850,
+            'marginBottom' => 995,
+            'spaceBefore' => 0,
+            'spaceAfter' => 0,
+            'spacing' => 0,
+            'colsNum' => 1,
+            'pageNumberingStart' => 1,
+        );
+
+        $sectionStyleSpacing = ['spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0, 'align' => 'both'];
+        $sectionStyleSpacingL = ['spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0];
+        $pAlignCenter = array('align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0,);
+        $boldTrue = array('bold' => TRUE);
+        $boldFalseSize8 = array('bold' => FALSE, 'size' => 8);
+        $boldFalseSize16 = array('bold' => FALSE, 'size' => 16);
+        $boldFalseItalicTrueUnderlineSingle = array('bold' => FALSE, 'italic' => TRUE, 'underline' => 'single');
+
+        $section = $phpWord->addSection($sectionStyle);
+        $textrunHead = $section->createTextRun($pAlignCenter);
+        $textrunHead->addText('АТТЕСТАЦИОННЫЙ ЛИСТ', $boldTrue);
+        $textrunHead->addTextBreak(1);
+        $textrunHead->addText('ГОСУДАРСТВЕННОГО ГРАЖДАНСКОГО СЛУЖАЩЕГО', $boldTrue);
+        $textrunHead->addTextBreak(1);
+        $textrunHead->addText('РОССИЙСКОЙ ФЕДЕРАЦИИ', $boldTrue);
+        $textrunHead->addTextBreak(1);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('1. Фамилия, имя, отчество: ');
+        $textrun->addText($staff["fam"] . ' ' . $staff["name"] . ' ' . $staff["otch"], $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('2. Год, число и месяц рождения: ');
+        $textrun->addText(\Yii::$app->formatter->asDatetime($staff["data_b"], "php:d.m.Y"), $boldFalseItalicTrueUnderlineSingle);
+   
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('3. Сведения о профессиональном образовании, наличии ученой степени, ученого звания: ');
+  
+        $textrun = $section->addTextRun($sectionStyleSpacingL);
+
+        foreach ($edu as $education) {
+            $textrun->addText(
+                mb_strtolower($education["text"]) . ', ' . 
+                $education["name_vuz"] . ', ' . 
+                $education["year_end"] . ' год, ' . 
+                mb_strtolower($education["specualnost"]) . ', ' . 
+                mb_strtolower($education["kvalif"]),
+                $boldFalseItalicTrueUnderlineSingle);
+            $textrun = $section->addTextRun($sectionStyleSpacingL);
+        }
+
+        $textrun->addText('(когда и какую образовательную организацию окончил, специальность или направление подготовки, квалификация, ученая степень, ученое звание)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('4. Замещаемая должность государственной гражданской службы на момент аттестации и дата назначения на эту должность: ');
+        $textrun->addText(mb_strtolower(trim($staff["dolj"]), 'UTF-8') . ' ' . str_ireplace("ый", "ого", str_ireplace("отдел", "отдела", $this->mb_lcfirst($staff["otdel"]))), $boldFalseItalicTrueUnderlineSingle);
+        $textrun->addText(', с ' . \Yii::$app->formatter->asDatetime($staff["date_nazn"], "php:d.m.Y") . ' года.', $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('5. Стаж государственной службы (в том числе стаж государственной гражданской службы): ');
+        $textrun->addText($this->diffDateResults($this->stazh($id)["gs"]->y, $this->stazh($id)["gs"]->m, $this->stazh($id)["gs"]->d), $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('6. Общий трудовой стаж: ');
+        $textrun->addText($this->diffDateResults($this->stazh($id)["full"]->y, $this->stazh($id)["full"]->m, $this->stazh($id)["full"]->d), $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('7. Классный чин гражданской службы: ');
+
+        if (!empty($rank)) {
+            $textrun->addText($this->mb_lcfirst($rank["text"]) . ', ' . \Yii::$app->formatter->asDatetime($rank["date_start"], "php:d.m.Y"), $boldFalseItalicTrueUnderlineSingle);
+        }
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(наименование классного чина и дата его присвоения)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('8. Вопросы к государственному гражданскому служащему и краткие ответы на них: ');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('9. Замечания и предложения, высказанные аттестационной комиссией: ');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('10. Краткая оценка выполнения федеральным государственным служащим рекомендаций предыдущей аттестации ');
+        $textrun->addText('________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(выполнены, выполнены частично, не выполнены)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('11. Решение аттестационной комиссии: ___________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(соответствует замещаемой должности государственной гражданской службы; соответствует замещаемой должности государственной гражданской службы и рекомендуется к включению в кадровый резерв для замещения вакантной должности государственной гражданкой службы в порядке должностного роста; соответствует замещаемой должности государственной гражданской службы при условии получения дополнительного профессионального образования; не соответствует замещаемой должности государственной гражданской службы)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('12. Количественный состав аттестационной комиссии _________');
+        
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('На заседании присутствовало ___________ членов аттестационной комиссии');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('Количество голосов за _______, против _______');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('14. Примечания _______________________________________________________________');
+
+        header("Content-Description: File Transfer");
+        header('Content-Disposition: attachment; filename="Аттестационный_лист_' . $nameFile . '.docx"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save("php://output");
+
+        exit;
+    }
+
+    public function examList($id) {
+        $modelEducation = new Education();
+        $modelLnkChin = new LnkChin();
+        $modelKvalifUp = new KvalifUp();
+        $staff = $this->employeePositionDepartment($id);
+        $edu = $modelEducation->educationInfo($id);
+        $rank = $modelLnkChin->lnkChin($id);
+        $qualification = $modelKvalifUp->kvalifUp($id);
+        $nameFile = $staff["fam"] . '_' . $staff["name"] . '_' . $staff["otch"];
+
+        if ($staff["status"] === 2 || empty($staff)) {
+            return '<h1>Нет документов на печать.</h1>';
+        }
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord->setDefaultFontName('Times New Roman');
+        $phpWord->setDefaultFontSize(12);
+        $properties = $phpWord->getDocInfo();
+        $properties->setCreator('Stepan Zakharov');
+        $properties->setCompany('FRSKuban');
+        $properties->setTitle('Get request');
+        $properties->setDescription('The service of request from kadru');
+        $properties->setCategory('kadru');
+        $properties->setLastModifiedBy('PHPWord');
+        $properties->setCreated(time());
+        $properties->setModified(time());
+        $properties->setSubject('Print to file');
+        $properties->setKeywords('kadru, Экзаменационный лист');
+
+        $sectionStyle = array(
+            'orientation' => 'portrait',
+            'marginTop' => \PhpOffice\PhpWord\Shared\Converter::pixelToTwip(75.5),
+            'marginLeft' => 1700,
+            'marginRight' => 850,
+            'marginBottom' => 995,
+            'spaceBefore' => 0,
+            'spaceAfter' => 0,
+            'spacing' => 0,
+            'colsNum' => 1,
+            'pageNumberingStart' => 1,
+        );
+
+        $sectionStyleSpacing = ['spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0, 'align' => 'both'];
+        $sectionStyleSpacingL = ['spaceBefore' => 0, 'spaceAfter' => 0, 'spacing' => 0];
+        $pAlignCenter = array('align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0,);
+        $boldTrue = array('bold' => TRUE);
+        $boldFalseSize8 = array('bold' => FALSE, 'size' => 8);
+        $boldFalseSize16 = array('bold' => FALSE, 'size' => 16);
+        $boldFalseItalicTrueUnderlineSingle = array('bold' => FALSE, 'italic' => TRUE, 'underline' => 'single');
+
+        $section = $phpWord->addSection($sectionStyle);
+        $textrunHead = $section->createTextRun($pAlignCenter);
+        $textrunHead->addText('ЭКЗАМЕНАЦИОННЫЙ ЛИСТ', $boldTrue);
+        $textrunHead->addTextBreak(1);
+        $textrunHead->addText('ГОСУДАРСТВЕННОГО ГРАЖДАНСКОГО СЛУЖАЩЕГО', $boldTrue);
+        $textrunHead->addTextBreak(1);
+        $textrunHead->addText('РОССИЙСКОЙ ФЕДЕРАЦИИ', $boldTrue);
+        $textrunHead->addTextBreak(1);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('1. Фамилия, имя, отчество: ');
+        $textrun->addText($staff["fam"] . ' ' . $staff["name"] . ' ' . $staff["otch"], $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('2. Год, число и месяц рождения: ');
+        $textrun->addText(\Yii::$app->formatter->asDatetime($staff["data_b"], "php:d.m.Y"), $boldFalseItalicTrueUnderlineSingle);
+   
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('3. Сведения о профессиональном образовании, наличии ученой степени, ученого звания: ');
+  
+        $textrun = $section->addTextRun($sectionStyleSpacingL);
+
+        foreach ($edu as $education) {
+            $textrun->addText(
+                mb_strtolower($education["text"]) . ', ' . 
+                $education["name_vuz"] . ', ' . 
+                $education["year_end"] . ' год, ' . 
+                mb_strtolower($education["specualnost"]) . ', ' . 
+                mb_strtolower($education["kvalif"]),
+                $boldFalseItalicTrueUnderlineSingle);
+            $textrun = $section->addTextRun($sectionStyleSpacingL);
+        }
+
+        $textrun->addText('(когда и какую образовательную организацию окончил, квалификация по специальности или направлению подготовки, ученая степень, ученое звание)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('4. Сведения о дополнительном профессиональном образовании: ');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+
+        foreach ($qualification as $q) {
+            $textrun->addText('c ' . $this->dmyDateFormat($q["data_start"]) . ' по ' . $this->dmyDateFormat($q["data_end"]) . ', ' . $q["obr_uch"] . ', ' . mb_strtolower($q["tema"]) . '; ', $boldFalseItalicTrueUnderlineSingle);
+        }
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(документ о квалификации, подтверждающие повышение или присвоение квалификации по результатам дополнительного профессионального образования (удостоверение о повышении квалификации,  диплом о профессиональной переподготовке))', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('5. Замещаемая должность государственной гражданской службы на день проведения квалификационного экзамена и дата назначения на эту должность: ');
+        $textrun->addText(mb_strtolower(trim($staff["dolj"]), 'UTF-8') . ' ' . str_ireplace("ый", "ого", str_ireplace("отдел", "отдела", $this->mb_lcfirst($staff["otdel"]))), $boldFalseItalicTrueUnderlineSingle);
+        $textrun->addText(', с ' . \Yii::$app->formatter->asDatetime($staff["date_nazn"], "php:d.m.Y") . ' года.', $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('6. Стаж государственной службы (в том числе стаж государственной гражданской службы): ');
+        $textrun->addText($this->diffDateResults($this->stazh($id)["gs"]->y, $this->stazh($id)["gs"]->m, $this->stazh($id)["gs"]->d), $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('7. Общий трудовой стаж: ');
+        $textrun->addText($this->diffDateResults($this->stazh($id)["full"]->y, $this->stazh($id)["full"]->m, $this->stazh($id)["full"]->d), $boldFalseItalicTrueUnderlineSingle);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('8. Классный чин гражданской службы: ');
+
+        if (!empty($rank)) {
+            $textrun->addText($this->mb_lcfirst($rank["text"]) . ', ' . \Yii::$app->formatter->asDatetime($rank["date_start"], "php:d.m.Y"), $boldFalseItalicTrueUnderlineSingle);
+        }
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(наименование классного чина и дата его присвоения)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('9. Вопросы к государственному гражданскому служащему и краткие ответы на них: ');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun();
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('10. Замечания и предложения, высказанные аттестационной (конкурсной) комиссией: ');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('_____________________________________________________________________________');
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('11. Предложения, высказанные государственным гражданским служащим: ');
+        $textrun->addText('_____________________________________________________________________________');
+        $textrun->addText('_____________________________________________________________________________');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('12. Оценка знаний, навыков и умений (профессионального уровня) государственного гражданского служащего по результатам квалификационного экзамена: ');
+        $textrun->addText('_____________________________________________________________________________');
+        $textrun->addText('_____________________________________________________________________________');
+        $textrun->addText('_____________________________________________________________________________');
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('(признать, что государственный гражданский служащий сдал квалификационный экзамен, и рекомендовать его для присвоения классного чина гражданской службы; признать, что государственный гражданский служащий не сдал квалификационный экзамен)', $boldFalseSize8);
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('13. Количественный состав аттестационной (конкурсной) комиссии _________');
+        
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('На заседании присутствовало ___________ членов аттестационной комиссии');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('Количество голосов за _______, против _______');
+
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun = $section->addTextRun($sectionStyleSpacing);
+        $textrun->addText('14. Примечания _______________________________________________________________');
+
+        header("Content-Description: File Transfer");
+        header('Content-Disposition: attachment; filename="Экзаменационный_лист_' . $nameFile . '.docx"');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save("php://output");
+
+        exit;
+    }
+
+    private function diffDate($inmoveDateStart, $inmoveDateEnd)
+    {
+        $date1 = new \DateTimeImmutable($inmoveDateStart);
+        $date2 = new \DateTimeImmutable($inmoveDateEnd);
+        $interval = $date1->diff($date2);
+
+        return $interval;
+    }
+
+    private function mb_lcfirst($str) {
+        return mb_strtolower(mb_substr($str, 0, 1)) . mb_substr($str, 1);
+    }
+
+    private function diffDateResults($years, $months, $days)
+    {
+        return "лет: " . $years . ", месяцев: " . $months . ", дней: " . $days;
+    }
+
+    private function dmyDateFormat($date) {
+        return \Yii::$app->formatter->asDatetime($date, "php:d.m.Y");
     }
 
     /**

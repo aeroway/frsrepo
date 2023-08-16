@@ -120,6 +120,18 @@ $(document).ready(function() {
         }
     });
 
+    /* Приостановки */
+    $(".field-otchetpriost-fio_sro").hide();
+    $('#otchetpriost-mark_id').change(function() {
+        var select = $(this).val();
+        if (select == '4') {
+            $( ".field-otchetpriost-fio_sro" ).show();
+        } else {
+            $('#otchetpriost-fio_sro').val('');
+            $( ".field-otchetpriost-fio_sro" ).hide();
+        }
+    });
+
     /* ГЗН */
 	$( "#selectPunishment" ).change(function()
 	{

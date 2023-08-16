@@ -59,20 +59,23 @@ class OtchetList extends \yii\db\ActiveRecord
 
     public function getStatusOtchetlist($table)
     {
-        //if($table == 'otchet39')
-            //return Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
+        if ($table == 'otchet78') {
+            return;
+        }
 
-        if($table == 'otchetn')
+        if($table == 'otchetn') {
             $controller = 'otchetn';
-        elseif($table == 'otchet_pay')
+        } elseif($table == 'otchet_pay') {
             $controller = 'otchet-pay';
-        elseif($table == 'otchetur' || $table == 'otchet999')
+        } elseif($table == 'otchetur' || $table == 'otchet999') {
             $controller = 'otchetur';
-        elseif($table == 'otchetfiz')
+        } elseif($table == 'otchetfiz') {
             $controller = 'otchetfiz';
-        else 
+        } elseif($table == 'otchetpriost') {
+            $controller = 'otchetpriost';
+        } else {
             $controller = 'otchett';
-
+        }
 
         /* Исправлен */
 
@@ -150,40 +153,52 @@ class OtchetList extends \yii\db\ActiveRecord
 
         foreach($rows[0] as $otchetSum) {}
 
-        $lcl_echo;
-        $lcl_echo = "<b>исправлен</b>: $otchetStatus0<br>";
-        $lcl_echo .= "<b>невозможно исправить</b>: $otchetStatus1<br>";
-
-        if($controller === 'otchet-pay')
+        if ($controller == 'otchetpriost') {
+            $cont = 'Otchetpriost';
+        } elseif ($controller == 'otchet-pay') {
             $cont = 'OtchetPay';
-        else
+        } else {
             $cont = ucfirst($controller);
+        }
 
-        if($otchetNull != 0)
+        $lcl_echo = '';
+
+        if ($table <> 'otchetpriost') {
+            $lcl_echo = "<b>исправлен</b>: $otchetStatus0<br>";
+            $lcl_echo .= "<b>невозможно исправить</b>: $otchetStatus1<br>";
+        }
+
+        if($otchetNull != 0 && $table <> 'otchetpriost')
         {
             $lcl_echo .= "<b><a style='color: orange' href='/index.php?" . $cont . "Search[status]=не+назначено&r=$controller/index&table=$table'>не назначено</a></b>: $otchetNull<br>";
         }
 
-        if($otchetNazn != 0)
+        if($otchetNazn != 0 && $table <> 'otchetpriost')
         {
             $lcl_echo .= "<b><a style='color: green' href='/index.php?" . $cont . "Search[status]=назначено&r=$controller/index&table=$table'>назначено</a></b>: $otchetNazn<br>";
         }
 
-        if($otchetRepeat != 0)
+        if($otchetRepeat != 0 && $table <> 'otchetpriost')
         {
             $lcl_echo .= "<b><a style='color: red' href='/index.php?" . $cont . "Search[flag]=1&r=$controller/index&table=$table'>повторные ошибки</a></b>: $otchetRepeat<br>";
         }
 
-        if($otchetWork != 0)
+        if($otchetWork != 0 && $table <> 'otchetpriost')
         {
             $lcl_echo .= "<b><a href='?r=$controller/indexstat&table=$table'>в работе</a>:</b> $otchetWork<br>";
         }
+
         $lcl_echo .= "<br><p><b>Всего:</b> $otchetSum</p>";
 
-        if($table <> 'otchet_pay' && $table <> 'otchet999') {
+        if ($table == 'otchetpriost') {
+            $lcl_echo .= Html::a('<br>Статистика в Excel за период', ['otchetlist/stat-index-otchet-priost', 'tblname' => $table], ['target'=>'_blank']);
+        }
+
+        if($table <> 'otchet_pay' && $table <> 'otchet999' && $table <> 'otchetpriost') {
             $lcl_echo .= Html::a('Статистика', ['otchetlist/statx', 'tblname' => $table], ['target'=>'_blank']);
-            $lcl_echo .= Html::a('<p>Статистика в Excel за период</p>', ['otchetlist/stat-index-otchet', 'tblname' => $table], ['target'=>'_blank']);
-            $lcl_echo .= Html::a('<p>Доска почёта</p>', ['otchetlist/stat-employee', 'tblname' => $table], ['target'=>'_blank']);
+            $lcl_echo .= Html::a('<br>Статистика в Excel за период', ['otchetlist/stat-index-otchet', 'tblname' => $table], ['target'=>'_blank']);
+            $lcl_echo .= Html::a('<br>Статистика назначенных Краснодар', ['otchetlist/stat-appoint', 'tblname' => $table], ['target'=>'_blank']);
+            $lcl_echo .= Html::a('<br>Статистика отработанных', ['otchetlist/stat-employee', 'tblname' => $table], ['target'=>'_blank']);
         }
 
         if($table == 'otchet39' || $table == 'otchet41' || $table == 'otchet42' || $table == 'otchet44' || $table == 'otchet47' || $table == 'otchet67')
@@ -535,5 +550,30 @@ class OtchetList extends \yii\db\ActiveRecord
         ]);
 
         return $exporter->send('items.xls');
+    }
+
+    public function getOtchetPriostExcel($tblname, $fromDate, $tillDate) {
+        Otchett::$name = $tblname;
+        $exporter = new Spreadsheet([
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Otchetpriost::find()
+                    ->where(['and', 
+                        ['>=', 'date', $fromDate . ' 00:00:00.000'],
+                        ['<=', 'date', $tillDate . ' 23:59:59.999']
+                    ]),
+            ]),
+            'columns' => [
+                ['attribute' => 'area.name'],
+                ['attribute' => 'date_suspend'],
+                ['attribute' => 'kuvd'],
+                ['attribute' => 'suspensionAsString'],
+                ['attribute' => 'description'],
+                ['attribute' => 'offer'],
+                ['attribute' => 'executor'],
+                ['attribute' => 'username'],
+            ],
+        ]);
+
+        return $exporter->send('priost.xls');
     }
 }

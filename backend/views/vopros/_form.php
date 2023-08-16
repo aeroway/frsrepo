@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use backend\models\Otdel;
-use kartik\date\DateTimePicker;
+// use kartik\date\DateTimePicker;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */

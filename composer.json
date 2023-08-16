@@ -33,7 +33,8 @@
         "kartik-v/yii2-mpdf": "~v1.0.6",
         "kartik-v/yii2-export": "~v1.4.2",
         "yii2tech/spreadsheet": "~1.0.5",
-        "2amigos/yii2-ckeditor-widget": ">=2.0.0"
+        "2amigos/yii2-ckeditor-widget": ">=2.0.0",
+        "neconix/yii2-oci8": "~1.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.18",

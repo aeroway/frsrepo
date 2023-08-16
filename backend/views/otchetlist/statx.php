@@ -150,6 +150,57 @@ $tblview = array(
     'otchet135' => 'stat_135',
     'otchet136' => 'stat_136',
     'otchet137' => 'stat_137',
+    'otchet138' => 'stat_138',
+    'otchet139' => 'stat_139',
+    'otchet140' => 'stat_140',
+    'otchet141' => 'stat_141',
+    'otchet142' => 'stat_142',
+    'otchet143' => 'stat_143',
+    'otchet144' => 'stat_144',
+    'otchet145' => 'stat_145',
+    'otchet146' => 'stat_146',
+    'otchet147' => 'stat_147',
+    'otchet148' => 'stat_148',
+    'otchet149' => 'stat_149',
+    'otchet150' => 'stat_150',
+    'otchet151' => 'stat_151',
+    'otchet152' => 'stat_152',
+    'otchet153' => 'stat_153',
+    'otchet154' => 'stat_154',
+    'otchet155' => 'stat_155',
+    'otchet156' => 'stat_156',
+    'otchet157' => 'stat_157',
+    'otchet158' => 'stat_158',
+    'otchet159' => 'stat_159',
+    'otchet160' => 'stat_160',
+    'otchet161' => 'stat_161',
+    'otchet162' => 'stat_162',
+    'otchet163' => 'stat_163',
+    'otchet164' => 'stat_164',
+    'otchet165' => 'stat_165',
+    'otchet166' => 'stat_166',
+    'otchet167' => 'stat_167',
+    'otchet168' => 'stat_168',
+    'otchet169' => 'stat_169',
+    'otchet170' => 'stat_170',
+    'otchet171' => 'stat_171',
+    'otchet172' => 'stat_172',
+    'otchet173' => 'stat_173',
+    'otchet174' => 'stat_174',
+    'otchet175' => 'stat_175',
+    'otchet176' => 'stat_176',
+    'otchet177' => 'stat_177',
+    'otchet178' => 'stat_178',
+    'otchet179' => 'stat_179',
+    'otchet180' => 'stat_180',
+    'otchet181' => 'stat_181',
+    'otchet182' => 'stat_182',
+    'otchet183' => 'stat_183',
+    'otchet184' => 'stat_184',
+    'otchet185' => 'stat_185',
+    'otchet186' => 'stat_186',
+    'otchet187' => 'stat_187',
+    'otchet188' => 'stat_188',
 );
 
 if(
@@ -279,6 +330,57 @@ if(
     or $tblname == 'otchet135'
     or $tblname == 'otchet136'
     or $tblname == 'otchet137'
+    or $tblname == 'otchet138'
+    or $tblname == 'otchet139'
+    or $tblname == 'otchet140'
+    or $tblname == 'otchet141'
+    or $tblname == 'otchet142'
+    or $tblname == 'otchet143'
+    or $tblname == 'otchet144'
+    or $tblname == 'otchet145'
+    or $tblname == 'otchet146'
+    or $tblname == 'otchet147'
+    or $tblname == 'otchet148'
+    or $tblname == 'otchet149'
+    or $tblname == 'otchet150'
+    or $tblname == 'otchet151'
+    or $tblname == 'otchet152'
+    or $tblname == 'otchet153'
+    or $tblname == 'otchet154'
+    or $tblname == 'otchet155'
+    or $tblname == 'otchet156'
+    or $tblname == 'otchet157'
+    or $tblname == 'otchet158'
+    or $tblname == 'otchet159'
+    or $tblname == 'otchet160'
+    or $tblname == 'otchet161'
+    or $tblname == 'otchet162'
+    or $tblname == 'otchet163'
+    or $tblname == 'otchet164'
+    or $tblname == 'otchet165'
+    or $tblname == 'otchet166'
+    or $tblname == 'otchet167'
+    or $tblname == 'otchet168'
+    or $tblname == 'otchet169'
+    or $tblname == 'otchet170'
+    or $tblname == 'otchet171'
+    or $tblname == 'otchet172'
+    or $tblname == 'otchet173'
+    or $tblname == 'otchet174'
+    or $tblname == 'otchet175'
+    or $tblname == 'otchet176'
+    or $tblname == 'otchet177'
+    or $tblname == 'otchet178'
+    or $tblname == 'otchet179'
+    or $tblname == 'otchet180'
+    or $tblname == 'otchet181'
+    or $tblname == 'otchet182'
+    or $tblname == 'otchet183'
+    or $tblname == 'otchet184'
+    or $tblname == 'otchet185'
+    or $tblname == 'otchet186'
+    or $tblname == 'otchet187'
+    or $tblname == 'otchet188'
 ) {
     $rows = (new \yii\db\Query())
         ->select('*')

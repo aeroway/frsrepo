@@ -102,21 +102,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' =>
                 [
-                    'exam-list' => function ($url, $model)
-                    {
+                    'attestat-list' => function ($url, $model) {
+                        $url = Yii::$app->getUrlManager()->createUrl(['employee/attestat-list', 'id' => $model['id']]);
+                        $options = [
+                            'title' => Yii::t('yii', 'Аттестационный лист'),
+                            'aria-label' => Yii::t('yii', 'attestatlist'),
+                        ];
+
+                        return Html::a('<span class="btn-xs btn-info glyphicon glyphicon-print"></span>', $url, $options);
+                    },
+
+                    'exam-list' => function ($url, $model) {
                         $url = Yii::$app->getUrlManager()->createUrl(['employee/exam-list', 'id' => $model['id']]);
                         $options = [
                             'title' => Yii::t('yii', 'Экзаменационный лист'),
                             'aria-label' => Yii::t('yii', 'examlist'),
                         ];
 
-                        return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        return Html::a('<span class="btn-xs btn-warning glyphicon glyphicon-print"></span>', $url, $options);
                     },
                 ],
-                'template' => '{exam-list}',
+                'template' => '{attestat-list} {exam-list}',
             ],
         ],
     ]); ?>
-
 
 </div>

@@ -56,6 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data) {
                     if($data->table_list == 'otchetn')
                         return "<a href='/index.php?r=otchetn/index'>$data->name_list</a>";
+                    elseif($data->table_list == 'otchetpriost')
+                        return "<a href='/index.php?r=otchetpriost/index'>$data->name_list</a>";
                     elseif($data->table_list == 'otchet_pay')
                         return "<a href='/index.php?r=otchet-pay/index'>$data->name_list</a>";
                     elseif($data->table_list == 'otchetur' || $data->table_list == 'otchet999')

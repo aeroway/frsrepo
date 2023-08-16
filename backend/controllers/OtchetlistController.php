@@ -31,8 +31,8 @@ class OtchetlistController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'stat-employee',
-                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp', 'stat-index-otchet',
+                        'actions' => ['logout', 'index', 'stat', 'statx', 'update', 'view', 'stat-employee', 'stat-appoint',
+                            'create', 'stat-39-range', 'stat-index', 'stat-index-ora', 'stat-index-tp', 'stat-index-otchet', 'stat-index-otchet-priost',
                             'status-reception', 'status-registration', 'number-applications', 'status-regkuvd-999', 'status-regkuvd'
                         ],
                         'allow' => true,
@@ -251,6 +251,31 @@ class OtchetlistController extends Controller
         }
     }
 
+    public function actionStatIndexOtchetPriost($tblname)
+    {
+        if(!in_array("ИТО", Yii::$app->user->identity->groups) && Yii::$app->user->identity->username != 'Осипов СЛ') {
+            throw new ForbiddenHttpException('Вы не можете получить доступ к этой странице.');
+        }
+
+        $model = new Otchetlist();
+        $fromDate = Yii::$app->request->post('fromDate');
+        $tillDate = Yii::$app->request->post('tillDate');
+
+        if ($tblname && $fromDate && $tillDate) {
+            $model->getOtchetPriostExcel($tblname, $fromDate, $tillDate);
+
+            return $this->render('stat-index-otchet-priost', [
+                'tblname' => $tblname,
+                'fromDate' => $fromDate,
+                'tillDate' => $tillDate,
+            ]);
+        } else {
+            return $this->render('stat-index-otchet-priost', [
+                'tblname' => $tblname,
+            ]);
+        }
+    }
+
     /**
      * Displays a single Otchetlist model.
      * @param integer $id
@@ -279,6 +304,23 @@ class OtchetlistController extends Controller
             ->where(["and", ["=", "status", "Исправлен"], ["=", "flag", 0]])
             ->groupBy("username")
             ->orderBy(["ct" => SORT_DESC])
+            ->all();
+
+        return $this->render('stat-employee', [
+            'tblname' => $tblname,
+            'employee' => $employee
+        ]);
+    }
+
+    public function actionStatAppoint($tblname)
+    {
+        $employee =
+        (new \yii\db\Query())
+            ->select([new \yii\db\Expression("SUBSTRING(username, CHARINDEX('\', username)+1, 10000) AS username, count(*) ct")])
+            ->from($tblname)
+            ->where(['and', ['or', ['=', 'status', 'назначено'], ['=', 'flag', 1]], ['like', 'kn', '23:43:']])
+            ->groupBy("username")
+            ->orderBy(["username" => SORT_ASC])
             ->all();
 
         return $this->render('stat-employee', [

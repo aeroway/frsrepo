@@ -3,6 +3,7 @@
 namespace console\models;
 
 use Yii;
+// use console\models\XmlAnalysisFlats;
 
 /**
  * This is the model class for table "xml_analysis".
@@ -62,7 +63,7 @@ class XmlAnalysis extends \yii\db\ActiveRecord
 
             for ($i = 0; $i < count($rows); $i++) {
                 $sql = Yii::$app->db10->queryBuilder->batchInsert($table, $columns, $rows[$i]);
-                Yii::$app->db10->createCommand($sql . ' ON CONFLICT ON CONSTRAINT xml_analysis_kn_filename_key DO NOTHING; ')->execute();
+                Yii::$app->db10->createCommand($sql . ' ON CONFLICT ON CONSTRAINT ' . $table . '_kn_filename_key DO NOTHING; ')->execute();
             }
         }
     }
@@ -73,6 +74,7 @@ class XmlAnalysis extends \yii\db\ActiveRecord
         $pathXml = glob($pathDir . "*.*");
         $modelXmlAnalysis = new XmlAnalysis();
         $arKnAddressFilename = [];
+        $arKnBuildFlats = [];
 
         foreach ($pathXml as $xml) {
             echo basename($xml) . ' - ';
@@ -93,19 +95,6 @@ class XmlAnalysis extends \yii\db\ActiveRecord
                 if (empty($number)) {
                     $number = (array)$value;
                 }
-    
-                if (!empty($number["@attributes"]["CadastralNumber"])) {
-                    $kn = $number["@attributes"]["CadastralNumber"];
-                } elseif (!empty($number["@attributes"]["ConditionalNumber"])) {
-                    $kn = $number["@attributes"]["ConditionalNumber"];
-                } elseif (!empty($number["Flat"]->Number_Register->CadastralNumber)) {
-                    $kn = (string)$number["Flat"]->Number_Register->CadastralNumber;
-                } elseif (!empty($number["Building"]->Number_Register->CadastralNumber)) {
-                    $kn = (string)$number["Building"]->Number_Register->CadastralNumber;
-                } elseif (!empty($number["Construction"]->Number_Register->CadastralNumber)) {
-                    $kn = (string)$number["Construction"]->Number_Register->CadastralNumber;
-                } else {
-                }
 
                 if (!empty($value->Flat->Address->Note)) {
                     $address = (string)$value->Flat->Address->Note;
@@ -121,12 +110,31 @@ class XmlAnalysis extends \yii\db\ActiveRecord
                     $address = '';
                 }
 
+                if (!empty($number["@attributes"]["CadastralNumber"])) {
+                    $kn = $number["@attributes"]["CadastralNumber"];
+                } elseif (!empty($number["@attributes"]["ConditionalNumber"])) {
+                    $kn = $number["@attributes"]["ConditionalNumber"];
+                } elseif (!empty($number["Flat"]->Number_Register->CadastralNumber)) {
+                    $kn = (string)$number["Flat"]->Number_Register->CadastralNumber;
+                } elseif (!empty($number["Building"]->Number_Register->CadastralNumber)) {
+                    $kn = (string)$number["Building"]->Number_Register->CadastralNumber;
+                    if (!empty($number["Building"]->Flats->CadastralNumber)) {
+                        foreach ($number["Building"]->Flats->CadastralNumber as $kn_flats) {
+                            $arKnBuildFlats[] = [$kn_flats, $address, strtolower(basename($xml))];
+                        }
+                    }
+                } elseif (!empty($number["Construction"]->Number_Register->CadastralNumber)) {
+                    $kn = (string)$number["Construction"]->Number_Register->CadastralNumber;
+                }
+
                 if (!empty($kn)) {
-                    $arKnAddressFilename[] = [$kn, $address, basename($xml)];
+                    $arKnAddressFilename[] = [$kn, $address, strtolower(basename($xml))];
                 }
             }
 
+            $modelXmlAnalysis->batchInsert('xml_analysis', ['kn', 'address', 'filename'], $arKnBuildFlats);
             $modelXmlAnalysis->batchInsert('xml_analysis', ['kn', 'address', 'filename'], $arKnAddressFilename);
+
             unlink($xml);
         }
     }
