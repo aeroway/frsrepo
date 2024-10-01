@@ -31,101 +31,6 @@ class XmlanalysisController extends Controller
 
     public function actionFnsCheck()
     {
-        function libxml_display_errors($pathFile) {
-            $errors = libxml_get_errors();
-            $lines = file($pathFile);
-            $errorLine = false;
-            $flag = 0;
-            $wStart = false;
-            $wStop = false;
-
-            for ($y=0; $y < count($errors); $y++) {
-                if ($y === 1 && $errors[$y] == $errors[$y-1]) {
-                    break;
-                }
-
-                $line = mb_convert_encoding($lines[$errors[$y]->line-1], "UTF-8", "Windows-1251");
-
-                $posNumReg = false;
-                $posAttribute = false;
-                $posAttributeValue = false;
-                $posDocInLineFirst = false;
-                $posknInLineFirts = false;
-                $posNameDocInLineFirst = false;
-                $isCountLimitDocSearch = false;
-                $posAttribute = strpos($errors[$y]->message, 'attribute');
-                $posAttributeValue = strpos($errors[$y]->message, 'value');
-
-                if ($posAttribute) {
-                    $wStart = false;
-                    $wStop = false;
-
-                    if (strpos($errors[$y]->message, 'ВерсФорм') !== false) {
-                        echo $errors[$y]->message;
-                        die;
-                    }
-
-                    for ($w1=$errors[$y]->line; $w1 < count($lines)-1 ; $w1--) {
-                        $posSvPravFirst = strpos(mb_convert_encoding($lines[$w1], "UTF-8", "Windows-1251"), 'Прав ');
-                        $posDocFirst = strpos(mb_convert_encoding($lines[$w1], "UTF-8", "Windows-1251"), '<Документ ');
-
-                        if ($posSvPravFirst !== false || $posDocFirst !== false) {
-                            $wStart = $w1;
-                            break;
-                        }
-                    }
-
-                    for ($w2=$errors[$y]->line; $w2 < count($lines)-1 ; $w2++) {
-                        $posSvPravSecond = strpos(mb_convert_encoding($lines[$w2], "UTF-8", "Windows-1251"), 'Прав>');
-                        $posDocSecond = strpos(mb_convert_encoding($lines[$w2], "UTF-8", "Windows-1251"), '</Документ>');
-
-                        if ($posSvPravSecond !== false || $posDocSecond !== false) {
-                            $wStop = $w2;
-                            break;
-                        }
-                    }
-                }
-
-                if ($y > 0 && ($errors[$y]->line - $errors[$y-1]->line) > 10) {
-                    $flag = 0;
-                }
-
-                $localConcatTextNameDocsAttribute = "";
-                if ($errors[$y]->line > $wStart && $errors[$y]->line <= $wStop && $flag === 0) {
-                    $localConcatTextNameDocsAttribute .= "\n\r--------------\n\r";
-                    $localConcatTextNameDocsAttribute .= $errors[$y]->message;
-                    $localConcatTextNameDocsAttribute .= "--------------\n\r";
-
-                    $newLine = '';
-                    for ($a=$wStart; $a < $wStop; $a++) { 
-                        $newLine .= mb_convert_encoding($lines[$a], "UTF-8", "Windows-1251") . "\n\r";
-                    }
-
-                    $flag = 1;
-
-                    $posNumReg = strpos($newLine, 'НомРег');
-                    if ($posNumReg !== false) {
-                        $firstQuoteNumReg = strpos($newLine, '"', $posNumReg);
-                        $secondQuoteNumReg = strpos($newLine, '"', $firstQuoteNumReg+1);
-                        $localConcatTextNameDocsAttribute .=  'НомРег: ';
-                        $localConcatTextNameDocsAttribute .= substr($newLine, $firstQuoteNumReg+1, $secondQuoteNumReg-$firstQuoteNumReg-1) . "\n\r";
-                    }
-                }
-
-                $posNameDoc = strpos($line, 'НаимПравДок');
-                if ($posNameDoc !== false) {
-                    $firstQuoteNamePravDoc = strpos($line, '"', $posNameDoc);
-                    $secondQuoteNamePravDoc = strpos($line, '"', $firstQuoteNamePravDoc+1);
-                    $localConcatTextNameDocsAttribute .= "\n\r" . 'НаимПравДок: ';
-                    $localConcatTextNameDocsAttribute .= substr($line, $firstQuoteNamePravDoc+1, $secondQuoteNamePravDoc-$firstQuoteNamePravDoc-1) . "\n\r";
-                }
-
-                echo $localConcatTextNameDocsAttribute;
-            }
-
-            libxml_clear_errors();
-        }
-
         // Enable user error handling
         libxml_use_internal_errors(true);
 
@@ -136,16 +41,119 @@ class XmlanalysisController extends Controller
             $xmlDoc = new \DOMDocument('1.0');
             $xmlDoc->preserveWhiteSpace = false;
             $xmlDoc->formatOutput = true;
-            $xmlDoc->load($xml);
+            $xmlDoc->load($xml, LIBXML_BIGLINES);
             $xmlDoc->save($xml);
 
             $xmlDoc = new \DOMDocument();
-            $xmlDoc->load($xml);
+            $xmlDoc->load($xml, LIBXML_BIGLINES);
 
             if (!$xmlDoc->schemaValidate('console/uploads/schema_validate_223001040800.xsd')) {
-                libxml_display_errors($xml);
+                $this->libxml_display_errors($xml);
             }
         }
+    }
+
+    public function libxml_display_errors($pathFile) {
+        $errors = libxml_get_errors();
+        $lines = file($pathFile);
+        $flag = 0;
+        $posStart = false;
+        // $localConcatTextNameDocsAttribute = "\n" . basename($pathFile);
+        $result = [];
+
+        for ($y=0; $y < count($errors); $y++) {
+            // $localConcatTextNameDocsAttribute .= "\n" . 'Ошибка #' . $y+1 . ' из ' . count($errors) . "\n";
+            // $localConcatTextNameDocsAttribute .= $errors[$y]->message;
+            $result[$y]['xml'] = basename($pathFile);
+            $result[$y]['error'] = $errors[$y]->message;
+
+            if ($y === 1 && $errors[$y] == $errors[$y-1]) {
+                echo 'Error 2';
+                continue;
+            }
+
+            $posNumReg = false;
+
+            if (strpos($errors[$y]->message, 'ВерсФорм') !== false) {
+                echo $errors[$y]->message;
+                die;
+            }
+
+            for ($i3=$errors[$y]->line; $i3 >= 0; $i3--) {
+                $posStart = strpos(mb_convert_encoding($lines[$i3], "UTF-8", "Windows-1251"), '<Документ ');
+
+                $strLine = mb_convert_encoding($lines[$i3], "UTF-8", "Windows-1251");
+                $posKadastNomZU = strpos($strLine, 'КадастНомЗУ');
+                if ($posKadastNomZU !== false) {
+                    $firstQuoteKadastNomZU = strpos($strLine, '"', $posKadastNomZU);
+                    $secondQuoteKadastNomZU = strpos($strLine, '"', $firstQuoteKadastNomZU+1);
+                    $substrKadastNomZU = substr($strLine, $firstQuoteKadastNomZU+1, $secondQuoteKadastNomZU-$firstQuoteKadastNomZU-1);
+                    // $localConcatTextNameDocsAttribute .= 'КадастНомЗУ: ';
+                    // $localConcatTextNameDocsAttribute .= preg_replace("/[^0-9:]/", "", $substrKadastNomZU) . "\n";
+                    $result[$y]['КадастНомЗУ'] = preg_replace("/[^0-9:]/", "", $substrKadastNomZU);
+                    
+                }
+
+                $posKadastNomZd = strpos($strLine, 'КадастНомЗд');
+                if ($posKadastNomZd !== false) {
+                    $firstQuoteKadastNomZd = strpos($strLine, '"', $posKadastNomZd);
+                    $secondQuoteKadastNomZd = strpos($strLine, '"', $firstQuoteKadastNomZd+1);
+                    // $localConcatTextNameDocsAttribute .= 'КадастНомЗд: ';
+                    // $localConcatTextNameDocsAttribute .= substr($strLine, $firstQuoteKadastNomZd+1, $secondQuoteKadastNomZd-$firstQuoteKadastNomZd-1) . "\n";
+                    $result[$y]['КадастНомЗд'] = substr($strLine, $firstQuoteKadastNomZd+1, $secondQuoteKadastNomZd-$firstQuoteKadastNomZd-1);
+                }
+
+                $posKadastNomPom = strpos($strLine, 'КадастНомПом');
+                if ($posKadastNomPom !== false) {
+                    $firstQuoteKadastNomPom = strpos($strLine, '"', $posKadastNomPom);
+                    $secondQuoteKadastNomPom = strpos($strLine, '"', $firstQuoteKadastNomPom+1);
+                    // $localConcatTextNameDocsAttribute .= 'КадастНомПом: ';
+                    // $localConcatTextNameDocsAttribute .= substr($strLine, $firstQuoteKadastNomPom+1, $secondQuoteKadastNomPom-$firstQuoteKadastNomPom-1) . "\n";
+                    $result[$y]['КадастНомПом'] = substr($strLine, $firstQuoteKadastNomPom+1, $secondQuoteKadastNomPom-$firstQuoteKadastNomPom-1);
+                }
+
+                $posKadastNomReg = strpos($strLine, 'НомРег');
+                if ($posKadastNomReg !== false && $flag == 0) {
+                    $firstQuoteKadastNomReg = strpos($strLine, '"', $posKadastNomReg);
+                    $secondQuoteKadastNomReg = strpos($strLine, '"', $firstQuoteKadastNomReg+1);
+                    // $localConcatTextNameDocsAttribute .= 'НомРег: ';
+                    // $localConcatTextNameDocsAttribute .= substr($strLine, $firstQuoteKadastNomReg+1, $secondQuoteKadastNomReg-$firstQuoteKadastNomReg-1) . "\n";
+                    $flag++;
+                    $result[$y]['НомРег'] = substr($strLine, $firstQuoteKadastNomReg+1, $secondQuoteKadastNomReg-$firstQuoteKadastNomReg-1);
+                }
+
+                if ($posStart) {
+                    $flag = 0;
+                    break;
+                }
+            }
+        }
+
+        // echo $localConcatTextNameDocsAttribute;
+
+
+        foreach ($result as $v) {
+            echo $v['xml'] . ';"';
+            echo trim($v['error']) . '";';
+
+            if (!empty($v['КадастНомПом'])) {
+                echo $v['КадастНомПом'] . ";";
+            } elseif (!empty($v['КадастНомЗд'])) {
+                echo $v['КадастНомЗд'] . ";";
+            } elseif (!empty($v['КадастНомЗУ'])) {
+                echo $v['КадастНомЗУ'] . ";";
+            } else {
+                echo 'Нет данных' . ";";
+            }
+
+            if (!empty($v['НомРег'])) {
+                echo $v['НомРег'] . "";
+            }
+
+            echo  "\n";
+        }
+
+        libxml_clear_errors();
     }
 }
 ?>

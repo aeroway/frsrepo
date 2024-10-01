@@ -72,6 +72,7 @@ codeception.yml
 /common/widgets
 /console/config/test.php
 /console/migrations
+/console/uploads
 docker-compose.yml
 /frontend/Dockerfile
 /frontend/codeception.yml

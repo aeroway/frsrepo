@@ -111,7 +111,7 @@ if(Otchett::$name == 'otchet29')
         <?php $labelKn = 'КН'; ?>
         <?php $labelArea = 'Документ в СЭД'; ?>
     <?php else: ?>
-        <?php $labelDescription = ['label' => 'Описание', 'attribute' => 'description',]; ?>
+        <?php $labelDescription = ['label' => 'Описание', 'attribute' => 'description', 'contentOptions' => ['style'=>'word-break: break-all;'],]; ?>
         <?php $labelComment = 'Наимен. ошибки'; ?>
         <?php $labelKn = 'КН/УН'; ?>
     <?php endif; ?>
@@ -190,6 +190,7 @@ if(Otchett::$name == 'otchet29')
             [
                 'label' => $labelComment,
                 'attribute' => 'comment',
+                'contentOptions' => ['style'=>'word-break: break-all;'],
                 'value' => function($data) {
                     if (Otchett::$name == 'otchet39' || Otchett::$name == 'otchet46') {
                         return date('d.m.Y', strtotime($data->comment));
@@ -214,7 +215,7 @@ if(Otchett::$name == 'otchet29')
             'area',
             'flag',
             'status',
-            'date_load'
+            // 'date_load'
             // 'id_dpt',
             // 'id_egrp'
         ];

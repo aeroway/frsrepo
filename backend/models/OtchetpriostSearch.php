@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Otchetpriost;
+use yii\db\Expression;
 
 /**
  * OtchetpriostSearch represents the model behind the search form about `backend\models\Otchetpriost`.
@@ -41,7 +42,8 @@ class OtchetpriostSearch extends Otchetpriost
      */
     public function search($params)
     {
-        $query = Otchetpriost::find();
+        $query = Otchetpriost::find()->where(['>=', 'date_suspend', date('Y-01-01')]);
+        // new Expression("DATEADD(day, -275, GETDATE())")
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

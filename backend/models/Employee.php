@@ -287,9 +287,10 @@ class Employee extends \yii\db\ActiveRecord
             if (!empty($stazhGsDiffDate2)) {
                 $stazhGsDiffDateResult = $this->sumDateIntervals($stazhGsDiffDate1, $stazhGsDiffDate2);
                 $stazhGsDiffDateResult->invert = 0;
+                $stazhGsDiffDate2 = $stazhGsDiffDateResult;
+            } else {
+                $stazhGsDiffDate2 = $stazhGsDiffDate1;
             }
-
-            $stazhGsDiffDate2 = $stazhGsDiffDate1;
         }
 
         foreach ($modelStazh->stazh($id) as $stazh) {
@@ -299,7 +300,6 @@ class Employee extends \yii\db\ActiveRecord
                 $stazhDiffDateResult = $this->sumDateIntervals($stazhDiffDate1, $stazhDiffDate2);
                 $stazhDiffDateResult->invert = 0;
                 $stazhDiffDate2 = $stazhDiffDateResult;
-
             } else {
                 $stazhDiffDate2 = $stazhDiffDate1;
             }

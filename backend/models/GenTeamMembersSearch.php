@@ -1,0 +1,72 @@
+<?php
+
+namespace backend\models;
+
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use backend\models\GenTeamMembers;
+
+/**
+ * GenTeamMembersSearch represents the model behind the search form of `backend\models\GenTeamMembers`.
+ */
+class GenTeamMembersSearch extends GenTeamMembers
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['id', 'agency_id', 'team'], 'integer'],
+            [['full_name', 'position'], 'safe'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = GenTeamMembers::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['team' => SORT_ASC, 'full_name' => SORT_ASC]]
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'agency_id' => $this->agency_id,
+            'team' => $this->team,
+        ]);
+
+        $query->andFilterWhere(['ilike', 'full_name', $this->full_name])
+            ->andFilterWhere(['ilike', 'position', $this->position]);
+
+        return $dataProvider;
+    }
+}

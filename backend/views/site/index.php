@@ -61,7 +61,6 @@ function button($gitem)
             <a target="_blank" href="/index.php?r=otchetpriost/index" style="margin: 5px;" class="btn btn-success">Приостановки</a>
             <?= yii\helpers\Html::a('КС «АРМ ГС»', 'https://dl.armgs.team', ['class' => 'btn btn-info']); ?>
             <a target="_blank" href="/index.php?r=otchett/index&table=otchet78" style="margin: 5px;" class="btn btn-default">Земли с/х назначения</a>
-            <!--<a target="_blank" href="/index.php?r=otchett/index&table=otchet42" style="margin: 5px;" class="btn btn-success btn-sm">Экстер ФГИС ЕГРН</a>-->
             <a target="_blank" href="/index.php?r=inventory-repair" style="margin: 5px;" class="btn btn-default">Ремонт принтеров</a>
             <a target="_blank" href="/index.php?r=rst-enf-proc" style="margin: 5px;" class="btn btn-default">Реестр исполнительных производств</a>
             <a target="_blank" href="https://www.rosreestr.ru/site/" style="margin: 5px;" class="btn btn-default">Управление Росреестра [rosreestr]</a>
@@ -69,10 +68,10 @@ function button($gitem)
             <a target="_blank" href="http://bankrot.fedresurs.ru/" style="margin: 5px;" class="btn btn-default">Реестр банкротов</a>
             <a target="_blank" href="http://10.23.143.1/vvs.ru/" style="margin: 5px;" class="btn btn-default">Форум ФКП [vvs]</a>
             <a target="_blank" href="http://10.23.112.38/topos/Boxes.aspx" style="margin: 5px;" class="btn btn-default">Топография архива</a>
-            <a target="_blank" href="http://10.23.113.44/cert_rayon/" style="margin: 5px;" class="btn btn-default">Экстерриториальная регистрация</a>
+            <!--<a target="_blank" href="http://10.23.113.44/cert_rayon/" style="margin: 5px;" class="btn btn-default">Экстерриториальная регистрация</a>-->
             <a target="_blank" href="http://10.23.113.44/sudotdel/" style="margin: 5px;" class="btn btn-default">Судебная практика</a>
             <a target="_blank" href="http://10.23.112.38/MWS" style="margin: 5px;" class="btn btn-default">Проверка арестов</a>
-            <a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-default">Портал отчётов [113.55]</a>
+            <!--<a target="_blank" href="http://10.23.113.55:9861/regist/default.aspx" style="margin: 5px;" class="btn btn-default">Портал отчётов [113.55]</a>-->
             <a target="_blank" href="http://10.128.21.4/app/" style="margin: 5px;" class="btn btn-default">Техпортал ЕСРОО</a>
             <a target="_blank" href="http://10.23.112.112/index.php?r=site/bthday" style="margin: 5px;" class="btn btn-default">Дни рождения</a>
             <?= yii\helpers\Html::a('ГИС ЖКХ', ['xml-analysis/index'], ['class' => 'btn btn-default']); ?>
@@ -84,6 +83,11 @@ function button($gitem)
                 <?= '<a target="_blank" href="http://10.23.112.112/index.php?r=employee" style="margin: 5px;" class="btn btn-default">Кадры</a>' ?>
             <?php endif; ?>
             <?= yii\helpers\Html::a('Совет регистраторов', ['sgr-meeting/index'], ['class' => 'btn btn-default']); ?>
+            <a target="_blank" href="http://10.23.112.112/index.php?r=otcheterl/index" style="margin: 5px;" class="btn btn-default">Журнал запросов</a>
+            <a target="_blank" href="http://10.23.112.112/index.php?r=otcheterlmfc/index" style="margin: 5px;" class="btn btn-default">Ошибки МФЦ</a>
+
+            <a target="_blank" href="/index.php?r=foreigners-border-areas" style="margin: 5px;" class="btn btn-info">Иностранцы приграничники</a>
+            <a target="_blank" href="/index.php?r=foreigners-agro" style="margin: 5px;" class="btn btn-info">Иностранцы с/х</a>
         </div>
         <div class="row">
             <div class="col-lg-4">
